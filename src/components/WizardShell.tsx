@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 export function WizardShell({
   title,
@@ -10,6 +11,7 @@ export function WizardShell({
   onPrimary,
   primaryDisabled,
   secondary,
+  accountLink,
 }: {
   title: string;
   description?: string;
@@ -24,6 +26,8 @@ export function WizardShell({
   primaryDisabled?: boolean;
   /** Extra content rendered just above the primary button (e.g. a secondary link). */
   secondary?: ReactNode;
+  /** A small persistent top-right link to the account/billing page, shown only on signed-in screens. */
+  accountLink?: boolean;
 }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-cream">
@@ -36,15 +40,26 @@ export function WizardShell({
         </div>
       )}
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-5 pb-8">
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            aria-label="Back"
-            className="mb-5 flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-lg text-ink"
-          >
-            ‹
-          </button>
+        {(onBack || accountLink) && (
+          <div className="mb-5 flex items-center justify-between">
+            {onBack ? (
+              <button
+                type="button"
+                onClick={onBack}
+                aria-label="Back"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-lg text-ink"
+              >
+                ‹
+              </button>
+            ) : (
+              <span />
+            )}
+            {accountLink && (
+              <Link href="/account/billing" className="text-xs text-ink/50 underline">
+                Account
+              </Link>
+            )}
+          </div>
         )}
         <h1 className="text-2xl font-bold text-ink">{title}</h1>
         {description && <p className="mt-1 text-sm text-ink/55">{description}</p>}

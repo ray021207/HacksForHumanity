@@ -5,6 +5,7 @@
 // just re-run this same single call with changed parameters.
 
 import type { ProfileScores } from "./scoring";
+import type { RelationshipType } from "./appState";
 import playbook from "@/data/playbook.json";
 
 export const TECHNIQUES = [
@@ -46,6 +47,8 @@ export interface CardsOutput {
 export interface GenerationInput {
   profile: ProfileScores;
   ageBand: AgeBand;
+  relationshipType: RelationshipType;
+  relationshipTypeOther?: string;
   situationText: string;
   goal: Goal;
   riskTier: "green" | "amber";
@@ -119,6 +122,10 @@ is the entire interaction. Follow these rules exactly:
 4. For age band 23+ and 18-22 (when living independently), use
    adult-to-adult framing. Never claim parental authority over an adult
    child.
+4b. Use relationship_frame to calibrate assumed authority and shared
+   history for the caregiver's relationship to this child. Never invent
+   relationship history, and never use parent-specific language (e.g.
+   "as their mom/dad") for a non-parent relationship type.
 5. Use the profile tendencies to tune tone and technique mix, but never
    mention a type label (e.g. "authoritarian", "permissive") anywhere in
    the output.
@@ -136,6 +143,7 @@ is the entire interaction. Follow these rules exactly:
 export function buildGenerationPrompt(input: GenerationInput): string {
   const ageGuidance = (playbook.ageBandGuidance as any)[input.ageBand];
   const goalNote = (playbook.goalNotes as any)[input.goal];
+  const relationshipGuidance = (playbook.relationshipGuidance as any)[input.relationshipType];
   const tendencies = scoresToTendencyLines(input.profile);
 
   const refinementNote = input.refinement
@@ -150,6 +158,9 @@ export function buildGenerationPrompt(input: GenerationInput): string {
     risk_tier_from_gate: input.riskTier,
     age_band: input.ageBand,
     age_band_frame: ageGuidance?.frame,
+    relationship_type: input.relationshipType,
+    relationship_frame: relationshipGuidance?.frame,
+    relationship_other_label: input.relationshipTypeOther ?? null,
     goal: input.goal,
     goal_note: goalNote,
     parent_tendencies: tendencies,

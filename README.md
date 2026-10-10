@@ -1,4 +1,4 @@
-# Conversation Starters (MVP)
+# kin&d (MVP)
 
 A parent answers a short questionnaire once, then describes a situation and gets 3 to 5
 conversation-starter cards. There is no chat — nothing typed after the cards ever reaches the
@@ -14,20 +14,27 @@ ready for real users. See "What still needs a human" below before any real launc
 - `@anthropic-ai/sdk` for the safety classifier and card generation
 - `@elevenlabs/elevenlabs-js` for optional speech-to-text on the situation screen's mic button
 - Plain TypeScript for all scoring (no model call involved)
-- Persistence: questionnaire responses and derived profile scores live **only in the browser**
-  (`localStorage`) and are sent with each request. The server stores nothing except an
-  append-only local log file of counts (`logs/events.log`) — tier counts, lint pass/fail, thumbs,
-  and completion time. It never stores situation text, child names, or birthdates — only age
-  bands.
+- Better Auth for sign-in (magic-link email via Resend, plus optional Google OAuth), with
+  database sessions
+- Drizzle ORM + Postgres (Neon/Vercel Postgres) for persistence
+- Stripe Checkout + Billing Portal for the freemium subscription
+- **Persistence changed from the original MVP.** Sign-in is now required before the
+  questionnaire or card generation. Once signed in, your account, questionnaire responses,
+  children/relationship info, and situation text are stored in Postgres, tied to your account —
+  this is a deliberate change from the original local-only MVP, made to support saved
+  progress across devices and the freemium usage limit. The append-only `logs/events.log`
+  remains counts-only, as before, for safety-gate/lint telemetry specifically. The in-browser
+  `localStorage` draft (`appState.ts`) still exists, but only as a short-lived autosave cache
+  for the in-progress step — the server is the source of truth once a block is completed.
 
 ## Setup
 
 ```bash
 npm install
-cp .env.example .env.local   # then fill in ANTHROPIC_API_KEY
+cp .env.example .env.local   # then fill in the variables below
 ```
 
-`.env.local` reads three variables:
+`.env.local` reads:
 
 - `ANTHROPIC_API_KEY` — required for the safety classifier and card generation.
 - `MODEL_NAME` — defaults to `claude-sonnet-5-5` if unset.
@@ -35,6 +42,33 @@ cp .env.example .env.local   # then fill in ANTHROPIC_API_KEY
   screen (speech-to-text only; there's no read-aloud/TTS). Leave it unset and the mic button
   simply doesn't render — `GET /api/voice/transcribe` reports `{enabled: false}` and the UI checks
   that before showing it.
+- `AUTH_SECRET` — required. Generate with `openssl rand -base64 33`.
+- `AUTH_URL` — the deployed domain in production; auto-detected in dev.
+- `RESEND_API_KEY`, `EMAIL_FROM` — required for magic-link sign-in email.
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` — optional, enables "Continue with Google".
+- `POSTGRES_URL`, `POSTGRES_URL_NON_POOLING` — required. A Postgres connection string (e.g. from
+  Vercel Postgres/Neon). The non-pooling URL is used by `drizzle-kit migrate`.
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID` — required for billing. Create
+  one Product + recurring Price in the Stripe dashboard, and register a webhook endpoint at
+  `/api/stripe/webhook` subscribed to `checkout.session.completed`,
+  `customer.subscription.updated`, and `customer.subscription.deleted`.
+
+Once `POSTGRES_URL`/`POSTGRES_URL_NON_POOLING` are set, run the migration:
+
+```bash
+npm run db:generate   # regenerate drizzle/*.sql after a schema change (already generated once)
+npm run db:migrate    # apply migrations to the database
+```
+
+## Freemium limit
+
+Signed-in users get `FREE_LIMIT` (5, see `src/lib/billingConstants.ts`) free card generations
+before `/api/cards/generate` returns `402` and the UI shows an upgrade prompt
+(`src/components/UpgradePrompt.tsx`) linking to `/account/billing`. A red-tier (crisis) result
+never consumes a free generation, since it costs no model call and someone in crisis shouldn't
+be penalized for hitting a limit. The usage counter is enforced server-side
+(`src/lib/billing.ts`) via an atomic `INSERT ... ON CONFLICT DO UPDATE`, and fails closed (blocks
+free users, never blocks an already-resolved subscriber) if the database is unreachable.
 
 ## Running things
 

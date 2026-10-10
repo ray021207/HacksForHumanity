@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Raisee",
+  title: "kin&d",
   description: "Conversation-starter cards for parents of teens and adult children.",
   // Favicon comes from src/app/icon.png (Next.js auto-detects this
   // filename as the app icon, no explicit `icons` field needed).

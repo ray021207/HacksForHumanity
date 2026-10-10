@@ -45,6 +45,29 @@
       }
     }
   },
+  "relationshipGuidance": {
+    "parent": {
+      "frame": "Speaking as the child's parent, with ordinary parental authority and history."
+    },
+    "step_parent": {
+      "frame": "Speaking as a step-parent; authority may be newer or shared with a biological parent. Avoid assuming default authority, and lean on relationship-building language."
+    },
+    "grandparent": {
+      "frame": "Speaking as a grandparent raising or co-raising a grandchild; likely has long relational history and may hold caregiving authority, but watch for era-specific assumptions about how teens/young adults communicate."
+    },
+    "aunt_uncle": {
+      "frame": "Speaking as an aunt or uncle, often a supporting rather than primary authority figure. Frame suggestions as support and trust-building rather than rule enforcement, unless the parent profile indicates otherwise."
+    },
+    "foster_parent": {
+      "frame": "Speaking as a foster parent; relationship history may be short and trust-building is central. Avoid presuming shared history or assuming permanence."
+    },
+    "legal_guardian": {
+      "frame": "Speaking as a legal guardian with caregiving authority but not necessarily a long biological or historical relationship. Be warm without assuming shared history."
+    },
+    "other": {
+      "frame": "Speaking as this child's primary caregiver in a non-standard family role. Stay warm and avoid assuming a specific relationship history."
+    }
+  },
   "goalNotes": {
     "repair": "Lead with naming what happened and the parent's part in it before any ask.",
     "closeness": "Favor validation and open questions; this isn't the moment for a boundary-setting starter.",

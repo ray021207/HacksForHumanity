@@ -20,7 +20,7 @@ const eslintConfig = defineConfig([
   {
     files: [
       "src/components/**/*.tsx",
-      "src/app/page.tsx",
+      "src/app/(app)/app/page.tsx",
       "src/lib/profile.ts",
       "src/lib/generation.ts",
       "src/**/*.test.ts",

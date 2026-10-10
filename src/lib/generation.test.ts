@@ -5,8 +5,10 @@ import {
   generateCards,
   fallbackCard,
   scoresToTendencyLines,
+  buildGenerationPrompt,
   type CardsOutput,
   type ModelInvoker,
+  type GenerationInput,
 } from "./generation";
 import type { ProfileScores } from "./scoring";
 
@@ -147,10 +149,41 @@ const baseInput = {
     confidenceLoad: { confidence: 4 },
   } as ProfileScores,
   ageBand: "16-17" as const,
+  relationshipType: "parent" as const,
   situationText: "We argued about curfew tonight.",
   goal: "set_a_limit" as const,
   riskTier: "green" as const,
 };
+
+describe("buildGenerationPrompt relationship framing", () => {
+  const relationshipTypes: GenerationInput["relationshipType"][] = [
+    "parent",
+    "step_parent",
+    "grandparent",
+    "aunt_uncle",
+    "foster_parent",
+    "legal_guardian",
+    "other",
+  ];
+
+  it.each(relationshipTypes)("includes a relationship_frame for %s", (relationshipType) => {
+    const prompt = buildGenerationPrompt({ ...baseInput, relationshipType });
+    const parsed = JSON.parse(prompt);
+    expect(parsed.relationship_type).toBe(relationshipType);
+    expect(typeof parsed.relationship_frame).toBe("string");
+    expect(parsed.relationship_frame.length).toBeGreaterThan(0);
+  });
+
+  it("passes through relationship_other_label when provided", () => {
+    const prompt = buildGenerationPrompt({
+      ...baseInput,
+      relationshipType: "other",
+      relationshipTypeOther: "family friend",
+    });
+    const parsed = JSON.parse(prompt);
+    expect(parsed.relationship_other_label).toBe("family friend");
+  });
+});
 
 describe("generateCards (validator-gated)", () => {
   it("returns the model's cards when valid on the first try", async () => {

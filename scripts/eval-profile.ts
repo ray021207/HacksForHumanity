@@ -70,6 +70,7 @@ async function main() {
       {
         profile: DISTINCTIVE_PROFILE,
         ageBand: scenario.ageBand,
+        relationshipType: "parent",
         situationText: scenario.situationText,
         goal: scenario.goal,
         riskTier: "green",
@@ -80,6 +81,7 @@ async function main() {
       {
         profile: NEUTRAL_PROFILE,
         ageBand: scenario.ageBand,
+        relationshipType: "parent",
         situationText: scenario.situationText,
         goal: scenario.goal,
         riskTier: "green",

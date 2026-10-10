@@ -55,6 +55,7 @@ async function main() {
     const prompt = buildGenerationPrompt({
       profile: NEUTRAL_PROFILE,
       ageBand: scenario.ageBand,
+      relationshipType: "parent",
       situationText: scenario.situationText,
       goal: scenario.goal,
       riskTier: "green",
