@@ -1,14 +1,16 @@
 import { useState } from "react";
 import TermsNotice from "./TermsNotice";
 import { WizardShell } from "./WizardShell";
-import type { ChildInfo } from "@/lib/appState";
+import type { ChildInfo, RelationshipType } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
 const familyBlock = (questionnaire.blocks as any[]).find((b) => b.id === "family");
+const relationshipField = familyBlock.fields.relationshipType;
 
 function newChild(): ChildInfo {
   return {
     id: crypto.randomUUID(),
+    relationshipType: relationshipField.options[0].value,
     ageBand: "13-15",
     livingSituation: familyBlock.fields.livingSituation.options[0].value,
     nickname: "",
@@ -66,7 +68,9 @@ export function FamilyStep({
         {local.map((child, idx) => (
           <div key={child.id} className="border-line bg-surface rounded-card border p-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-d16 font-semibold">Child {idx + 1}</h3>
+              <h3 className="text-d16 font-semibold">
+                {relationshipField.nounLabels[child.relationshipType] ?? "Child"} {idx + 1}
+              </h3>
               {local.length > 1 && (
                 <button
                   type="button"
@@ -77,6 +81,36 @@ export function FamilyStep({
                 </button>
               )}
             </div>
+
+            <label className="text-muted text-d16 mt-2 block">
+              {relationshipField.label}
+              <select
+                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                value={child.relationshipType}
+                onChange={(e) =>
+                  update(child.id, { relationshipType: e.target.value as RelationshipType })
+                }
+              >
+                {relationshipField.options.map((opt: any) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {child.relationshipType === "other" && (
+              <label className="text-muted text-d16 mt-2 block">
+                Tell us what to call it (optional)
+                <input
+                  type="text"
+                  className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                  value={child.relationshipTypeOther ?? ""}
+                  onChange={(e) => update(child.id, { relationshipTypeOther: e.target.value })}
+                  placeholder="However you'd describe it"
+                />
+              </label>
+            )}
 
             <label className="text-muted text-d16 mt-2 block">
               {familyBlock.fields.ageBand.label}

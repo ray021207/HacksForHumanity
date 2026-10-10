@@ -2,10 +2,21 @@
 // browser (localStorage) and are sent with each request; the server never
 // stores them. See README for the persistence rationale.
 
+export type RelationshipType =
+  | "parent"
+  | "step_parent"
+  | "grandparent"
+  | "aunt_uncle"
+  | "foster_parent"
+  | "legal_guardian"
+  | "other";
+
 export interface ChildInfo {
   id: string;
   ageBand: "13-15" | "16-17" | "18-22" | "23+";
   livingSituation: string;
+  relationshipType: RelationshipType;
+  relationshipTypeOther?: string; // free text, only meaningful when relationshipType === "other"
   nickname?: string; // optional, browser-only, never sent to the server log
 }
 

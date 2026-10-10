@@ -78,6 +78,32 @@
 	--color-blush-ink: #c0417f;
 	--color-field: #f1efec;
 
+	/* ---- Clovis aliases --------------------------------------------------
+	   main names its colours for the role they play (primary-fg, secondary-bg)
+	   rather than for what they are (ink, field). Both namings are now in the
+	   tree: the questionnaire and everything main added — sign-in, billing,
+	   the upgrade wall — are written against these four, and the landing page
+	   is written against the names above.
+
+	   Rather than rewriting one set of class names into the other, the roles
+	   point at the landing page's values. That is the whole merge in five
+	   lines: main's components keep their markup and come out in our palette,
+	   and a screen built against either vocabulary lands in the same place.
+
+	   These are aliases, not a second palette. Changing canvas changes
+	   primary-bg with it, which is the only way the two namings can't drift. */
+	--color-primary-fg: var(--color-ink);
+	--color-primary-bg: var(--color-canvas);
+	--color-secondary-fg: var(--color-muted);
+	--color-secondary-bg: var(--color-field);
+	--color-tertiary-fg: var(--color-muted-2);
+
+	/* main's pink pair, used for selected answers and technique badges. Ours
+	   is the blush the landing page already picks answers out in, so the two
+	   designs agree on what "chosen" looks like. */
+	--color-prup: var(--color-blush-ink);
+	--color-purp-faded: var(--color-blush);
+
 	/* ---- mesh tints ------------------------------------------------------
 	   The four ellipses behind the closing CTA, lifted from the app's start
 	   screen. They are only ever seen through a 100px blur, so they are picked
@@ -110,6 +136,10 @@
 	   licensed webfont later is a change to this one line. */
 	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
 	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+
+	/* main's headlines ask for font-serif; ours is the `display` utility.
+	   Same face, so the alias keeps its screens on the brand serif. */
+	--font-serif: var(--font-display);
 
 	/* Courier for the footer disclaimer only. Legal copy set in the same face
 	   as the marketing copy reads as more marketing copy; a typewriter face

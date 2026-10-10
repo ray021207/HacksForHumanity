@@ -93,6 +93,27 @@ export function CardsStep({
           </div>
         )}
 
+        {/* What the model thinks might come back, and what to do with it. The
+            reaction is quoted in the other person's voice and the response in
+            yours, which is the whole point of the pair — reading a line you
+            dread next to a line you could actually say is what makes it
+            rehearsable rather than just discouraging. */}
+        {!isRed && result.anticipated_reactions && result.anticipated_reactions.length > 0 && (
+          <div>
+            <h3 className="text-d16 font-semibold">If they push back</h3>
+            <div className="mt-1 space-y-1">
+              {result.anticipated_reactions.map((reaction, idx) => (
+                <div key={idx} className="border-line bg-field rounded-card border p-3">
+                  <p className="text-d16 font-medium">
+                    If they say: &ldquo;{reaction.reaction}&rdquo;
+                  </p>
+                  <p className="text-muted text-d16 mt-1">{reaction.how_to_respond}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {!isRed && result.setting_tip && (
           <p className="text-muted text-d16">Setting tip: {result.setting_tip}</p>
         )}

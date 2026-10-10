@@ -30,6 +30,28 @@
       "type": "family",
       "maxChildren": 4,
       "fields": {
+        "relationshipType": {
+          "label": "Your relationship to them",
+          "options": [
+            { "value": "parent", "label": "Parent" },
+            { "value": "step_parent", "label": "Step-parent" },
+            { "value": "grandparent", "label": "Grandparent" },
+            { "value": "aunt_uncle", "label": "Aunt or uncle" },
+            { "value": "foster_parent", "label": "Foster parent" },
+            { "value": "legal_guardian", "label": "Legal guardian" },
+            { "value": "other", "label": "Other" }
+          ],
+          "otherFreeTextField": "relationshipTypeOther",
+          "nounLabels": {
+            "parent": "Child",
+            "step_parent": "Stepchild",
+            "grandparent": "Grandchild",
+            "aunt_uncle": "Niece/nephew",
+            "foster_parent": "Foster child",
+            "legal_guardian": "Ward",
+            "other": "Child"
+          }
+        },
         "ageBand": {
           "label": "Age band",
           "options": [

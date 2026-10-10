@@ -5,6 +5,7 @@
 // just re-run this same single call with changed parameters.
 
 import type { ProfileScores } from "./scoring";
+import type { RelationshipType } from "./appState";
 import playbook from "@/data/playbook.json";
 
 export const TECHNIQUES = [
@@ -35,17 +36,30 @@ export interface Starter {
   avoid: string;
 }
 
+export interface AnticipatedReaction {
+  // A hypothetical reaction FROM the child/other person — quoting what they
+  // might say or do, never something the parent would say. Not linted for
+  // the same reason `avoid` isn't: it's meant to name realistic pushback
+  // ("you always do this"), not model good parent speech.
+  reaction: string;
+  // What the PARENT could say or do in response. This IS linted.
+  how_to_respond: string;
+}
+
 export interface CardsOutput {
   risk_tier: "green" | "amber";
   frame: string;
   before_you_start: string;
   starters: Starter[];
+  anticipated_reactions: AnticipatedReaction[];
   setting_tip: string;
 }
 
 export interface GenerationInput {
   profile: ProfileScores;
   ageBand: AgeBand;
+  relationshipType: RelationshipType;
+  relationshipTypeOther?: string;
   situationText: string;
   goal: Goal;
   riskTier: "green" | "amber";
@@ -119,10 +133,25 @@ is the entire interaction. Follow these rules exactly:
 4. For age band 23+ and 18-22 (when living independently), use
    adult-to-adult framing. Never claim parental authority over an adult
    child.
+4b. Use relationship_frame to calibrate assumed authority and shared
+   history for the caregiver's relationship to this child. Never invent
+   relationship history, and never use parent-specific language (e.g.
+   "as their mom/dad") for a non-parent relationship type.
 5. Use the profile tendencies to tune tone and technique mix, but never
    mention a type label (e.g. "authoritarian", "permissive") anywhere in
    the output.
-6. Respond with ONLY strict JSON matching this exact shape, no other text:
+6. Also return 2 to 3 "anticipated_reactions": realistic ways the other
+   person might respond to a first word that didn't land cleanly (e.g. "I
+   don't know", "You always do this", going quiet, changing the subject).
+   This is rehearsal, not a script to force the conversation down one path
+   - cover a *range* of reactions (e.g. one shutdown, one deflection, one
+   pushback), not three versions of the same one. Each "reaction" quotes
+   or describes what the other person might say or do; each
+   "how_to_respond" is one or two sentences on how the parent could meet
+   that reaction, consistent with the technique mix and age/relationship
+   framing used elsewhere. This still is not chat: these are prepared
+   responses to rehearse, not a live back-and-forth.
+7. Respond with ONLY strict JSON matching this exact shape, no other text:
 {
   "risk_tier": "green" | "amber",
   "frame": "one line naming the situation back to the parent",
@@ -130,12 +159,16 @@ is the entire interaction. Follow these rules exactly:
   "starters": [
     { "text": "...", "technique": "...", "why": "...", "avoid": "..." }
   ],
+  "anticipated_reactions": [
+    { "reaction": "...", "how_to_respond": "..." }
+  ],
   "setting_tip": "where and when to say it"
 }`;
 
 export function buildGenerationPrompt(input: GenerationInput): string {
   const ageGuidance = (playbook.ageBandGuidance as any)[input.ageBand];
   const goalNote = (playbook.goalNotes as any)[input.goal];
+  const relationshipGuidance = (playbook.relationshipGuidance as any)[input.relationshipType];
   const tendencies = scoresToTendencyLines(input.profile);
 
   const refinementNote = input.refinement
@@ -150,6 +183,9 @@ export function buildGenerationPrompt(input: GenerationInput): string {
     risk_tier_from_gate: input.riskTier,
     age_band: input.ageBand,
     age_band_frame: ageGuidance?.frame,
+    relationship_type: input.relationshipType,
+    relationship_frame: relationshipGuidance?.frame,
+    relationship_other_label: input.relationshipTypeOther ?? null,
     goal: input.goal,
     goal_note: goalNote,
     parent_tendencies: tendencies,
@@ -208,6 +244,29 @@ export function validateSchema(obj: unknown): ValidationResult {
       }
       if (typeof starter.avoid !== "string" || starter.avoid.trim() === "") {
         errors.push(`starters[${idx}].avoid must be a non-empty string`);
+      }
+    });
+  }
+
+  if (!Array.isArray(o.anticipated_reactions)) {
+    errors.push("anticipated_reactions must be an array");
+  } else {
+    if (o.anticipated_reactions.length < 2 || o.anticipated_reactions.length > 3) {
+      errors.push(
+        `anticipated_reactions must have 2 to 3 items, got ${o.anticipated_reactions.length}`
+      );
+    }
+    o.anticipated_reactions.forEach((r, idx) => {
+      if (typeof r !== "object" || r === null) {
+        errors.push(`anticipated_reactions[${idx}] is not an object`);
+        return;
+      }
+      const reaction = r as Record<string, unknown>;
+      if (typeof reaction.reaction !== "string" || reaction.reaction.trim() === "") {
+        errors.push(`anticipated_reactions[${idx}].reaction must be a non-empty string`);
+      }
+      if (typeof reaction.how_to_respond !== "string" || reaction.how_to_respond.trim() === "") {
+        errors.push(`anticipated_reactions[${idx}].how_to_respond must be a non-empty string`);
       }
     });
   }
@@ -288,6 +347,13 @@ export function lintBannedPatterns(cards: CardsOutput): LintIssue[] {
     // contain. What actually reaches the parent to say is `text`, `why`,
     // `frame`, `before_you_start` and `setting_tip` — those are linted.
   });
+  cards.anticipated_reactions.forEach((r, idx) => {
+    // `reaction` is deliberately not linted, same reasoning as `avoid`: it
+    // quotes what the CHILD might say ("you always do this"), not the
+    // parent, so it will legitimately trip guilt/command-shaped patterns.
+    // `how_to_respond` is what the parent would actually say, so it is linted.
+    lintText(`anticipated_reactions[${idx}].how_to_respond`, r.how_to_respond, issues);
+  });
   return issues;
 }
 
@@ -316,6 +382,20 @@ export function fallbackCard(riskTier: "green" | "amber"): CardsOutput {
         technique: "autonomy_offer",
         why: "Puts them in the driver's seat for what happens next.",
         avoid: "Don't jump straight to your own plan for fixing it.",
+      },
+    ],
+    anticipated_reactions: [
+      {
+        reaction: "\"I don't know.\"",
+        how_to_respond: "That's okay — you don't have to know right now. I just wanted you to hear that I noticed.",
+      },
+      {
+        reaction: "They go quiet or shrug and change the subject.",
+        how_to_respond: "Let it sit. You can say, \"No pressure — I'm around whenever,\" and leave it there for now.",
+      },
+      {
+        reaction: "\"You always do this.\"",
+        how_to_respond: "Fair enough. I'm not trying to make this a bigger thing — I just wanted to check in.",
       },
     ],
     setting_tip: "Somewhere private, with no time pressure to wrap up quickly.",

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { classifyRisk } from "@/lib/safety";
 import { generateCards, type AgeBand, type Goal, type Refinement } from "@/lib/generation";
 import type { ProfileScores } from "@/lib/scoring";
+import type { RelationshipType } from "@/lib/appState";
 import { createClassifierInvoker, createGenerationInvoker } from "@/lib/anthropic-client";
 import { appendLog } from "@/lib/logging";
 import { RED_TIER_CONTENT, AMBER_TIER_CONTENT, DISCLOSURE_LINE } from "@/data/safety-content";
@@ -9,6 +10,8 @@ import { RED_TIER_CONTENT, AMBER_TIER_CONTENT, DISCLOSURE_LINE } from "@/data/sa
 export interface GenerateRequestBody {
   profile: ProfileScores;
   ageBand: AgeBand;
+  relationshipType: RelationshipType;
+  relationshipTypeOther?: string;
   situationText: string;
   goal: Goal;
   refinement?: Refinement;
@@ -23,9 +26,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  if (!body?.situationText || !body?.ageBand || !body?.goal || !body?.profile) {
+  if (!body?.situationText || !body?.ageBand || !body?.goal || !body?.profile || !body?.relationshipType) {
     return NextResponse.json(
-      { error: "situationText, ageBand, goal and profile are required" },
+      { error: "situationText, ageBand, relationshipType, goal and profile are required" },
       { status: 400 }
     );
   }
@@ -57,6 +60,8 @@ export async function POST(req: NextRequest) {
     {
       profile: body.profile,
       ageBand: body.ageBand,
+      relationshipType: body.relationshipType,
+      relationshipTypeOther: body.relationshipTypeOther,
       situationText: body.situationText,
       goal: body.goal,
       riskTier: gate.tier,

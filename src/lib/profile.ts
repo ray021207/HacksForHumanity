@@ -84,6 +84,7 @@ export function computeProfile(responses: MixedResponses): ProfileScores {
 }
 
 export interface ProfileDisplay {
+  headline: string;
   strengths: string[];
   stretches: string[];
 }
@@ -91,6 +92,7 @@ export interface ProfileDisplay {
 interface Candidate {
   key: string;
   score: number;
+  headline: string;
   strength: string;
   stretch: string;
 }
@@ -109,6 +111,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     candidates.push({
       key: "warmth",
       score: ps.warmth,
+      headline: "You lead with warmth.",
       strength: "You make a point of connecting with warmth, not just addressing problems.",
       stretch: "A small moment of connection before addressing an issue could lower the temperature of hard conversations.",
     });
@@ -117,6 +120,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     candidates.push({
       key: "structure",
       score: ps.structure,
+      headline: "You bring structure.",
       strength: "You tend to follow through on what you say, which builds trust over time.",
       stretch: "Setting one clear, consistent expectation, and sticking with it, could make a bigger difference than a new rule.",
     });
@@ -125,6 +129,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     candidates.push({
       key: "autonomy_support",
       score: ac.autonomy_support,
+      headline: "You invite their voice.",
       strength: "You tend to ask for input and offer choices rather than just directing.",
       stretch: "Offering a small choice before you decide something for them could open up the conversation.",
     });
@@ -133,6 +138,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     candidates.push({
       key: "emotion_coaching",
       score: ec.emotion_coaching,
+      headline: "You name feelings first.",
       strength: "You tend to name feelings before jumping to a fix, which helps things land.",
       stretch: "Naming what you think they might be feeling, before offering a solution, could help a conversation land better.",
     });
@@ -141,6 +147,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     candidates.push({
       key: "confidence",
       score: cl.confidence,
+      headline: "You stay steady.",
       strength: "You generally feel steady heading into a hard conversation.",
       stretch: "You're often harder on yourself after a hard conversation than the moment deserves. That's worth noticing.",
     });
@@ -165,5 +172,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
     stretches.push("Keep noticing what works; you can always come back and retake this later.");
   }
 
-  return { strengths, stretches };
+  const headline = byScoreDesc[0]?.headline ?? "You're paying attention.";
+
+  return { headline, strengths, stretches };
 }

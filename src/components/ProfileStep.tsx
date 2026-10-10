@@ -5,11 +5,14 @@ export function ProfileStep({
   profile,
   onNext,
   onBack,
+  onRetake,
   progress,
 }: {
   profile: ProfileDisplay;
   onNext: () => void;
   onBack: () => void;
+  /** Clears the answers and drops back to the first question. */
+  onRetake?: () => void;
   progress?: number;
 }) {
   return (
@@ -21,6 +24,17 @@ export function ProfileStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={onNext}
+      secondary={
+        onRetake && (
+          <button
+            type="button"
+            onClick={onRetake}
+            className="text-muted text-d16 mx-auto underline"
+          >
+            Retake the questionnaire
+          </button>
+        )
+      }
     >
       <div className="space-y-2">
         <div>

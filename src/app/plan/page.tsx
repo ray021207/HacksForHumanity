@@ -122,7 +122,7 @@ export default function Home() {
   const activeChild: ChildInfo | undefined = state.children.find((c) => c.id === situationChildId) ?? state.children[0];
   const isAdultChild = activeChild ? activeChild.ageBand === "18-22" || activeChild.ageBand === "23+" : false;
 
-  async function submitSituation(input: { childId: string; situationText: string; goal: Goal; setting: string }) {
+  async function submitSituation(input: { childId: string; situationText: string; goal: Goal }) {
     setIsSubmitting(true);
     setSituationChildId(input.childId);
     const child = state.children.find((c) => c.id === input.childId)!;
@@ -133,6 +133,8 @@ export default function Home() {
         body: JSON.stringify({
           profile,
           ageBand: child.ageBand,
+          relationshipType: child.relationshipType,
+          relationshipTypeOther: child.relationshipTypeOther,
           situationText: input.situationText,
           goal: input.goal,
         }),
@@ -192,6 +194,10 @@ export default function Home() {
           profile={profileDisplay}
           onNext={() => goNextAfter("profile")}
           onBack={() => goBack("profile")}
+          onRetake={() => {
+            update({ responses: {}, goals: [] });
+            goTo("personality");
+          }}
           progress={progress}
         />
       );

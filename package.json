@@ -1,5 +1,5 @@
 {
-  "name": "parenting-starters",
+  "name": "kin-and-d",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,14 +12,22 @@
     "score:csv": "tsx scripts/score-csv.ts",
     "safety:eval": "tsx scripts/eval-safety.ts",
     "lint:pass-rate": "tsx scripts/lint-pass-rate.ts",
-    "eval:profile": "tsx scripts/eval-profile.ts"
+    "eval:profile": "tsx scripts/eval-profile.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
     "@elevenlabs/elevenlabs-js": "^2.71.0",
+    "@neondatabase/serverless": "^1.2.0",
+    "better-auth": "^1.7.7",
+    "drizzle-orm": "^0.45.4",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "resend": "^6.32.1",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
@@ -29,6 +37,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "csv-parse": "^7.0.3",
     "dotenv": "^18.0.7",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "tailwindcss": "^4",

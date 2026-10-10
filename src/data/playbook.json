@@ -45,6 +45,29 @@
       }
     }
   },
+  "relationshipGuidance": {
+    "parent": {
+      "frame": "Speaking as the child's parent, with ordinary parental authority and history."
+    },
+    "step_parent": {
+      "frame": "Speaking as a step-parent; authority may be newer or shared with a biological parent. Avoid assuming default authority, and lean on relationship-building language."
+    },
+    "grandparent": {
+      "frame": "Speaking as a grandparent raising or co-raising a grandchild; likely has long relational history and may hold caregiving authority, but watch for era-specific assumptions about how teens/young adults communicate."
+    },
+    "aunt_uncle": {
+      "frame": "Speaking as an aunt or uncle, often a supporting rather than primary authority figure. Frame suggestions as support and trust-building rather than rule enforcement, unless the parent profile indicates otherwise."
+    },
+    "foster_parent": {
+      "frame": "Speaking as a foster parent; relationship history may be short and trust-building is central. Avoid presuming shared history or assuming permanence."
+    },
+    "legal_guardian": {
+      "frame": "Speaking as a legal guardian with caregiving authority but not necessarily a long biological or historical relationship. Be warm without assuming shared history."
+    },
+    "other": {
+      "frame": "Speaking as this child's primary caregiver in a non-standard family role. Stay warm and avoid assuming a specific relationship history."
+    }
+  },
   "goalNotes": {
     "repair": "Lead with naming what happened and the parent's part in it before any ask.",
     "closeness": "Favor validation and open questions; this isn't the moment for a boundary-setting starter.",
@@ -55,5 +78,10 @@
     "give_feedback": "Favor validation before the feedback itself, and open_question to check how it landed. Avoid anything that reads as a verdict on the person rather than a specific action.",
     "celebrate": "Keep it short and specific to what's being celebrated. Favor validation; a boundary or autonomy_offer starter rarely belongs here."
   },
-  "selfCriticalParentGuidance": "When the parent's confidence/load score is low, no starter or 'why' line may imply the parent caused the problem or should feel guilty. Lead the 'before_you_start' line with reassurance, not a caveat."
+  "selfCriticalParentGuidance": "When the parent's confidence/load score is low, no starter or 'why' line may imply the parent caused the problem or should feel guilty. Lead the 'before_you_start' line with reassurance, not a caveat.",
+  "anticipatedReactionsGuidance": {
+    "_status": "draft, needs owner review",
+    "_source": "Not copied from any published instrument. The three reaction archetypes used as a reference point (shutdown/stonewalling, deflection, pushback) are loosely inspired by Gottman's 'Four Horsemen' communication-breakdown research (criticism, contempt, defensiveness, stonewalling) and by Gottman-style emotion-coaching guidance on responding to a child who withdraws rather than engages. This is an original, best-effort adaptation for rehearsal purposes, not a validated clinical framework.",
+    "note": "Cover a range across the 2-3 reactions returned (e.g. one shutdown/silence, one deflection, one verbal pushback) rather than three variations of the same reaction type, so the parent rehearses more than one kind of moment."
+  }
 }
