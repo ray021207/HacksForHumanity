@@ -81,7 +81,7 @@ export default function Page() {
 									    is in em so it holds its place against the baseline
 									    at every breakpoint. */}
 									<svg
-										className="text-accent pointer-events-none absolute top-[calc(0.74em_+_2px)] left-1/2 w-[106%] -translate-x-1/2"
+										className="text-accent pointer-events-none absolute top-[calc(0.84em_+_2px)] left-1/2 w-[106%] -translate-x-1/2"
 										viewBox="0 0 302 23"
 										fill="none"
 										aria-hidden="true"

@@ -65,6 +65,11 @@
 	--color-surface: #ffffff;
 	--color-ink: #16110e;
 	--color-muted: #6f6761;
+	/* Tertiary text: the footer disclaimer, and anything else that should
+	   recede behind muted without becoming decoration. #79716b is the
+	   lightest step off muted that still clears 4.5:1 on canvas, which is
+	   the floor for 12px copy and not negotiable for legal fine print. */
+	--color-muted-2: #79716b;
 	--color-line: #e6e2dc;
 	--color-panel: #e9e6e2;
 	--color-panel-2: #e4e1dd;
@@ -105,6 +110,11 @@
 	   licensed webfont later is a change to this one line. */
 	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
 	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+
+	/* Courier for the footer disclaimer only. Legal copy set in the same face
+	   as the marketing copy reads as more marketing copy; a typewriter face
+	   reads as the fine print it is. */
+	--font-mono: Courier, 'Courier New', ui-monospace, monospace;
 
 	/* ---- elevation ------------------------------------------------------ */
 	--shadow-bar: 0 2px 8px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);

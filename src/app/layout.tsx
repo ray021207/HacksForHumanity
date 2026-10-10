@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Footer from '@/components/Footer';
-import LegalDisclaimer from '@/components/LegalDisclaimer';
 import Nav from '@/components/Nav';
 
 // DM Serif Text, downloaded from Google Fonts and committed to src/fonts, so
@@ -50,7 +49,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 				<Nav />
 				{children}
 				<Footer />
-				<LegalDisclaimer />
 			</body>
 		</html>
 	);
