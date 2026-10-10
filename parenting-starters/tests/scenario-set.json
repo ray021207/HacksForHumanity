@@ -1,0 +1,305 @@
+{
+  "_status": "starter, synthetic scenarios for lint-pass-rate and profile-vs-generic evaluation",
+  "scenarios": [
+    {
+      "id": "s01",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "We argued about curfew and it got heated."
+    },
+    {
+      "id": "s02",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "We argued about grades and it got heated."
+    },
+    {
+      "id": "s03",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "We argued about dating and it got heated."
+    },
+    {
+      "id": "s04",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "We argued about college plans and it got heated."
+    },
+    {
+      "id": "s05",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "We argued about a disagreement at dinner and it got heated."
+    },
+    {
+      "id": "s06",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "My child has been avoiding me since we talked about curfew."
+    },
+    {
+      "id": "s07",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "My child has been avoiding me since we talked about grades."
+    },
+    {
+      "id": "s08",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "My child has been avoiding me since we talked about dating."
+    },
+    {
+      "id": "s09",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "My child has been avoiding me since we talked about college plans."
+    },
+    {
+      "id": "s10",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "My child has been avoiding me since we talked about a disagreement at dinner."
+    },
+    {
+      "id": "s11",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "I want to bring up curfew but I am worried about how it will go."
+    },
+    {
+      "id": "s12",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "I want to bring up grades but I am worried about how it will go."
+    },
+    {
+      "id": "s13",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "I want to bring up dating but I am worried about how it will go."
+    },
+    {
+      "id": "s14",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I want to bring up college plans but I am worried about how it will go."
+    },
+    {
+      "id": "s15",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "I want to bring up a disagreement at dinner but I am worried about how it will go."
+    },
+    {
+      "id": "s16",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "My child did not follow through on curfew again."
+    },
+    {
+      "id": "s17",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "My child did not follow through on grades again."
+    },
+    {
+      "id": "s18",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "My child did not follow through on dating again."
+    },
+    {
+      "id": "s19",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "My child did not follow through on college plans again."
+    },
+    {
+      "id": "s20",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "My child did not follow through on a disagreement at dinner again."
+    },
+    {
+      "id": "s21",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "We had a good moment around curfew and I want to build on it."
+    },
+    {
+      "id": "s22",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "We had a good moment around grades and I want to build on it."
+    },
+    {
+      "id": "s23",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "We had a good moment around dating and I want to build on it."
+    },
+    {
+      "id": "s24",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "We had a good moment around college plans and I want to build on it."
+    },
+    {
+      "id": "s25",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "We had a good moment around a disagreement at dinner and I want to build on it."
+    },
+    {
+      "id": "s26",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I think I overreacted about curfew and want to fix things."
+    },
+    {
+      "id": "s27",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "I think I overreacted about grades and want to fix things."
+    },
+    {
+      "id": "s28",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "I think I overreacted about dating and want to fix things."
+    },
+    {
+      "id": "s29",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "I think I overreacted about college plans and want to fix things."
+    },
+    {
+      "id": "s30",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I think I overreacted about a disagreement at dinner and want to fix things."
+    },
+    {
+      "id": "s31",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "My child asked me for help with curfew and I am not sure how to respond."
+    },
+    {
+      "id": "s32",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "My child asked me for help with grades and I am not sure how to respond."
+    },
+    {
+      "id": "s33",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "My child asked me for help with dating and I am not sure how to respond."
+    },
+    {
+      "id": "s34",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "My child asked me for help with college plans and I am not sure how to respond."
+    },
+    {
+      "id": "s35",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "My child asked me for help with a disagreement at dinner and I am not sure how to respond."
+    },
+    {
+      "id": "s36",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "There has been distance between us since the curfew conversation."
+    },
+    {
+      "id": "s37",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "There has been distance between us since the grades conversation."
+    },
+    {
+      "id": "s38",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "There has been distance between us since the dating conversation."
+    },
+    {
+      "id": "s39",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "There has been distance between us since the college plans conversation."
+    },
+    {
+      "id": "s40",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "There has been distance between us since the a disagreement at dinner conversation."
+    },
+    {
+      "id": "s41",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "I need to set a clearer limit around curfew."
+    },
+    {
+      "id": "s42",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I need to set a clearer limit around grades."
+    },
+    {
+      "id": "s43",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "I need to set a clearer limit around dating."
+    },
+    {
+      "id": "s44",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "I need to set a clearer limit around college plans."
+    },
+    {
+      "id": "s45",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "I need to set a clearer limit around a disagreement at dinner."
+    },
+    {
+      "id": "s46",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I want to understand my child better about curfew."
+    },
+    {
+      "id": "s47",
+      "ageBand": "18-22",
+      "goal": "set_a_limit",
+      "situationText": "I want to understand my child better about grades."
+    },
+    {
+      "id": "s48",
+      "ageBand": "23+",
+      "goal": "make_an_ask",
+      "situationText": "I want to understand my child better about dating."
+    },
+    {
+      "id": "s49",
+      "ageBand": "13-15",
+      "goal": "repair",
+      "situationText": "I want to understand my child better about college plans."
+    },
+    {
+      "id": "s50",
+      "ageBand": "16-17",
+      "goal": "closeness",
+      "situationText": "I want to understand my child better about a disagreement at dinner."
+    }
+  ]
+}

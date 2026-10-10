@@ -1,0 +1,201 @@
+{
+  "version": "0.1.0",
+  "scales": {
+    "tipi7": {
+      "min": 1,
+      "max": 7,
+      "labels": [
+        "Disagree strongly",
+        "Disagree moderately",
+        "Disagree a little",
+        "Neither agree nor disagree",
+        "Agree a little",
+        "Agree moderately",
+        "Agree strongly"
+      ]
+    },
+    "freq5": {
+      "min": 1,
+      "max": 5,
+      "labels": ["Never", "Rarely", "Sometimes", "Often", "Always"]
+    }
+  },
+  "preferNotToSayValue": null,
+  "minAnsweredFractionPerBlock": 0.75,
+  "blocks": [
+    {
+      "id": "family",
+      "title": "Your family",
+      "description": "Tell us a little about the people you're navigating conversations with. No birthdates or last names, please.",
+      "type": "family",
+      "maxChildren": 4,
+      "fields": {
+        "ageBand": {
+          "label": "Age band",
+          "options": [
+            { "value": "13-15", "label": "13 to 15" },
+            { "value": "16-17", "label": "16 to 17" },
+            { "value": "18-22", "label": "18 to 22" },
+            { "value": "23+", "label": "23 and up" }
+          ]
+        },
+        "livingSituation": {
+          "label": "Living situation",
+          "options": [
+            { "value": "with_me_full_time", "label": "Lives with me full-time" },
+            { "value": "with_me_part_time", "label": "Lives with me part-time" },
+            { "value": "independent_nearby", "label": "Lives on their own, nearby" },
+            { "value": "independent_away", "label": "Lives away (college, another city, etc.)" },
+            { "value": "other", "label": "Other" }
+          ]
+        },
+        "nickname": {
+          "label": "Nickname (optional)",
+          "optional": true,
+          "helpText": "A first name or nickname only, never used for anything but labeling this child's card on your screen. Never stored on our server."
+        }
+      }
+    },
+    {
+      "id": "personality",
+      "title": "Your personality",
+      "description": "There are no right answers. Please answer honestly, describing yourself as you generally are.",
+      "type": "likert",
+      "scale": "tipi7",
+      "source": "6 of the 10 TIPI items (Gosling, Rentfrow & Swann, 2003). The TIPI's own items and 7-point scale are used verbatim and the reverse-keyed pairing is kept intact for every trait that's included, but this is a trimmed subset chosen to shorten the questionnaire, not the published 10-item instrument. Conscientiousness and Openness were dropped as the traits least tied to conversational tone; Extraversion, Agreeableness and Emotional Stability keep both their items (regular + reverse-keyed) so trait averaging still works as designed.",
+      "status": "trimmed subset of a published instrument, needs owner sign-off on which traits were dropped",
+      "items": [
+        { "id": "tipi_1", "text": "I see myself as: Extraverted, enthusiastic.", "trait": "extraversion", "reverse": false },
+        { "id": "tipi_2", "text": "I see myself as: Critical, quarrelsome.", "trait": "agreeableness", "reverse": true },
+        { "id": "tipi_4", "text": "I see myself as: Anxious, easily upset.", "trait": "emotional_stability", "reverse": true },
+        { "id": "tipi_6", "text": "I see myself as: Reserved, quiet.", "trait": "extraversion", "reverse": true },
+        { "id": "tipi_7", "text": "I see myself as: Sympathetic, warm.", "trait": "agreeableness", "reverse": false },
+        { "id": "tipi_9", "text": "I see myself as: Calm, emotionally stable.", "trait": "emotional_stability", "reverse": false }
+      ]
+    },
+    {
+      "id": "scenarios",
+      "title": "A few quick scenarios",
+      "description": "Pick the response closest to what you'd actually do. There's no right answer — these just help tune the cards you get.",
+      "type": "scenario",
+      "source": "Original situational-judgment items written for this app, inspired by Baumrind's three parenting styles, self-determination theory, Gottman-style emotion coaching, and parenting self-efficacy constructs (e.g. SEPA). Not copied from the PSDQ, P-PASS, ERPS, or any published scale. Chosen over a longer Likert battery specifically to keep the questionnaire short.",
+      "status": "draft, needs owner review",
+      "items": [
+        {
+          "id": "sc_1",
+          "subscales": ["structure", "pressure"],
+          "text_teen": "Your teen breaks curfew without calling. When they get home, you...",
+          "text_adult": "Your adult child misses something they promised to do, with no heads-up. When you next talk, you...",
+          "options": [
+            { "id": "a", "label": "Calmly state the agreed limit and follow through on what you said would happen.", "scores": { "structure": 5, "pressure": 2 } },
+            { "id": "b", "label": "Let it go without saying much — bringing it up feels like a hassle.", "scores": { "structure": 1, "pressure": 1 } },
+            { "id": "c", "label": "Raise your voice and hand down a consequence on the spot.", "scores": { "structure": 3, "pressure": 5 } },
+            { "id": "d", "label": "Ask what happened before deciding anything.", "scores": { "structure": 4, "pressure": 1 } }
+          ]
+        },
+        {
+          "id": "sc_2",
+          "subscales": ["warmth", "pressure"],
+          "text_teen": "After a blow-up argument with your teen, once things calm down, you usually...",
+          "text_adult": "After a tense exchange with your adult child, once things calm down, you usually...",
+          "options": [
+            { "id": "a", "label": "Go quiet for a while before reconnecting.", "scores": { "warmth": 2, "pressure": 3 } },
+            { "id": "b", "label": "Bring the old argument back up next time you're annoyed.", "scores": { "warmth": 1, "pressure": 4 } },
+            { "id": "c", "label": "Reach out first, even if you're still a little annoyed.", "scores": { "warmth": 5, "pressure": 2 } },
+            { "id": "d", "label": "Wait for them to come to you.", "scores": { "warmth": 3, "pressure": 2 } }
+          ]
+        },
+        {
+          "id": "sc_3",
+          "subscales": ["autonomy_support", "structure"],
+          "text_teen": "Your teen wants to handle a school or friend problem their own way, one you're not sure about. You...",
+          "text_adult": "Your adult child wants to handle a problem their own way, one you're not sure about. You...",
+          "options": [
+            { "id": "a", "label": "Ask what they're thinking and offer your take only if they want it.", "scores": { "autonomy_support": 5, "structure": 3 } },
+            { "id": "b", "label": "Tell them what to do, since you can see the problem more clearly.", "scores": { "autonomy_support": 1, "structure": 4 } },
+            { "id": "c", "label": "Step in and handle it yourself to make sure it goes well.", "scores": { "autonomy_support": 1, "structure": 2 } },
+            { "id": "d", "label": "Offer a couple of options and let them pick.", "scores": { "autonomy_support": 4, "structure": 4 } }
+          ]
+        },
+        {
+          "id": "sc_4",
+          "subscales": ["emotion_coaching", "warmth"],
+          "text_teen": "Your teen comes home visibly upset about something and doesn't want to talk yet. You...",
+          "text_adult": "Your adult child seems upset about something and doesn't want to talk yet. You...",
+          "options": [
+            { "id": "a", "label": "Name that they seem upset and let them know you're around whenever they're ready.", "scores": { "emotion_coaching": 5, "warmth": 5 } },
+            { "id": "b", "label": "Tell them to cheer up, or try to distract them with something else.", "scores": { "emotion_coaching": 1, "warmth": 3 } },
+            { "id": "c", "label": "Ask what's wrong right away, a few times if needed.", "scores": { "emotion_coaching": 2, "warmth": 3 } },
+            { "id": "d", "label": "Give them space and don't bring it up unless they do.", "scores": { "emotion_coaching": 3, "warmth": 2 } }
+          ]
+        },
+        {
+          "id": "sc_5",
+          "subscales": ["autonomy_support", "emotion_coaching"],
+          "text_teen": "Your teen vents to you about a problem that doesn't have an easy fix. You mostly...",
+          "text_adult": "Your adult child vents to you about a problem that doesn't have an easy fix. You mostly...",
+          "options": [
+            { "id": "a", "label": "Listen and ask how they're feeling about it before anything else.", "scores": { "emotion_coaching": 5, "autonomy_support": 4 } },
+            { "id": "b", "label": "Jump in with advice on how to fix it.", "scores": { "emotion_coaching": 2, "autonomy_support": 2 } },
+            { "id": "c", "label": "Tell them what you would do in their situation.", "scores": { "emotion_coaching": 1, "autonomy_support": 1 } },
+            { "id": "d", "label": "Ask questions to help them think it through themselves.", "scores": { "emotion_coaching": 4, "autonomy_support": 5 } }
+          ]
+        },
+        {
+          "id": "sc_6",
+          "subscales": ["confidence", "warmth"],
+          "text_teen": "A hard conversation with your teen doesn't go the way you hoped. Afterward, you...",
+          "text_adult": "A hard conversation with your adult child doesn't go the way you hoped. Afterward, you...",
+          "options": [
+            { "id": "a", "label": "Feel it, but trust you can try again differently next time.", "scores": { "confidence": 5, "warmth": 4 } },
+            { "id": "b", "label": "Replay it for a long time, criticizing how you handled it.", "scores": { "confidence": 1, "warmth": 3 } },
+            { "id": "c", "label": "Feel like you need to make it up to them somehow.", "scores": { "confidence": 2, "warmth": 4 } },
+            { "id": "d", "label": "Shrug it off completely without much thought.", "scores": { "confidence": 3, "warmth": 2 } }
+          ]
+        },
+        {
+          "id": "sc_7",
+          "subscales": ["pressure", "confidence"],
+          "text_teen": "Right before a conversation you know will be hard with your teen, you typically feel...",
+          "text_adult": "Right before a conversation you know will be hard with your adult child, you typically feel...",
+          "options": [
+            { "id": "a", "label": "On edge, and it's easy to snap once the conversation starts.", "scores": { "pressure": 4, "confidence": 2 } },
+            { "id": "b", "label": "Worn out before it even begins.", "scores": { "pressure": 2, "confidence": 1 } },
+            { "id": "c", "label": "Steady enough, even if you're not looking forward to it.", "scores": { "pressure": 1, "confidence": 5 } },
+            { "id": "d", "label": "Determined to get your point across no matter what.", "scores": { "pressure": 5, "confidence": 3 } }
+          ]
+        },
+        {
+          "id": "sc_8",
+          "subscales": ["structure", "autonomy_support"],
+          "text_teen": "Your teen asks for more independence (later curfew, more freedom, etc.) than you're used to giving. You...",
+          "text_adult": "Your adult child makes a life decision you wouldn't have made yourself. You...",
+          "options": [
+            { "id": "a", "label": "Talk it through, explain your reasoning, and look for a middle ground.", "scores": { "structure": 4, "autonomy_support": 4 } },
+            { "id": "b", "label": "Say no without much explanation — the rule is the rule.", "scores": { "structure": 5, "autonomy_support": 1 } },
+            { "id": "c", "label": "Go along with whatever they want to avoid a conflict.", "scores": { "structure": 1, "autonomy_support": 3 } },
+            { "id": "d", "label": "Voice your concern once, then support their choice either way.", "scores": { "structure": 3, "autonomy_support": 5 } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goals",
+      "title": "What is this for?",
+      "description": "Pick what you're generally hoping conversations can do right now. You'll also pick a specific goal for each situation.",
+      "type": "chips",
+      "status": "draft, needs owner review",
+      "multiSelect": true,
+      "options": [
+        { "value": "repair", "label": "Repair, after a conflict" },
+        { "value": "closeness", "label": "Build closeness" },
+        { "value": "set_a_limit", "label": "Set a limit" },
+        { "value": "make_an_ask", "label": "Make an ask" },
+        { "value": "check_in", "label": "Just check in" },
+        { "value": "share_feelings", "label": "Share how you're feeling" },
+        { "value": "give_feedback", "label": "Give feedback" },
+        { "value": "celebrate", "label": "Celebrate something" }
+      ]
+    }
+  ]
+}

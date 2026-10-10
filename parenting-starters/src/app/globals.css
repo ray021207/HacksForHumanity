@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  /* Raisee color theme (exact brand values) */
+  --color-terracotta: #e26a4c;
+  --color-terracotta-soft: #ec9981;
+  --color-ink: #200524;
+  --color-cream: #f5f3df;
+  --color-olive: #d6d3a6;
+
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-soft: var(--color-terracotta-soft);
+  --color-ink: var(--color-ink);
+  --color-cream: var(--color-cream);
+  --color-olive: var(--color-olive);
+  /* Helvetica Neue is a licensed system font (not available via Google
+     Fonts) — this stack resolves to it on macOS/iOS, falls to Helvetica
+     then Arial elsewhere, which is the standard way to use it on the web. */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}

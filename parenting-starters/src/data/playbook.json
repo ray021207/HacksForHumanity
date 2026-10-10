@@ -1,0 +1,59 @@
+{
+  "version": "0.1.0",
+  "_status": "draft, needs owner review",
+  "_note": "A small, versioned, curated set of techniques per age band. Reviewed by ordinary code review, not retrieval. A clinician should review the content fields before launch.",
+  "techniques": ["validation", "open_question", "autonomy_offer", "repair", "boundary"],
+  "ageBandGuidance": {
+    "13-15": {
+      "frame": "Early teens are building identity and testing limits. Lead with warmth, keep boundaries clear and few, and explain the reasoning behind a rule rather than just stating it.",
+      "techniqueNotes": {
+        "validation": "Name the feeling before the facts. Early teens often can't yet separate the two.",
+        "open_question": "Ask about the specific moment, not the whole pattern, to avoid sounding like an interrogation.",
+        "autonomy_offer": "Offer a bounded choice (two or three options), not an open-ended one, since the scaffolding still needs structure.",
+        "repair": "Keep the apology short and concrete. Over-explaining can read as asking the teen to reassure the parent.",
+        "boundary": "State the limit once, calmly, and let it stand. Repeating it under stress can read as nagging."
+      }
+    },
+    "16-17": {
+      "frame": "Older teens want more say in decisions that affect them and are rehearsing independence. Autonomy support and genuine curiosity land better than directives.",
+      "techniqueNotes": {
+        "validation": "Validate the underlying want (independence, belonging) even while holding a limit.",
+        "open_question": "Ask what they think a fair outcome looks like before proposing one.",
+        "autonomy_offer": "Offer real input into the 'how', even where the 'whether' isn't negotiable.",
+        "repair": "Acknowledge the specific thing that went wrong, and ask what would help going forward.",
+        "boundary": "Frame the boundary in terms of safety or a shared value, not just 'because I said so'."
+      }
+    },
+    "18-22": {
+      "frame": "This age band is transitional: some live independently, some don't. Default to adult-to-adult framing while leaving room for continued support.",
+      "techniqueNotes": {
+        "validation": "Validate as you would with a peer navigating a hard stretch, not as a parent soothing a child.",
+        "open_question": "Ask open questions about their plan or thinking rather than offering unsolicited advice first.",
+        "autonomy_offer": "Make clear the decision is theirs; offer help only if and how they want it.",
+        "repair": "Name your part plainly. Avoid over-explaining your intentions.",
+        "boundary": "Frame limits as your own needs or resources ('what I can offer'), not as rules over them."
+      }
+    },
+    "23+": {
+      "frame": "Fully adult children. No claim to parental authority. Conversations work best framed as one adult to another, with the parent naming their own worry before any ask.",
+      "techniqueNotes": {
+        "validation": "Validate their autonomy explicitly; they don't need permission to make their own choices.",
+        "open_question": "Ask rather than assume; your adult child's life has context you may not have.",
+        "autonomy_offer": "Offer support as an option they can decline without consequence.",
+        "repair": "Keep it adult-to-adult: a direct acknowledgment, not an over-apology that asks for reassurance.",
+        "boundary": "Frame limits as your own boundary ('here's what I can do'), never as a rule you're imposing on them."
+      }
+    }
+  },
+  "goalNotes": {
+    "repair": "Lead with naming what happened and the parent's part in it before any ask.",
+    "closeness": "Favor validation and open questions; this isn't the moment for a boundary-setting starter.",
+    "set_a_limit": "At least one starter should be tagged 'boundary', framed per the age band's guidance above.",
+    "make_an_ask": "Favor open_question and autonomy_offer; frame the ask so the other person can say no.",
+    "check_in": "Keep it light and low-stakes. Favor validation and open_question; this is not the moment for a boundary starter.",
+    "share_feelings": "The parent is the one sharing here. Starters should model naming a feeling plainly, without blaming language, and invite the other person to respond rather than just receive it.",
+    "give_feedback": "Favor validation before the feedback itself, and open_question to check how it landed. Avoid anything that reads as a verdict on the person rather than a specific action.",
+    "celebrate": "Keep it short and specific to what's being celebrated. Favor validation; a boundary or autonomy_offer starter rarely belongs here."
+  },
+  "selfCriticalParentGuidance": "When the parent's confidence/load score is low, no starter or 'why' line may imply the parent caused the problem or should feel guilty. Lead the 'before_you_start' line with reassurance, not a caveat."
+}
