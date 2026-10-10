@@ -131,15 +131,10 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
       </div>
 
       <div className="relative z-10 flex min-h-[60vh] flex-col items-center justify-center text-center">
-        <span className="bg-blush text-blush-ink rounded-pill text-d16 mb-3 px-2 py-1">
-          01 &nbsp;Understand the moment
-        </span>
-
         <DanceStage />
 
         <h1 className="display text-d32 sm:text-d40 mt-3 max-w-[24ch] italic">
-          &ldquo;She used to tell me everything. Now she goes straight to her
-          room.&rdquo;
+          &ldquo;Conversations can be hard. Starting them doesn&apos;t have to be.&rdquo;
         </h1>
 
         <p className="text-muted text-d16 mt-2 max-w-[44ch]">
