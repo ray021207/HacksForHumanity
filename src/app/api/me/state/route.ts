@@ -78,18 +78,16 @@ export async function PATCH(req: NextRequest) {
   // The server assigns new row ids on every replace, so the response hands
   // them back in order — the client must adopt these as the new ChildInfo
   // ids, since a generation's childId FK only resolves against these.
-  // Wrapped in a transaction so a crash between delete and insert can't
-  // leave a user with zero children recorded.
+  // Sequential delete+insert, not a transaction: Neon's HTTP driver doesn't
+  // support multi-statement transactions.
   let insertedChildren: ChildInfo[] = [];
   if (body.children) {
-    const bodyChildren = body.children;
-    insertedChildren = await db.transaction(async (tx) => {
-      await tx.delete(children).where(eq(children.userId, userId));
-      if (bodyChildren.length === 0) return [];
-      const rows = await tx
+    await db.delete(children).where(eq(children.userId, userId));
+    if (body.children.length > 0) {
+      const rows = await db
         .insert(children)
         .values(
-          bodyChildren.map((c) => ({
+          body.children.map((c) => ({
             userId,
             relationshipType: c.relationshipType,
             relationshipTypeOther: c.relationshipTypeOther,
@@ -99,7 +97,7 @@ export async function PATCH(req: NextRequest) {
           }))
         )
         .returning();
-      return rows.map(
+      insertedChildren = rows.map(
         (c): ChildInfo => ({
           id: c.id,
           relationshipType: c.relationshipType as ChildInfo["relationshipType"],
@@ -109,7 +107,7 @@ export async function PATCH(req: NextRequest) {
           nickname: c.nickname ?? undefined,
         })
       );
-    });
+    }
   }
 
   return NextResponse.json({ ok: true, children: insertedChildren });

@@ -20,9 +20,8 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
-    // postgres.js (unlike Neon's HTTP driver) supports real multi-statement
-    // transactions, so let Better Auth use them for atomic operations.
-    transaction: true,
+    // Neon's HTTP driver doesn't support multi-statement transactions.
+    transaction: false,
   }),
   socialProviders: {
     google: {

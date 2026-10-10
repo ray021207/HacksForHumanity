@@ -16,7 +16,7 @@ ready for real users. See "What still needs a human" below before any real launc
 - Plain TypeScript for all scoring (no model call involved)
 - Better Auth for sign-in (magic-link email via Resend, plus optional Google OAuth), with
   database sessions
-- Drizzle ORM + Postgres (Railway, or any standard Postgres provider) for persistence
+- Drizzle ORM + Postgres (Neon/Vercel Postgres) for persistence
 - Stripe Checkout + Billing Portal for the freemium subscription
 - **Persistence changed from the original MVP.** Sign-in is now required before the
   questionnaire or card generation. Once signed in, your account, questionnaire responses,
@@ -46,13 +46,14 @@ cp .env.example .env.local   # then fill in the variables below
 - `AUTH_URL` — the deployed domain in production; auto-detected in dev.
 - `RESEND_API_KEY`, `EMAIL_FROM` — required for magic-link sign-in email.
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` — optional, enables "Continue with Google".
-- `POSTGRES_URL` — required. A standard Postgres connection string (e.g. from Railway).
+- `POSTGRES_URL`, `POSTGRES_URL_NON_POOLING` — required. A Postgres connection string (e.g. from
+  Vercel Postgres/Neon). The non-pooling URL is used by `drizzle-kit migrate`.
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID` — required for billing. Create
   one Product + recurring Price in the Stripe dashboard, and register a webhook endpoint at
   `/api/stripe/webhook` subscribed to `checkout.session.completed`,
   `customer.subscription.updated`, and `customer.subscription.deleted`.
 
-Once `POSTGRES_URL` is set, run the migration:
+Once `POSTGRES_URL`/`POSTGRES_URL_NON_POOLING` are set, run the migration:
 
 ```bash
 npm run db:generate   # regenerate drizzle/*.sql after a schema change (already generated once)
