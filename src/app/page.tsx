@@ -103,11 +103,13 @@ export default function Page() {
 						    costs no extra request. The aspect ratio is deliberately NOT
 						    stretched: this is a scribble with overlapping loops, and
 						    squashing 302 units of it into the width of a four-letter word
-						    would flatten those loops into a smudge. Width tracks the word,
-						    height follows from the viewBox, and `top` is in em so the rule
-						    stays put against the heading at every breakpoint. */}
+						    flattens those loops into a smudge. So it runs wider than the
+						    word and is centred on it — which is also how a hand-drawn rule
+						    actually behaves, overshooting at both ends. Height follows from
+						    the viewBox, and `top` is in em so the rule holds its position
+						    against the heading at every breakpoint. */}
 						<svg
-							className="text-accent absolute top-[0.82em] left-0 w-full"
+							className="text-accent absolute top-[0.78em] left-1/2 w-[122%] -translate-x-1/2"
 							viewBox="0 0 302 23"
 							fill="none"
 							aria-hidden="true"
