@@ -24,6 +24,7 @@ export function CardsStep({
   const [thumbs, setThumbs] = useState<Record<number, "up" | "down">>({});
   const [activeIdx, setActiveIdx] = useState(0);
   const [savedIdx, setSavedIdx] = useState<number | null>(null);
+  const [reactionsRevealed, setReactionsRevealed] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const reactionsRef = useRef<HTMLDivElement>(null);
 
@@ -73,11 +74,12 @@ export function CardsStep({
       headerPill={!isRed && starters.length > 0 ? `${activeIdx + 1} of ${starters.length}` : undefined}
       eyebrow={isRed ? undefined : "Your first words"}
       title={isRed ? "Please get help right now" : "Try one of these to start."}
-      primaryLabel={isRed ? "Describe another situation" : "Prepare for their response"}
+      primaryLabel={isRed || reactionsRevealed ? "Describe another situation" : "Prepare for their response"}
       onPrimary={() => {
-        if (isRed) {
+        if (isRed || reactionsRevealed) {
           onStartOver();
         } else {
+          setReactionsRevealed(true);
           reactionsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }}
