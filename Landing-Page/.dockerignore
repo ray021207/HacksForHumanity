@@ -1,0 +1,12 @@
+# Keeps the build context small AND keeps secrets out of image layers.
+# Without this file, `COPY . .` ships .env and .git into the image.
+node_modules
+.next
+out
+build
+.git
+.env
+.env.*
+!.env.example
+.vscode
+*.log
