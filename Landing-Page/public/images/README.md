@@ -1,15 +1,18 @@
-# Drop the real artwork here
+# Artwork
 
-The page references these three paths. Until the files exist the layout still
-holds its shape (every slot has a fixed aspect ratio) — the image slots just
-come back empty.
+| File | Used by |
+|---|---|
+| `hero-kitchen.jpg` | hero, right column — 1572×1179 (4:3) |
+| `app-moment.png` | three-steps panel, front phone + the mobile in-flow phone |
+| `app-voice.png` | three-steps panel, tilted top-right phone |
+| `app-results.png` | **not placed yet** — the "You lead with warmth" results screen |
 
-| File | Used by | Spec |
-|---|---|---|
-| `hero-kitchen.jpg` | hero, right column | 4:3, 1600×1200 or larger, warm daylight interior |
-| `app-moment.png` | three-steps panel + mobile | flat screenshot, 1179×2556, no device frame |
-| `app-voice.png` | three-steps panel, tilted top-right | flat screenshot, 1179×2556, no device frame |
+## These renders are already framed
 
-The phone bezel, corner radius and notch are drawn in CSS by
-`src/components/Phone.tsx`, so the screenshots must be flat captures — a
-pre-framed mockup render would double up the chrome.
+Bezel, notch, status bar and drop shadow are baked into each PNG on a
+transparent surround, so `src/components/Phone.tsx` draws no chrome of its own.
+A CSS bezel would sit outside the rendered one and read as a double frame.
+
+All three share a 499:1024 ratio, which is what reserves their space before the
+image loads. A replacement at a different ratio needs `aspect-[499/1024]` in
+Phone.tsx updated to match.

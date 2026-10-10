@@ -1,7 +1,14 @@
 import Image from 'next/image';
 
-/** CSS bezel so the handoff only ever needs a flat screenshot, never a
-    pre-rendered device mockup that would bake in its own corner radius. */
+/**
+ * The supplied screens arrive already framed — bezel, notch, status bar and
+ * drop shadow are baked into the PNG, on a transparent surround. So this draws
+ * no chrome of its own; a CSS bezel here would sit outside the rendered one and
+ * read as a double frame.
+ *
+ * All three renders share a 499:1024 ratio, which is what reserves the space
+ * before the image loads.
+ */
 export default function Phone({
 	src,
 	alt,
@@ -12,14 +19,8 @@ export default function Phone({
 	className?: string;
 }) {
 	return (
-		<div className={`rounded-[44px] bg-[#111] p-[10px] shadow-pop ${className}`}>
-			<div className="bg-panel-2 relative aspect-[1179/2556] overflow-hidden rounded-[36px]">
-				<Image src={src} alt={alt} fill sizes="300px" className="object-cover" />
-				<span
-					aria-hidden="true"
-					className="rounded-pill absolute top-[10px] left-1/2 h-[26px] w-[88px] -translate-x-1/2 bg-[#111]"
-				/>
-			</div>
+		<div className={`relative aspect-[499/1024] ${className}`}>
+			<Image src={src} alt={alt} fill sizes="(min-width: 1024px) 320px, 240px" />
 		</div>
 	);
 }

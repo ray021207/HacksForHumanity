@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Icon, { type IconName } from '@/components/Icon';
+import ParallaxPhones from '@/components/ParallaxPhones';
 import Phone from '@/components/Phone';
 import { FAMILY_TYPES } from '@/lib/search-config';
 
@@ -145,21 +146,7 @@ export default function Page() {
 					</div>
 				</div>
 
-				<div
-					aria-hidden="true"
-					className="pointer-events-none absolute inset-0 hidden lg:block"
-				>
-					<Phone
-						src="/images/app-voice.png"
-						alt=""
-						className="absolute top-[-14%] right-[2%] w-[300px] rotate-[15deg]"
-					/>
-					<Phone
-						src="/images/app-moment.png"
-						alt=""
-						className="absolute top-[20%] right-[22%] w-[300px] rotate-[-4deg]"
-					/>
-				</div>
+				<ParallaxPhones />
 			</section>
 
 			{/* ──────────────────── the two cards ──────────────────── */}

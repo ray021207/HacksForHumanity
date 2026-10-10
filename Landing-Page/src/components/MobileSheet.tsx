@@ -102,6 +102,9 @@ export default function MobileSheet() {
 					</button>
 					<Link
 						href="/plan"
+						// No route at /plan yet, so the default prefetch just 404s on every
+						// render. Drop this line when the page lands.
+						prefetch={false}
 						className="bg-accent rounded-pill text-d16 flex items-center gap-1 px-4 py-2 font-medium text-white"
 					>
 						<Icon name="arrow" size={18} />
