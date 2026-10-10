@@ -21,7 +21,7 @@ export function BillingActions({ isSubscribed }: { isSubscribed: boolean }) {
       type="button"
       disabled={isLoading}
       onClick={() => go(isSubscribed ? "/api/stripe/portal" : "/api/stripe/checkout")}
-      className="mt-8 w-full rounded-full bg-terracotta py-3.5 text-sm font-semibold text-cream disabled:bg-terracotta-soft"
+      className="bg-ink rounded-pill text-d16 shadow-bar mt-8 w-full py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
     >
       {isLoading ? "Loading…" : isSubscribed ? "Manage subscription" : "Upgrade"}
     </button>

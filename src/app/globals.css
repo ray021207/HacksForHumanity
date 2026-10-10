@@ -1,54 +1,384 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  /* kin&d color theme — exact values from the Clovis design system Figma
-     variables. Token names follow that source exactly (primary-fg,
-     primary-bg, accent, secondary-bg, secondary-fg, tertiary-fg, prup,
-     purp-faded) rather than the previous ink/cream/terracotta naming. */
-  --color-primary-fg: #100212;
-  --color-primary-bg: #fbfaf9;
-  --color-accent: #e26a4c;
-  --color-secondary-bg: #e8e4e3;
-  --color-secondary-fg: rgb(16 2 18 / 64%);
-  --color-tertiary-fg: rgb(16 2 18 / 40%);
-  --color-prup: #ee59c9;
-  --color-purp-faded: rgb(238 89 201 / 24%);
+/* ---------------------------------------------------------------------------
+   Base 8.
 
-  /* Legacy aliases kept for anything not yet migrated off the old names. */
-  --color-ink: var(--color-primary-fg);
-  --color-cream: var(--color-primary-bg);
-  --color-terracotta: var(--color-accent);
-  --color-terracotta-soft: #ec9981;
-  --color-olive: #d6d3a6;
+   Every spacing utility in this project is a multiple of 8 because --spacing IS
+   8px: p-1 = 8, p-2 = 16, p-3 = 24, p-6 = 48. There is no way to write a 5px
+   gap by accident. Section rhythm is the separate 124 ladder below.
+--------------------------------------------------------------------------- */
+@theme {
+	--spacing: 8px;
 
-  --background: var(--color-primary-bg);
-  --foreground: var(--color-primary-fg);
+	/* ---- type ladder: 72 down by 8 --------------------------------------
+	   Named by their pixel size so the ladder is visible at the call site.
+	   16 is the floor — anything the comp showed smaller gets promoted to it.
+
+	   Every heading size carries 0.02em more negative tracking than its
+	   optical baseline — the ladder still opens up as the sizes come down,
+	   it just starts 2% tighter. d16 is body copy and keeps its own value;
+	   tightening running text hurts reading speed. */
+	--text-d72: 72px;
+	--text-d72--line-height: 1.02;
+	--text-d72--letter-spacing: -0.048em;
+
+	--text-d64: 64px;
+	--text-d64--line-height: 1.04;
+	--text-d64--letter-spacing: -0.046em;
+
+	--text-d56: 56px;
+	--text-d56--line-height: 1.08;
+	--text-d56--letter-spacing: -0.044em;
+
+	--text-d48: 48px;
+	--text-d48--line-height: 1.1;
+	--text-d48--letter-spacing: -0.042em;
+
+	--text-d40: 40px;
+	--text-d40--line-height: 1.14;
+	--text-d40--letter-spacing: -0.04em;
+
+	--text-d32: 32px;
+	--text-d32--line-height: 1.2;
+	--text-d32--letter-spacing: -0.036em;
+
+	--text-d24: 24px;
+	--text-d24--line-height: 1.28;
+	--text-d24--letter-spacing: -0.032em;
+
+	--text-d16: 16px;
+	--text-d16--line-height: 1.5;
+	--text-d16--letter-spacing: -0.004em;
+
+	/* ---- section ladder: 124, then /3 each step -------------------------
+	   s1 = 124        big section padding
+	   s2 = 124/3      block gaps inside a section
+	   s3 = 124/9      tight gaps between stacked rows
+	   Written as calc so the relationship stays legible, not as rounded magic
+	   numbers that drift apart the first time someone edits one. */
+	--spacing-s1: 124px;
+	--spacing-s2: calc(124px / 3);
+	--spacing-s3: calc(124px / 9);
+
+	/* ---- colour --------------------------------------------------------- */
+	--color-canvas: #faf8f5;
+	--color-surface: #ffffff;
+	--color-ink: #16110e;
+	--color-muted: #6f6761;
+	/* Tertiary text: the footer disclaimer, and anything else that should
+	   recede behind muted without becoming decoration. #79716b is the
+	   lightest step off muted that still clears 4.5:1 on canvas, which is
+	   the floor for 12px copy and not negotiable for legal fine print. */
+	--color-muted-2: #79716b;
+	--color-line: #e6e2dc;
+	--color-panel: #e9e6e2;
+	--color-panel-2: #e4e1dd;
+	--color-accent: #e0553a;
+	--color-blush: #fbdcec;
+	--color-blush-ink: #c0417f;
+	--color-field: #f1efec;
+
+	/* ---- Clovis aliases --------------------------------------------------
+	   main names its colours for the role they play (primary-fg, secondary-bg)
+	   rather than for what they are (ink, field). Both namings are now in the
+	   tree: the questionnaire and everything main added — sign-in, billing,
+	   the upgrade wall — are written against these four, and the landing page
+	   is written against the names above.
+
+	   Rather than rewriting one set of class names into the other, the roles
+	   point at the landing page's values. That is the whole merge in five
+	   lines: main's components keep their markup and come out in our palette,
+	   and a screen built against either vocabulary lands in the same place.
+
+	   These are aliases, not a second palette. Changing canvas changes
+	   primary-bg with it, which is the only way the two namings can't drift. */
+	--color-primary-fg: var(--color-ink);
+	--color-primary-bg: var(--color-canvas);
+	--color-secondary-fg: var(--color-muted);
+	--color-secondary-bg: var(--color-field);
+	--color-tertiary-fg: var(--color-muted-2);
+
+	/* main's pink pair, used for selected answers and technique badges. Ours
+	   is the blush the landing page already picks answers out in, so the two
+	   designs agree on what "chosen" looks like. */
+	--color-prup: var(--color-blush-ink);
+	--color-purp-faded: var(--color-blush);
+
+	/* ---- mesh tints ------------------------------------------------------
+	   The four ellipses behind the closing CTA, lifted from the app's start
+	   screen. They are only ever seen through a 100px blur, so they are picked
+	   for how they bleed into each other, not for how they look flat. Nothing
+	   else in the page should use them — type on any of these fails contrast.
+	*/
+	--color-mesh-pink: #f0abd8;
+	--color-mesh-lilac: #cdb8ef;
+	--color-mesh-mint: #b6e1e6;
+	--color-mesh-peach: #f2c0ab;
+
+	/* ---- radii ---------------------------------------------------------- */
+	--radius-panel: 40px;
+	--radius-card: 32px;
+	--radius-field: 16px;
+	--radius-pill: 999px;
+
+	/* ---- type faces -----------------------------------------------------
+	   Display is DM Serif Text, vendored in src/fonts and injected by
+	   next/font in layout.tsx — self-hosted, no runtime request, no layout
+	   shift. Confirmed against the app mockups: the giveaway is the narrow
+	   et-ligature ampersand in the "kin&d" wordmark, which rules out the
+	   wide double-looped ampersand of Playfair Display.
+
+	   The sans is the same stack the Raisee app declares at the repo root,
+	   and it matches the mockups' letterforms. Helvetica Neue is a licensed
+	   system font that CANNOT be served as a webfont, so this resolves to it
+	   on macOS/iOS and degrades to Arial elsewhere. That is a known, accepted
+	   tradeoff — brand fidelity over cross-platform uniformity. Swapping in a
+	   licensed webfont later is a change to this one line. */
+	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
+	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+
+	/* main's headlines ask for font-serif; ours is the `display` utility.
+	   Same face, so the alias keeps its screens on the brand serif. */
+	--font-serif: var(--font-display);
+
+	/* Courier for the footer disclaimer only. Legal copy set in the same face
+	   as the marketing copy reads as more marketing copy; a typewriter face
+	   reads as the fine print it is. */
+	--font-mono: Courier, 'Courier New', ui-monospace, monospace;
+
+	/* ---- elevation ------------------------------------------------------ */
+	--shadow-bar: 0 2px 8px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);
+	--shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 16px 48px rgb(0 0 0 / 0.14);
+	--shadow-seg: 0 2px 8px rgb(0 0 0 / 0.1), 0 6px 20px rgb(0 0 0 / 0.1);
+
+	/* ---- entrances ------------------------------------------------------ */
+	--animate-pop-in: pop-in 160ms cubic-bezier(0.33, 1, 0.68, 1);
+	--animate-drop-in: drop-in 180ms cubic-bezier(0.33, 1, 0.68, 1);
+	--animate-fade-in: fade-in 160ms ease-out;
+	--animate-rise-in: rise-in 220ms cubic-bezier(0.33, 1, 0.68, 1);
+
+	/* The characters' idle drift. Deliberately long and small: it should read
+	   as "alive" out of the corner of your eye, not as something asking to be
+	   looked at. Distances are in SVG user units, so they scale with whatever
+	   size the character is drawn at. The reduced-motion rule below freezes
+	   it at the first frame, which is the rest pose. */
+	--animate-drift: drift 7.5s ease-in-out infinite;
+
+	@keyframes pop-in {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+	}
+	@keyframes drop-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+	}
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+	@keyframes rise-in {
+		from {
+			opacity: 0;
+			transform: translateY(24px);
+		}
+	}
+	@keyframes drift {
+		0%,
+		100% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+		30% {
+			transform: translate(1.5px, -4px) rotate(1.6deg);
+		}
+		60% {
+			transform: translate(-1.5px, -2px) rotate(-1.4deg);
+		}
+	}
+
+	/* ---- the welcome stage ----------------------------------------------
+	   Loops, not entrances: these run for as long as the first screen is up.
+
+	   The three characters each get their own period and their own idea of
+	   what dancing is, and the three periods share no small divisor, so the
+	   trio keeps drifting in and out of phase instead of pulsing as one unit.
+	   Each contact shadow runs the same shape on its character's period —
+	   a character at the top of its hop is over the narrow, faint shadow,
+	   which is what sells the hop as height rather than as a slide. */
+	--animate-dance-bob: dance-bob 2600ms ease-in-out infinite;
+	--animate-dance-sway: dance-sway 3100ms ease-in-out infinite;
+	--animate-dance-tip: dance-tip 2200ms ease-in-out infinite;
+	--animate-dance-shadow: dance-shadow 2600ms ease-in-out infinite;
+	--animate-dance-shadow-slow: dance-shadow 3100ms ease-in-out infinite;
+	--animate-dance-shadow-fast: dance-shadow 2200ms ease-in-out infinite;
+
+	/* The mesh ellipses behind the glow, each started at a different negative
+	   delay so they are already mid-drift on the first paint. */
+	--animate-glow-drift: glow-drift 11s ease-in-out infinite;
+
+	/* One band crossing the glow, then four fifths of the period parked
+	   off-screen — a sweep you notice once rather than a strobe. */
+	--animate-shimmer: shimmer 5600ms cubic-bezier(0.45, 0, 0.55, 1) infinite;
+
+	@keyframes dance-bob {
+		0%,
+		100% {
+			transform: translateY(5%) rotate(-4deg);
+		}
+		50% {
+			transform: translateY(-11%) rotate(4deg);
+		}
+	}
+	@keyframes dance-sway {
+		0%,
+		100% {
+			transform: translate(-5%, 2%) rotate(6deg);
+		}
+		50% {
+			transform: translate(5%, -10%) rotate(-6deg);
+		}
+	}
+	@keyframes dance-tip {
+		0%,
+		100% {
+			transform: translateY(3%) rotate(9deg) scale(0.97);
+		}
+		50% {
+			transform: translateY(-12%) rotate(-9deg) scale(1.03);
+		}
+	}
+	@keyframes dance-shadow {
+		0%,
+		100% {
+			transform: scaleX(1);
+			opacity: 1;
+		}
+		50% {
+			transform: scaleX(0.7);
+			opacity: 0.45;
+		}
+	}
+	@keyframes glow-drift {
+		0%,
+		100% {
+			transform: translate3d(0, 0, 0) scale(1);
+		}
+		33% {
+			transform: translate3d(4%, 3%, 0) scale(1.09);
+		}
+		66% {
+			transform: translate3d(-3%, -2%, 0) scale(0.94);
+		}
+	}
+	@keyframes shimmer {
+		0% {
+			transform: translateX(-120%) skewX(-12deg);
+		}
+		55%,
+		100% {
+			transform: translateX(320%) skewX(-12deg);
+		}
+	}
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary-fg: var(--color-primary-fg);
-  --color-primary-bg: var(--color-primary-bg);
-  --color-accent: var(--color-accent);
-  --color-secondary-bg: var(--color-secondary-bg);
-  --color-secondary-fg: var(--color-secondary-fg);
-  --color-tertiary-fg: var(--color-tertiary-fg);
-  --color-prup: var(--color-prup);
-  --color-purp-faded: var(--color-purp-faded);
-  --color-ink: var(--color-ink);
-  --color-cream: var(--color-cream);
-  --color-terracotta: var(--color-terracotta);
-  --color-terracotta-soft: var(--color-terracotta-soft);
-  --color-olive: var(--color-olive);
-  /* Inter (body/UI) + DM Serif Display (headlines) — self-hosted via
-     next/font in layout.tsx. */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-dm-serif-display), Georgia, "Times New Roman", serif;
+@layer base {
+	:root {
+		/* Height of the compact header the wizard and the partner pages sit
+		   under: a 40px account button (size-5) between two 16px rails (py-2).
+		   The tokens fix it at 72px — no font metric is involved, so a screen
+		   can subtract it from the viewport and land exactly on the fold. The
+		   safe-area inset is folded in because the header pads itself by the
+		   same amount; it resolves to 0px wherever there is no inset. */
+		--nav-h: calc(72px + env(safe-area-inset-top, 0px));
+	}
+
+	html {
+		background: var(--color-canvas);
+		/* Footer and nav links are all in-page anchors; the sections they
+		   point at carry a matching scroll-mt so they don't land under the
+		   sticky header. */
+		scroll-behavior: smooth;
+	}
+
+	body {
+		background: var(--color-canvas);
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+		font-size: var(--text-d16);
+		line-height: 1.5;
+	}
+
+	/* Selection is off page-wide: this reads as a product, not a document,
+	   and a stray drag highlighting half the hero is the fastest way to
+	   break that. Anything you can type into opts back in below, because
+	   not being able to select what you just typed is not a tradeoff worth
+	   making. */
+	body {
+		-webkit-user-select: none;
+		user-select: none;
+	}
+
+	:where(input, textarea, select, [contenteditable='true']) {
+		-webkit-user-select: text;
+		user-select: text;
+	}
+
+	:where(button, a, input, textarea, [tabindex]):focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	/* ---- scroll reveal ---------------------------------------------------
+	   Sections start a little low and transparent and settle as they come
+	   into view; Reveal.tsx flips data-shown once per element and then stops
+	   observing. The resting state lives in the stylesheet rather than in a
+	   class React adds at hydration, so the section can't paint in place and
+	   then jump back to animate. */
+	.reveal {
+		opacity: 0;
+		transform: translateY(24px);
+		transition:
+			opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+			transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+	}
+
+	.reveal[data-shown='true'] {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Without JS nothing ever flips data-shown, so the page would be blank.
+	   Under reduced motion skipping the entrance IS the correct behaviour,
+	   and the global rule above only shortens it. */
+	@media (scripting: none), (prefers-reduced-motion: reduce) {
+		.reveal {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+@utility display {
+	font-family: var(--font-display);
+	/* DM Serif Text ships one weight. Asking for 700 would make the browser
+	   synthesise a fake bold and smear the hairlines that make the face. */
+	font-weight: 400;
 }

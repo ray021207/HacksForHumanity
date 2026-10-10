@@ -5,7 +5,7 @@ import questionnaire from "@/data/questionnaire.json";
 
 const scenarioBlock = (questionnaire.blocks as any[]).find((b) => b.id === "scenarios");
 
-/** One scenario per screen; the scenario prompt itself is the screen title. */
+/** One scenario per screen, same "Question N" pattern as the personality block. */
 export function ScenarioBlockStep({
   responses,
   isAdultChild,
@@ -39,32 +39,33 @@ export function ScenarioBlockStep({
 
   return (
     <WizardShell
-      headerPill={`${itemIndex + 1} of ${scenarioBlock.items.length}`}
-      eyebrow="A moment you might recognize"
-      title={prompt}
+      title={`Question ${itemIndex + 1}`}
+      description={`${scenarioBlock.title} · ${itemIndex + 1} of ${scenarioBlock.items.length}`}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Next"
+      primaryLabel="Continue"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
-      secondary={
+    >
+      <div>
+        <p className="text-d24">{prompt}</p>
+
+        <div className="mt-3 space-y-1">
+          {item.options.map((opt: any) => (
+            <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
+              {opt.label}
+            </PillOption>
+          ))}
+        </div>
+
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`block text-center text-xs underline ${selected === null ? "text-prup" : "text-tertiary-fg"}`}
+          className={`text-d16 mt-2 underline ${selected === null ? "text-blush-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>
-      }
-    >
-      <div className="space-y-2">
-        {item.options.map((opt: any) => (
-          <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
-            {opt.label}
-          </PillOption>
-        ))}
       </div>
-      <p className="mt-4 text-xs text-tertiary-fg">No right or wrong. Just what feels like you.</p>
     </WizardShell>
   );
 }

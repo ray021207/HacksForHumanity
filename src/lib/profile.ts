@@ -122,7 +122,7 @@ export function describeProfile(profile: ProfileScores): ProfileDisplay {
       score: ps.structure,
       headline: "You bring structure.",
       strength: "You tend to follow through on what you say, which builds trust over time.",
-      stretch: "Setting one clear, consistent expectation — and sticking with it — could make a bigger difference than a new rule.",
+      stretch: "Setting one clear, consistent expectation, and sticking with it, could make a bigger difference than a new rule.",
     });
   }
   if (typeof ac.autonomy_support === "number") {

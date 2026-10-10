@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WizardShell, PillOption } from "./WizardShell";
+import { WizardShell, PillChip } from "./WizardShell";
 import type { RawResponses } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
@@ -9,10 +9,10 @@ function itemText(item: any, isAdult: boolean): string {
 }
 
 /**
- * One question per screen, each with its own back/continue. The question
- * text itself is the screen title. Item count comes from
- * src/data/questionnaire.json (6 TIPI items as of this build — a trimmed
- * 3-trait subset, see that file's "source" note).
+ * One question per screen, each with its own back/continue, matching the
+ * "Question 1 / Question 2 / ..." onboarding pattern. Item count comes
+ * from src/data/questionnaire.json (6 TIPI items as of this build — a
+ * trimmed 3-trait subset, see that file's "source" note).
  */
 export function LikertBlockStep({
   blockId,
@@ -38,7 +38,6 @@ export function LikertBlockStep({
   const item = block.items[itemIndex];
   const value = responses[item.id];
   const isAnswered = value !== undefined;
-  const isLast = itemIndex === block.items.length - 1;
 
   function goBack() {
     if (itemIndex > 0) setItemIndex(itemIndex - 1);
@@ -52,31 +51,32 @@ export function LikertBlockStep({
 
   return (
     <WizardShell
-      headerPill={`${itemIndex + 1} of ${block.items.length}`}
-      eyebrow="How much does this sound like you?"
-      title={itemText(item, isAdultChild)}
+      title={`Question ${itemIndex + 1}`}
+      description={`${block.title} · ${itemIndex + 1} of ${block.items.length}`}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Next"
+      primaryLabel="Continue"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
-      doodles={isLast ? [{ src: "/doodles/star.svg", className: "absolute bottom-24 right-2 w-10" }] : undefined}
-      secondary={
+    >
+      <div>
+        <p className="text-d24">{itemText(item, isAdultChild)}</p>
+
+        <div className="mt-3 flex flex-wrap gap-1">
+          {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
+            <PillChip key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
+              {scale.labels[n - scale.min]}
+            </PillChip>
+          ))}
+        </div>
+
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`block text-center text-xs underline ${value === null ? "text-prup" : "text-tertiary-fg"}`}
+          className={`text-d16 mt-2 underline ${value === null ? "text-blush-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>
-      }
-    >
-      <div className="space-y-2">
-        {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
-          <PillOption key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
-            {scale.labels[n - scale.min]}
-          </PillOption>
-        ))}
       </div>
     </WizardShell>
   );

@@ -26,31 +26,31 @@ export function SignInStep({
         <button
           type="button"
           onClick={onGoogleSignIn}
-          className="w-full rounded-full border border-ink/15 bg-white py-3 text-sm font-semibold text-ink"
+          className="border-line bg-surface text-ink hover:bg-panel-2 rounded-pill text-d16 w-full border py-2 font-medium transition-colors"
         >
           Continue with Google
         </button>
       }
     >
       <div className="flex min-h-[60vh] flex-col justify-center">
-        <h1 className="text-4xl font-bold italic leading-tight text-ink">Sign in to kin&amp;d</h1>
-        <p className="mt-2 text-sm italic text-ink/60">
+        <h1 className="display text-d40 italic">Sign in to kin&amp;d</h1>
+        <p className="text-muted text-d16 mt-1 italic">
           Your answers and situation history are saved to your account.
         </p>
 
-        <label className="mt-8 block text-sm text-ink/70">
+        <label className="text-muted text-d16 mt-s3 block">
           Email
           <input
             type="email"
             autoFocus
-            className="mt-1 block w-full rounded-xl border border-ink/15 bg-white p-3 text-sm text-ink"
+            className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
           />
         </label>
 
-        {error && <p className="mt-3 text-sm text-terracotta">{error}</p>}
+        {error && <p className="text-accent text-d16 mt-3">{error}</p>}
       </div>
     </WizardShell>
   );

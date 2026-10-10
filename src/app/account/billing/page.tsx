@@ -33,20 +33,20 @@ export default async function BillingPage() {
   const used = usage?.freeGenerationsUsed ?? 0;
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-cream">
+    <div className="flex min-h-screen w-full flex-col bg-canvas">
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8">
-        <Link href="/app" className="text-xs text-ink/50 underline">
+        <Link href="/plan" className="text-muted text-d16 underline">
           ‹ Back to app
         </Link>
 
-        <h1 className="mt-4 text-3xl font-bold italic leading-tight text-ink">Your plan</h1>
+        <h1 className="display text-d32 mt-3 italic">Your plan</h1>
 
         {isSubscribed ? (
-          <p className="mt-4 text-sm text-ink/60">
+          <p className="text-muted text-d16 mt-3">
             You&apos;re on the kin&amp;d plan. Thanks for supporting the project.
           </p>
         ) : (
-          <p className="mt-4 text-sm text-ink/60">
+          <p className="text-muted text-d16 mt-3">
             You&apos;ve used {used} of {FREE_LIMIT} free situations. Upgrade for unlimited
             conversation-starter cards.
           </p>

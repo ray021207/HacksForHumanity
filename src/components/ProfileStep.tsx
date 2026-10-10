@@ -1,4 +1,4 @@
-import { WizardShell, Badge } from "./WizardShell";
+import { WizardShell } from "./WizardShell";
 import type { ProfileDisplay } from "@/lib/profile";
 
 export function ProfileStep({
@@ -11,54 +11,49 @@ export function ProfileStep({
   profile: ProfileDisplay;
   onNext: () => void;
   onBack: () => void;
+  /** Clears the answers and drops back to the first question. */
   onRetake?: () => void;
   progress?: number;
 }) {
   return (
     <WizardShell
-      headerPill="Your results"
-      eyebrow="Based on your answers"
-      title={profile.headline}
-      description="No labels, no scores. Just patterns to work with."
+      mascot="block"
+      title="A quick read on your tendencies"
+      description="Here's what your answers suggest about how you tend to show up in hard conversations. We use this to tune the tone and techniques in your cards, never to label or diagnose you. It's based on a short, original questionnaire (not a validated clinical instrument), so take it as a loose signal, not a verdict. You can retake it anytime, and it never leaves your browser."
       onBack={onBack}
       progress={progress}
-      primaryLabel="Start with a situation"
+      primaryLabel="Continue"
       onPrimary={onNext}
-      belowPrimary={
+      secondary={
         onRetake && (
-          <button type="button" onClick={onRetake} className="text-xs text-tertiary-fg underline">
+          <button
+            type="button"
+            onClick={onRetake}
+            className="text-muted text-d16 mx-auto underline"
+          >
             Retake the questionnaire
           </button>
         )
       }
-      doodles={[
-        { src: "/doodles/star.svg", className: "absolute right-4 top-28 w-8" },
-        { src: "/doodles/blob.svg", className: "absolute bottom-28 right-3 w-16" },
-      ]}
     >
-      <div className="space-y-4">
-        <div className="rounded-2xl border border-secondary-bg bg-primary-bg p-4">
-          <Badge>What you do well</Badge>
-          <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-primary-fg marker:text-prup">
+      <div className="space-y-2">
+        <div>
+          <h3 className="text-d16 font-semibold">What stands out</h3>
+          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
             {profile.strengths.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl border border-secondary-bg bg-primary-bg p-4">
-          <Badge>What you might be missing</Badge>
-          <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-primary-fg marker:text-accent">
+        <div className="bg-field rounded-card p-3">
+          <h3 className="text-d16 font-semibold">A few things to try</h3>
+          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
             {profile.stretches.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}
           </ul>
         </div>
       </div>
-
-      <p className="mt-4 text-xs text-tertiary-fg">
-        This is based on a short, original questionnaire, not a validated clinical instrument — take
-        it as a loose signal, not a verdict. It never leaves your browser.
-      </p>
     </WizardShell>
   );
 }

@@ -20,7 +20,9 @@ const eslintConfig = defineConfig([
   {
     files: [
       "src/components/**/*.tsx",
-      "src/app/page.tsx",
+      // The wizard reads the questionnaire JSON; it moved from / to /plan when
+      // the landing page took over the root route.
+      "src/app/plan/page.tsx",
       "src/lib/profile.ts",
       "src/lib/generation.ts",
       "src/**/*.test.ts",

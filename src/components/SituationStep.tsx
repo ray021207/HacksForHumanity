@@ -6,7 +6,6 @@ import type { Goal } from "@/lib/generation";
 import questionnaire from "@/data/questionnaire.json";
 
 const goalsBlock = (questionnaire.blocks as any[]).find((b) => b.id === "goals");
-
 const SETTING_OPTIONS = [
   { value: "at_home", label: "At home" },
   { value: "in_the_car", label: "In the car" },
@@ -35,50 +34,50 @@ export function SituationStep({
 
   return (
     <WizardShell
-      headerPill="New situation"
-      eyebrow="What's happening?"
-      title="Tell us about the moment."
+      mascot="star"
+      title="What's going on?"
+      description="Type or speak. Nothing here is stored after you leave this page."
       onBack={onBack}
-      primaryLabel={isSubmitting ? "Getting cards..." : "Find the first words"}
+      primaryLabel={isSubmitting ? "Getting cards..." : "Get conversation starters"}
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
       primaryDisabled={!canSubmit || isSubmitting}
-      doodles={[{ src: "/doodles/ghost.svg", className: "absolute bottom-28 left-3 w-12" }]}
     >
-      <div className="space-y-5">
+      <div className="space-y-3">
+        {familyChildren.length > 1 && (
+          <label className="text-muted text-d16 block">
+            Which child?
+            <select
+              className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+              value={childId}
+              onChange={(e) => setChildId(e.target.value)}
+            >
+              {familyChildren.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nickname?.trim() || `Child (${c.ageBand})`}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
         <div>
           <textarea
-            className="block w-full rounded-2xl border border-secondary-bg bg-primary-bg p-3 text-sm text-primary-fg placeholder:text-tertiary-fg"
+            className="border-line bg-field rounded-field text-d16 text-ink placeholder:text-muted block w-full border p-2"
             rows={5}
             value={situationText}
             onChange={(e) => setSituationText(e.target.value)}
-            placeholder="My 17-year-old wants to study art instead of nursing. Every time I bring it up, it turns into an argument."
+            placeholder="Type or speak, e.g. we argued about curfew tonight and it got heated."
           />
           <VoiceInputButton
             onTranscript={(text) =>
               setSituationText((prev) => (prev.trim() ? `${prev.trim()} ${text}` : text))
             }
           />
-          <p className="mt-2 text-xs text-tertiary-fg">
-            Please leave out names or details that could identify your child.
-          </p>
         </div>
 
-        {familyChildren.length > 1 && (
-          <div>
-            <span className="block text-sm font-medium text-primary-fg">Which child?</span>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {familyChildren.map((c) => (
-                <PillChip key={c.id} selected={childId === c.id} onClick={() => setChildId(c.id)}>
-                  {c.nickname?.trim() || `(${c.ageBand})`}
-                </PillChip>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div>
-          <span className="block text-sm font-medium text-primary-fg">What do you hope for?</span>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <span className="text-d16 block font-semibold">What&apos;s this for?</span>
+          <div className="mt-1 flex flex-wrap gap-1">
             {goalsBlock.options.map((opt: any) => (
               <PillChip key={opt.value} selected={goal === opt.value} onClick={() => setGoal(opt.value)}>
                 {opt.label}
@@ -88,8 +87,8 @@ export function SituationStep({
         </div>
 
         <div>
-          <span className="block text-sm font-medium text-primary-fg">Where did this happen?</span>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <span className="text-d16 block font-semibold">Setting</span>
+          <div className="mt-1 flex flex-wrap gap-1">
             {SETTING_OPTIONS.map((opt) => (
               <PillChip key={opt.value} selected={setting === opt.value} onClick={() => setSetting(opt.value)}>
                 {opt.label}
