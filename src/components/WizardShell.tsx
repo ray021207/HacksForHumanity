@@ -70,7 +70,7 @@ export function WizardShell({
 
       <div className="relative mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-5 pb-8">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold tracking-tight text-primary-fg">kin&amp;d</span>
+          <span className="font-serif text-lg tracking-tight text-primary-fg">kin&amp;d</span>
           {headerPill && (
             <span className="ml-auto rounded-full bg-secondary-bg px-3 py-1 text-xs font-medium text-secondary-fg">
               {headerPill}

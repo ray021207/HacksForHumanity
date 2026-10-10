@@ -7,7 +7,7 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-primary-bg">
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-8 pb-8">
-        <span className="text-center text-xl font-bold tracking-tight text-primary-fg">kin&amp;d</span>
+        <span className="text-center font-serif text-xl tracking-tight text-primary-fg">kin&amp;d</span>
 
         <div className="mt-4 flex justify-center">
           <span className="rounded-full bg-secondary-bg px-3 py-1 text-xs font-medium text-secondary-fg">
