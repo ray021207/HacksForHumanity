@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 logs/
+
+# the original product spec is kept locally for reference only, not in the repo
+/Spec.md
+/Gentle Parenting Conversation Starters MVP Spec.md

@@ -4,7 +4,7 @@ A parent answers a short questionnaire once, then describes a situation and gets
 conversation-starter cards. There is no chat — nothing typed after the cards ever reaches the
 model.
 
-This is an MVP built to the spec in `../Spec.md`. It is **not clinically reviewed** and is not
+This is an MVP built to the spec in the original product spec (kept locally, not in this repo). It is **not clinically reviewed** and is not
 ready for real users. See "What still needs a human" below before any real launch.
 
 ## Stack
@@ -79,7 +79,7 @@ statements is also arguably a worse way to surface "what do you actually do" tha
 situation. So the 27 Likert items were replaced with **8 short scenario (situational-judgment)
 questions**, and the TIPI was later trimmed from 10 to 6 items on request (see point 2).
 
-The full sourcing rationale and instrument survey are in `../Spec.md`; block by block, as built:
+The full sourcing rationale and instrument survey are in the original product spec (kept locally, not in this repo); block by block, as built:
 
 1. **Family** — age band (13–15, 16–17, 18–22, 23+), living situation, optional nickname.
    Original, not from a published instrument. This is the single biggest lever on tone: teens get
@@ -123,7 +123,7 @@ The full sourcing rationale and instrument survey are in `../Spec.md`; block by 
 **Everything except the TIPI is original and marked `"draft, needs owner review"`** in
 `questionnaire.json` and `playbook.json`. None of it has been validated. It's a best-effort
 adaptation of well-supported constructs, not a validated clinical instrument — see the
-"Questionnaire sources" table in `../Spec.md` for the full survey of why no single published
+"Questionnaire sources" table in the original product spec (kept locally, not in this repo) for the full survey of why no single published
 instrument covers parents of teens through adult children.
 
 Every item follows the same rules: ask about behavior, never identity; never ask about diagnoses,
@@ -255,7 +255,7 @@ the commands above to re-run them.
   a lower alpha. If the pilot shows it's too low to be useful, the fix is likely more scenarios
   per subscale, not reverting to the long Likert form.
 - **A legal check.** Rhode Island's chatbot-safety law (effective June 23, 2026) and the amended
-  COPPA rule (compliance deadline April 22, 2026) are both referenced in `../Spec.md`. Whether
+  COPPA rule (compliance deadline April 22, 2026) are both referenced in the original product spec (kept locally, not in this repo). Whether
   either applies here, and the exact disclosure/retention language needed, is a question for
   counsel, not for this codebase.
 
