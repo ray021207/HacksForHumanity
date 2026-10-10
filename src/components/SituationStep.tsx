@@ -6,7 +6,6 @@ import type { Goal } from "@/lib/generation";
 import questionnaire from "@/data/questionnaire.json";
 
 const goalsBlock = (questionnaire.blocks as any[]).find((b) => b.id === "goals");
-const ageBandField = (questionnaire.blocks as any[]).find((b) => b.id === "family").fields.ageBand;
 
 const SETTING_OPTIONS = [
   { value: "at_home", label: "At home" },
@@ -32,7 +31,6 @@ export function SituationStep({
   const [goal, setGoal] = useState<Goal | "">("");
   const [setting, setSetting] = useState("");
 
-  const activeChild = familyChildren.find((c) => c.id === childId);
   const canSubmit = situationText.trim().length > 0 && goal !== "" && childId !== "";
 
   return (
@@ -65,7 +63,7 @@ export function SituationStep({
           </p>
         </div>
 
-        {familyChildren.length > 1 ? (
+        {familyChildren.length > 1 && (
           <div>
             <span className="block text-sm font-medium text-primary-fg">Which child?</span>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -76,26 +74,6 @@ export function SituationStep({
               ))}
             </div>
           </div>
-        ) : (
-          activeChild && (
-            <div>
-              <span className="block text-sm font-medium text-primary-fg">Your child&apos;s age</span>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {ageBandField.options.map((opt: any) => (
-                  <span
-                    key={opt.value}
-                    className={`rounded-full border px-4 py-2 text-sm ${
-                      opt.value === activeChild.ageBand
-                        ? "border-prup text-prup"
-                        : "border-secondary-bg text-tertiary-fg"
-                    }`}
-                  >
-                    {opt.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )
         )}
 
         <div>
