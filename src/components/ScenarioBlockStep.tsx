@@ -39,31 +39,32 @@ export function ScenarioBlockStep({
 
   return (
     <WizardShell
+      headerPill={`${itemIndex + 1} of ${scenarioBlock.items.length}`}
+      eyebrow="A moment you might recognize"
       title={prompt}
-      description={`${scenarioBlock.title} · ${itemIndex + 1} of ${scenarioBlock.items.length}`}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Continue"
+      primaryLabel="Next"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
-    >
-      <div>
-        <div className="space-y-2">
-          {item.options.map((opt: any) => (
-            <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
-              {opt.label}
-            </PillOption>
-          ))}
-        </div>
-
+      secondary={
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`mt-4 text-xs underline ${selected === null ? "text-ink" : "text-ink/40"}`}
+          className={`block text-center text-xs underline ${selected === null ? "text-prup" : "text-tertiary-fg"}`}
         >
           Prefer not to say
         </button>
+      }
+    >
+      <div className="space-y-2">
+        {item.options.map((opt: any) => (
+          <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
+            {opt.label}
+          </PillOption>
+        ))}
       </div>
+      <p className="mt-4 text-xs text-tertiary-fg">No right or wrong. Just what feels like you.</p>
     </WizardShell>
   );
 }

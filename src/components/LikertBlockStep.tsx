@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WizardShell } from "./WizardShell";
+import { WizardShell, PillOption } from "./WizardShell";
 import type { RawResponses } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
@@ -38,6 +38,7 @@ export function LikertBlockStep({
   const item = block.items[itemIndex];
   const value = responses[item.id];
   const isAnswered = value !== undefined;
+  const isLast = itemIndex === block.items.length - 1;
 
   function goBack() {
     if (itemIndex > 0) setItemIndex(itemIndex - 1);
@@ -51,37 +52,31 @@ export function LikertBlockStep({
 
   return (
     <WizardShell
+      headerPill={`${itemIndex + 1} of ${block.items.length}`}
+      eyebrow="How much does this sound like you?"
       title={itemText(item, isAdultChild)}
-      description={`${block.title} · ${itemIndex + 1} of ${block.items.length}`}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Continue"
+      primaryLabel="Next"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
-    >
-      <div>
-        <div className="flex flex-wrap gap-2">
-          {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
-            <button
-              key={n}
-              type="button"
-              onClick={() => onChange(item.id, n)}
-              className={`rounded-full border px-3 py-2 text-xs transition-colors ${
-                value === n ? "border-ink bg-ink text-cream" : "border-ink/15 bg-white/60 text-ink"
-              }`}
-            >
-              {scale.labels[n - scale.min]}
-            </button>
-          ))}
-        </div>
-
+      doodles={isLast ? [{ src: "/doodles/star.svg", className: "absolute bottom-24 right-2 w-10" }] : undefined}
+      secondary={
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`mt-4 text-xs underline ${value === null ? "text-ink" : "text-ink/40"}`}
+          className={`block text-center text-xs underline ${value === null ? "text-prup" : "text-tertiary-fg"}`}
         >
           Prefer not to say
         </button>
+      }
+    >
+      <div className="space-y-2">
+        {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
+          <PillOption key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
+            {scale.labels[n - scale.min]}
+          </PillOption>
+        ))}
       </div>
     </WizardShell>
   );

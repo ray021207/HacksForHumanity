@@ -1,29 +1,50 @@
 @import "tailwindcss";
 
 :root {
-  /* kin&d color theme (exact brand values) */
-  --color-terracotta: #e26a4c;
+  /* kin&d color theme — exact values from the Clovis design system Figma
+     variables. Token names follow that source exactly (primary-fg,
+     primary-bg, accent, secondary-bg, secondary-fg, tertiary-fg, prup,
+     purp-faded) rather than the previous ink/cream/terracotta naming. */
+  --color-primary-fg: #100212;
+  --color-primary-bg: #fbfaf9;
+  --color-accent: #e26a4c;
+  --color-secondary-bg: #e8e4e3;
+  --color-secondary-fg: rgb(16 2 18 / 64%);
+  --color-tertiary-fg: rgb(16 2 18 / 40%);
+  --color-prup: #ee59c9;
+  --color-purp-faded: rgb(238 89 201 / 24%);
+
+  /* Legacy aliases kept for anything not yet migrated off the old names. */
+  --color-ink: var(--color-primary-fg);
+  --color-cream: var(--color-primary-bg);
+  --color-terracotta: var(--color-accent);
   --color-terracotta-soft: #ec9981;
-  --color-ink: #200524;
-  --color-cream: #f5f3df;
   --color-olive: #d6d3a6;
 
-  --background: var(--color-cream);
-  --foreground: var(--color-ink);
+  --background: var(--color-primary-bg);
+  --foreground: var(--color-primary-fg);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-terracotta: var(--color-terracotta);
-  --color-terracotta-soft: var(--color-terracotta-soft);
+  --color-primary-fg: var(--color-primary-fg);
+  --color-primary-bg: var(--color-primary-bg);
+  --color-accent: var(--color-accent);
+  --color-secondary-bg: var(--color-secondary-bg);
+  --color-secondary-fg: var(--color-secondary-fg);
+  --color-tertiary-fg: var(--color-tertiary-fg);
+  --color-prup: var(--color-prup);
+  --color-purp-faded: var(--color-purp-faded);
   --color-ink: var(--color-ink);
   --color-cream: var(--color-cream);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-soft: var(--color-terracotta-soft);
   --color-olive: var(--color-olive);
-  /* Helvetica Neue is a licensed system font (not available via Google
-     Fonts) — this stack resolves to it on macOS/iOS, falls to Helvetica
-     then Arial elsewhere, which is the standard way to use it on the web. */
-  --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  /* Inter (body/UI) + DM Serif Display (headlines) — self-hosted via
+     next/font in layout.tsx. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif-display), Georgia, "Times New Roman", serif;
 }
 
 body {

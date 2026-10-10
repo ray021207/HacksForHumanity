@@ -163,6 +163,10 @@ export default function Home() {
           profile={profileDisplay}
           onNext={() => goNextAfter("profile")}
           onBack={() => goBack("profile")}
+          onRetake={() => {
+            update({ responses: {}, goals: [] });
+            goTo("personality");
+          }}
           progress={progress}
         />
       );

@@ -1,5 +1,22 @@
 import type { Metadata } from "next";
+import { DM_Serif_Display, Inter } from "next/font/google";
 import "./globals.css";
+
+// next/font self-hosts both faces at build time: no request to
+// fonts.googleapis.com at runtime, and no layout shift while they load.
+const dmSerifDisplay = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-dm-serif-display",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "kin&d",
@@ -10,8 +27,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-cream text-ink">{children}</body>
+    <html lang="en" className={`h-full antialiased ${dmSerifDisplay.variable} ${inter.variable}`}>
+      <body className="min-h-full flex flex-col bg-primary-bg text-primary-fg">{children}</body>
     </html>
   );
 }
