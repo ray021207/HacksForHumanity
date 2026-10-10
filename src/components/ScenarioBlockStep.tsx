@@ -61,7 +61,7 @@ export function ScenarioBlockStep({
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`text-d16 mt-2 underline ${selected === null ? "text-ink" : "text-muted"}`}
+          className={`text-d16 mt-2 underline ${selected === null ? "text-blush-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>

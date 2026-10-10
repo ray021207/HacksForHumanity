@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TermsNotice from "./TermsNotice";
 import { WizardShell } from "./WizardShell";
 import type { ChildInfo } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
@@ -24,7 +25,8 @@ export function FamilyStep({
   familyChildren: ChildInfo[];
   onChange: (children: ChildInfo[]) => void;
   onNext: () => void;
-  onBack: () => void;
+  /** Omitted on the first step of the flow, where there is nowhere to go back to. */
+  onBack?: () => void;
   progress?: number;
 }) {
   const [local, setLocal] = useState<ChildInfo[]>(familyChildren.length ? familyChildren : [newChild()]);
@@ -57,6 +59,8 @@ export function FamilyStep({
       primaryLabel="Continue"
       onPrimary={onNext}
       primaryDisabled={local.length === 0}
+      mascot="ghost"
+      secondary={<TermsNotice />}
     >
       <div className="space-y-2">
         {local.map((child, idx) => (

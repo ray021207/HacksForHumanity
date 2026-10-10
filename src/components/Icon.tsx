@@ -8,9 +8,11 @@ export type IconName =
 	| 'user'
 	| 'search'
 	| 'close'
+	| 'check'
 	| 'people'
 	| 'lotus'
-	| 'speech';
+	| 'speech'
+	| 'lock';
 
 export default function Icon({
 	name,
@@ -57,6 +59,7 @@ export default function Icon({
 				</>
 			)}
 			{name === 'close' && <path d="M6 6l12 12M18 6 6 18" />}
+			{name === 'check' && <path d="m5 12.5 4.5 4.5L19 7" />}
 			{name === 'people' && (
 				<>
 					<circle cx="12" cy="7" r="2.6" />
@@ -69,6 +72,12 @@ export default function Icon({
 				<>
 					<path d="M12 20c-4 0-7-2.6-7-6 0-1 .3-1.9.8-2.7M12 20c4 0 7-2.6 7-6 0-1-.3-1.9-.8-2.7" />
 					<path d="M12 20c-2.4-1.6-3.8-4-3.8-6.6 0-3 1.4-5.6 3.8-7.4 2.4 1.8 3.8 4.4 3.8 7.4 0 2.6-1.4 5-3.8 6.6Z" />
+				</>
+			)}
+			{name === 'lock' && (
+				<>
+					<rect x="4.5" y="10.5" width="15" height="10" rx="3" />
+					<path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" />
 				</>
 			)}
 			{name === 'speech' && (

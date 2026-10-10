@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Start a plan — Kin&d',
+	title: 'Start a plan · Kin&d',
 	description:
 		'Answer a few questions about your family, describe what happened, and get conversation starters for the moment you are in.'
 };

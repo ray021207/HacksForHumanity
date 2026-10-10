@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Footer from '@/components/Footer';
+import LegalDisclaimer from '@/components/LegalDisclaimer';
 import Nav from '@/components/Nav';
-import { SearchProvider } from '@/components/SearchContext';
 
 // DM Serif Text, downloaded from Google Fonts and committed to src/fonts, so
 // the build needs no network for fonts at all.
@@ -32,26 +32,25 @@ const dmSerifText = localFont({
 // The body sans is deliberately NOT a webfont — see the note in globals.css.
 
 export const metadata: Metadata = {
-	title: 'Kin&d — know what to say when it matters',
+	title: 'Kin&d: know what to say when it matters',
 	description:
 		'Personalized guidance for the conversations you want to have with your child.'
 };
 
 /**
  * One shell for the whole product: the landing page, the plan wizard and the
- * partner pages all sit inside the same header, footer and search store. The
- * wizard used to be a separate app with its own palette; it now inherits these
- * tokens like every other route.
+ * partner pages all sit inside the same header and footer. The wizard used to
+ * be a separate app with its own palette; it now inherits these tokens like
+ * every other route.
  */
 export default function RootLayout({ children }: LayoutProps<'/'>) {
 	return (
 		<html lang="en" className={`${dmSerifText.variable} h-full`}>
 			<body className="flex min-h-full flex-col antialiased">
-				<SearchProvider>
-					<Nav />
-					{children}
-					<Footer />
-				</SearchProvider>
+				<Nav />
+				{children}
+				<Footer />
+				<LegalDisclaimer />
 			</body>
 		</html>
 	);

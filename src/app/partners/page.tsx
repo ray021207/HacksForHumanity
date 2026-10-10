@@ -43,7 +43,7 @@ const GETS: { title: string; copy: string }[] = [
 ];
 
 export const metadata: Metadata = {
-	title: 'Partner program — Kin&d',
+	title: 'Partner program · Kin&d',
 	description:
 		'Kin&d partners with therapy offices, school counselors and parent coaches to support families between sessions.'
 };

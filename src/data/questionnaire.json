@@ -76,7 +76,7 @@
     {
       "id": "scenarios",
       "title": "A few quick scenarios",
-      "description": "Pick the response closest to what you'd actually do. There's no right answer — these just help tune the cards you get.",
+      "description": "Pick the response closest to what you'd actually do. There's no right answer. These just help tune the cards you get.",
       "type": "scenario",
       "source": "Original situational-judgment items written for this app, inspired by Baumrind's three parenting styles, self-determination theory, Gottman-style emotion coaching, and parenting self-efficacy constructs (e.g. SEPA). Not copied from the PSDQ, P-PASS, ERPS, or any published scale. Chosen over a longer Likert battery specifically to keep the questionnaire short.",
       "status": "draft, needs owner review",
@@ -88,7 +88,7 @@
           "text_adult": "Your adult child misses something they promised to do, with no heads-up. When you next talk, you...",
           "options": [
             { "id": "a", "label": "Calmly state the agreed limit and follow through on what you said would happen.", "scores": { "structure": 5, "pressure": 2 } },
-            { "id": "b", "label": "Let it go without saying much — bringing it up feels like a hassle.", "scores": { "structure": 1, "pressure": 1 } },
+            { "id": "b", "label": "Let it go without saying much; bringing it up feels like a hassle.", "scores": { "structure": 1, "pressure": 1 } },
             { "id": "c", "label": "Raise your voice and hand down a consequence on the spot.", "scores": { "structure": 3, "pressure": 5 } },
             { "id": "d", "label": "Ask what happened before deciding anything.", "scores": { "structure": 4, "pressure": 1 } }
           ]
@@ -172,7 +172,7 @@
           "text_adult": "Your adult child makes a life decision you wouldn't have made yourself. You...",
           "options": [
             { "id": "a", "label": "Talk it through, explain your reasoning, and look for a middle ground.", "scores": { "structure": 4, "autonomy_support": 4 } },
-            { "id": "b", "label": "Say no without much explanation — the rule is the rule.", "scores": { "structure": 5, "autonomy_support": 1 } },
+            { "id": "b", "label": "Say no without much explanation. The rule is the rule.", "scores": { "structure": 5, "autonomy_support": 1 } },
             { "id": "c", "label": "Go along with whatever they want to avoid a conflict.", "scores": { "structure": 1, "autonomy_support": 3 } },
             { "id": "d", "label": "Voice your concern once, then support their choice either way.", "scores": { "structure": 3, "autonomy_support": 5 } }
           ]

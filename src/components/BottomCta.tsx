@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Icon from './Icon';
+import { MascotTrio } from './Mascot';
 import { PLAN_HREF } from '@/lib/app-url';
 
 /**
@@ -31,22 +32,24 @@ export default function BottomCta() {
 			</div>
 
 			<div className="gap-s3 py-s2 lg:py-s1 flex flex-col items-center px-3 text-center lg:px-6">
+				<MascotTrio size={132} />
+
 				<h2 className="display text-d32 sm:text-d40 lg:text-d56 max-w-[20ch]">
-					Tell us what&rsquo;s going on
+					You don&rsquo;t have to do this alone
 				</h2>
 				<p className="text-muted text-d16 max-w-[44ch]">
-					We&rsquo;ll help you find the first words.
+					Tell us what happened and we&rsquo;ll help you find the first words.
 				</p>
 
+				{/* Ink, 240 wide: the same pill as the hero and the wizard, so the
+				    one thing you press looks the same the whole way through. */}
 				<Link
 					href={PLAN_HREF}
-					className="bg-ink rounded-pill text-d16 shadow-bar flex items-center gap-1 px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"
+					className="bg-ink rounded-pill text-d16 shadow-bar flex w-full max-w-[240px] items-center justify-center gap-1 px-4 py-2 font-medium text-white transition-[opacity,scale] hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
 				>
 					<Icon name="arrow" size={18} />
 					Get started
 				</Link>
-
-				<p className="text-muted text-d16">Not therapy. Just a gentle place to start.</p>
 			</div>
 		</section>
 	);

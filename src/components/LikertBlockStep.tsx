@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WizardShell } from "./WizardShell";
+import { WizardShell, PillChip } from "./WizardShell";
 import type { RawResponses } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
@@ -64,25 +64,16 @@ export function LikertBlockStep({
 
         <div className="mt-3 flex flex-wrap gap-1">
           {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
-            <button
-              key={n}
-              type="button"
-              onClick={() => onChange(item.id, n)}
-              className={`rounded-pill text-d16 border px-3 py-1 transition-colors ${
-                value === n
-                  ? "border-ink bg-ink text-white"
-                  : "border-line bg-surface text-ink hover:border-ink"
-              }`}
-            >
+            <PillChip key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
               {scale.labels[n - scale.min]}
-            </button>
+            </PillChip>
           ))}
         </div>
 
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`text-d16 mt-2 underline ${value === null ? "text-ink" : "text-muted"}`}
+          className={`text-d16 mt-2 underline ${value === null ? "text-blush-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>

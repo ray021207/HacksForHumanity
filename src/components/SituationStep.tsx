@@ -34,8 +34,9 @@ export function SituationStep({
 
   return (
     <WizardShell
+      mascot="star"
       title="What's going on?"
-      description="Type or speak — nothing here is stored after you leave this page."
+      description="Type or speak. Nothing here is stored after you leave this page."
       onBack={onBack}
       primaryLabel={isSubmitting ? "Getting cards..." : "Get conversation starters"}
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
@@ -65,7 +66,7 @@ export function SituationStep({
             rows={5}
             value={situationText}
             onChange={(e) => setSituationText(e.target.value)}
-            placeholder="Type or speak — e.g. we argued about curfew tonight and it got heated."
+            placeholder="Type or speak, e.g. we argued about curfew tonight and it got heated."
           />
           <VoiceInputButton
             onTranscript={(text) =>

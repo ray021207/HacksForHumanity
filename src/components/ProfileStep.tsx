@@ -14,8 +14,9 @@ export function ProfileStep({
 }) {
   return (
     <WizardShell
+      mascot="block"
       title="A quick read on your tendencies"
-      description="Here's what your answers suggest about how you tend to show up in hard conversations. We use this to tune the tone and techniques in your cards — never to label or diagnose you. It's based on a short, original questionnaire (not a validated clinical instrument), so take it as a loose signal, not a verdict. You can retake it anytime, and it never leaves your browser."
+      description="Here's what your answers suggest about how you tend to show up in hard conversations. We use this to tune the tone and techniques in your cards, never to label or diagnose you. It's based on a short, original questionnaire (not a validated clinical instrument), so take it as a loose signal, not a verdict. You can retake it anytime, and it never leaves your browser."
       onBack={onBack}
       progress={progress}
       primaryLabel="Continue"

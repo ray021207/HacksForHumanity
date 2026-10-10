@@ -117,6 +117,13 @@
 	--animate-fade-in: fade-in 160ms ease-out;
 	--animate-rise-in: rise-in 220ms cubic-bezier(0.33, 1, 0.68, 1);
 
+	/* The characters' idle drift. Deliberately long and small: it should read
+	   as "alive" out of the corner of your eye, not as something asking to be
+	   looked at. Distances are in SVG user units, so they scale with whatever
+	   size the character is drawn at. The reduced-motion rule below freezes
+	   it at the first frame, which is the rest pose. */
+	--animate-drift: drift 7.5s ease-in-out infinite;
+
 	@keyframes pop-in {
 		from {
 			opacity: 0;
@@ -140,11 +147,121 @@
 			transform: translateY(24px);
 		}
 	}
+	@keyframes drift {
+		0%,
+		100% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+		30% {
+			transform: translate(1.5px, -4px) rotate(1.6deg);
+		}
+		60% {
+			transform: translate(-1.5px, -2px) rotate(-1.4deg);
+		}
+	}
+
+	/* ---- the welcome stage ----------------------------------------------
+	   Loops, not entrances: these run for as long as the first screen is up.
+
+	   The three characters each get their own period and their own idea of
+	   what dancing is, and the three periods share no small divisor, so the
+	   trio keeps drifting in and out of phase instead of pulsing as one unit.
+	   Each contact shadow runs the same shape on its character's period —
+	   a character at the top of its hop is over the narrow, faint shadow,
+	   which is what sells the hop as height rather than as a slide. */
+	--animate-dance-bob: dance-bob 2600ms ease-in-out infinite;
+	--animate-dance-sway: dance-sway 3100ms ease-in-out infinite;
+	--animate-dance-tip: dance-tip 2200ms ease-in-out infinite;
+	--animate-dance-shadow: dance-shadow 2600ms ease-in-out infinite;
+	--animate-dance-shadow-slow: dance-shadow 3100ms ease-in-out infinite;
+	--animate-dance-shadow-fast: dance-shadow 2200ms ease-in-out infinite;
+
+	/* The mesh ellipses behind the glow, each started at a different negative
+	   delay so they are already mid-drift on the first paint. */
+	--animate-glow-drift: glow-drift 11s ease-in-out infinite;
+
+	/* One band crossing the glow, then four fifths of the period parked
+	   off-screen — a sweep you notice once rather than a strobe. */
+	--animate-shimmer: shimmer 5600ms cubic-bezier(0.45, 0, 0.55, 1) infinite;
+
+	@keyframes dance-bob {
+		0%,
+		100% {
+			transform: translateY(5%) rotate(-4deg);
+		}
+		50% {
+			transform: translateY(-11%) rotate(4deg);
+		}
+	}
+	@keyframes dance-sway {
+		0%,
+		100% {
+			transform: translate(-5%, 2%) rotate(6deg);
+		}
+		50% {
+			transform: translate(5%, -10%) rotate(-6deg);
+		}
+	}
+	@keyframes dance-tip {
+		0%,
+		100% {
+			transform: translateY(3%) rotate(9deg) scale(0.97);
+		}
+		50% {
+			transform: translateY(-12%) rotate(-9deg) scale(1.03);
+		}
+	}
+	@keyframes dance-shadow {
+		0%,
+		100% {
+			transform: scaleX(1);
+			opacity: 1;
+		}
+		50% {
+			transform: scaleX(0.7);
+			opacity: 0.45;
+		}
+	}
+	@keyframes glow-drift {
+		0%,
+		100% {
+			transform: translate3d(0, 0, 0) scale(1);
+		}
+		33% {
+			transform: translate3d(4%, 3%, 0) scale(1.09);
+		}
+		66% {
+			transform: translate3d(-3%, -2%, 0) scale(0.94);
+		}
+	}
+	@keyframes shimmer {
+		0% {
+			transform: translateX(-120%) skewX(-12deg);
+		}
+		55%,
+		100% {
+			transform: translateX(320%) skewX(-12deg);
+		}
+	}
 }
 
 @layer base {
+	:root {
+		/* Height of the compact header the wizard and the partner pages sit
+		   under: a 40px account button (size-5) between two 16px rails (py-2).
+		   The tokens fix it at 72px — no font metric is involved, so a screen
+		   can subtract it from the viewport and land exactly on the fold. The
+		   safe-area inset is folded in because the header pads itself by the
+		   same amount; it resolves to 0px wherever there is no inset. */
+		--nav-h: calc(72px + env(safe-area-inset-top, 0px));
+	}
+
 	html {
 		background: var(--color-canvas);
+		/* Footer and nav links are all in-page anchors; the sections they
+		   point at carry a matching scroll-mt so they don't land under the
+		   sticky header. */
+		scroll-behavior: smooth;
 	}
 
 	body {
@@ -155,10 +272,19 @@
 		line-height: 1.5;
 	}
 
-	/* The sheet takes over the viewport on mobile; this stops the page behind
-	   it from scrolling under the blur. */
-	body[data-locked='true'] {
-		overflow: hidden;
+	/* Selection is off page-wide: this reads as a product, not a document,
+	   and a stray drag highlighting half the hero is the fastest way to
+	   break that. Anything you can type into opts back in below, because
+	   not being able to select what you just typed is not a tradeoff worth
+	   making. */
+	body {
+		-webkit-user-select: none;
+		user-select: none;
+	}
+
+	:where(input, textarea, select, [contenteditable='true']) {
+		-webkit-user-select: text;
+		user-select: text;
 	}
 
 	:where(button, a, input, textarea, [tabindex]):focus-visible {
@@ -167,11 +293,45 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
 		*,
 		*::before,
 		*::after {
 			animation-duration: 0.01ms !important;
 			transition-duration: 0.01ms !important;
+		}
+	}
+
+	/* ---- scroll reveal ---------------------------------------------------
+	   Sections start a little low and transparent and settle as they come
+	   into view; Reveal.tsx flips data-shown once per element and then stops
+	   observing. The resting state lives in the stylesheet rather than in a
+	   class React adds at hydration, so the section can't paint in place and
+	   then jump back to animate. */
+	.reveal {
+		opacity: 0;
+		transform: translateY(24px);
+		transition:
+			opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+			transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+	}
+
+	.reveal[data-shown='true'] {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Without JS nothing ever flips data-shown, so the page would be blank.
+	   Under reduced motion skipping the entrance IS the correct behaviour,
+	   and the global rule above only shortens it. */
+	@media (scripting: none), (prefers-reduced-motion: reduce) {
+		.reveal {
+			opacity: 1;
+			transform: none;
+			transition: none;
 		}
 	}
 }
