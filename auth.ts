@@ -20,8 +20,9 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
-    // Neon's HTTP driver doesn't support multi-statement transactions.
-    transaction: false,
+    // postgres.js (unlike Neon's HTTP driver) supports real multi-statement
+    // transactions, so let Better Auth use them for atomic operations.
+    transaction: true,
   }),
   socialProviders: {
     google: {
@@ -32,6 +33,13 @@ export const auth = betterAuth({
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url }) => {
+        if (!process.env.RESEND_API_KEY) {
+          // Local-dev convenience only: no email service configured, so
+          // print the sign-in link instead of silently failing. Never
+          // reached in production, where RESEND_API_KEY is always set.
+          console.log(`\n[kin&d] Magic sign-in link for ${email}:\n${url}\n`);
+          return;
+        }
         await getResend().emails.send({
           from: process.env.EMAIL_FROM ?? "kin&d <noreply@example.com>",
           to: email,

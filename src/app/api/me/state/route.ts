@@ -78,14 +78,18 @@ export async function PATCH(req: NextRequest) {
   // The server assigns new row ids on every replace, so the response hands
   // them back in order — the client must adopt these as the new ChildInfo
   // ids, since a generation's childId FK only resolves against these.
+  // Wrapped in a transaction so a crash between delete and insert can't
+  // leave a user with zero children recorded.
   let insertedChildren: ChildInfo[] = [];
   if (body.children) {
-    await db.delete(children).where(eq(children.userId, userId));
-    if (body.children.length > 0) {
-      const rows = await db
+    const bodyChildren = body.children;
+    insertedChildren = await db.transaction(async (tx) => {
+      await tx.delete(children).where(eq(children.userId, userId));
+      if (bodyChildren.length === 0) return [];
+      const rows = await tx
         .insert(children)
         .values(
-          body.children.map((c) => ({
+          bodyChildren.map((c) => ({
             userId,
             relationshipType: c.relationshipType,
             relationshipTypeOther: c.relationshipTypeOther,
@@ -95,7 +99,7 @@ export async function PATCH(req: NextRequest) {
           }))
         )
         .returning();
-      insertedChildren = rows.map(
+      return rows.map(
         (c): ChildInfo => ({
           id: c.id,
           relationshipType: c.relationshipType as ChildInfo["relationshipType"],
@@ -105,7 +109,7 @@ export async function PATCH(req: NextRequest) {
           nickname: c.nickname ?? undefined,
         })
       );
-    }
+    });
   }
 
   return NextResponse.json({ ok: true, children: insertedChildren });
