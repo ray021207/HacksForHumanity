@@ -5,7 +5,7 @@ import questionnaire from "@/data/questionnaire.json";
 
 const scenarioBlock = (questionnaire.blocks as any[]).find((b) => b.id === "scenarios");
 
-/** One scenario per screen, same "Question N" pattern as the personality block. */
+/** One scenario per screen; the scenario prompt itself is the screen title. */
 export function ScenarioBlockStep({
   responses,
   isAdultChild,
@@ -39,7 +39,7 @@ export function ScenarioBlockStep({
 
   return (
     <WizardShell
-      title={`Question ${itemIndex + 1}`}
+      title={prompt}
       description={`${scenarioBlock.title} · ${itemIndex + 1} of ${scenarioBlock.items.length}`}
       onBack={goBack}
       progress={progress}
@@ -49,9 +49,7 @@ export function ScenarioBlockStep({
       primaryDisabled={!isAnswered}
     >
       <div>
-        <p className="text-lg font-medium text-ink">{prompt}</p>
-
-        <div className="mt-6 space-y-2">
+        <div className="space-y-2">
           {item.options.map((opt: any) => (
             <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
               {opt.label}

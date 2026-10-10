@@ -9,10 +9,10 @@ function itemText(item: any, isAdult: boolean): string {
 }
 
 /**
- * One question per screen, each with its own back/continue, matching the
- * "Question 1 / Question 2 / ..." onboarding pattern. Item count comes
- * from src/data/questionnaire.json (6 TIPI items as of this build — a
- * trimmed 3-trait subset, see that file's "source" note).
+ * One question per screen, each with its own back/continue. The question
+ * text itself is the screen title. Item count comes from
+ * src/data/questionnaire.json (6 TIPI items as of this build — a trimmed
+ * 3-trait subset, see that file's "source" note).
  */
 export function LikertBlockStep({
   blockId,
@@ -51,7 +51,7 @@ export function LikertBlockStep({
 
   return (
     <WizardShell
-      title={`Question ${itemIndex + 1}`}
+      title={itemText(item, isAdultChild)}
       description={`${block.title} · ${itemIndex + 1} of ${block.items.length}`}
       onBack={goBack}
       progress={progress}
@@ -61,9 +61,7 @@ export function LikertBlockStep({
       primaryDisabled={!isAnswered}
     >
       <div>
-        <p className="text-lg font-medium text-ink">{itemText(item, isAdultChild)}</p>
-
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
             <button
               key={n}
