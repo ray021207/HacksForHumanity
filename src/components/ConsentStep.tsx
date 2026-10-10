@@ -9,15 +9,9 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-8 pb-8">
         <span className="text-center font-serif text-xl tracking-tight text-primary-fg">kin&amp;d</span>
 
-        <div className="mt-4 flex justify-center">
-          <span className="rounded-full bg-secondary-bg px-3 py-1 text-xs font-medium text-secondary-fg">
-            01 &nbsp;Understand the moment
-          </span>
-        </div>
-
         <div className="mt-8 flex-1">
           <h1 className="text-center font-serif text-3xl leading-tight text-primary-fg">
-            &ldquo;She used to tell me everything. Now she goes straight to her room.&rdquo;
+            &ldquo;Conversations can be hard. Starting them doesn&apos;t have to be.&rdquo;
           </h1>
           <p className="mt-4 text-center text-sm text-secondary-fg">
             Tell us what&apos;s going on. We&apos;ll help you find the first words.
