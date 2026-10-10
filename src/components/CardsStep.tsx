@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { WizardShell } from "./WizardShell";
 import type { CardsOutput } from "@/lib/generation";
 
@@ -17,6 +17,12 @@ export function CardsStep({
   onStartOver: () => void;
 }) {
   const [thumbs, setThumbs] = useState<Record<number, "up" | "down">>({});
+  // The pushback section stays folded away until it's asked for. Handing
+  // someone the words to open with and the ways it could go wrong in the same
+  // breath buries the part they came for; this way the starters get read
+  // first, and the primary button turns into the next thing to do.
+  const [reactionsRevealed, setReactionsRevealed] = useState(false);
+  const reactionsRef = useRef<HTMLDivElement>(null);
 
   async function sendThumb(idx: number, technique: string, value: "up" | "down") {
     setThumbs((t) => ({ ...t, [idx]: value }));
@@ -32,12 +38,22 @@ export function CardsStep({
   }
 
   const isRed = result.risk_tier === "red";
+  const reactions = result.anticipated_reactions ?? [];
+  // Nothing to reveal means the button has only one job to offer.
+  const canReveal = !isRed && reactions.length > 0 && !reactionsRevealed;
 
   return (
     <WizardShell
       title={isRed ? "Please get help right now" : "Here's what you could say"}
-      primaryLabel="Describe another situation"
-      onPrimary={onStartOver}
+      primaryLabel={canReveal ? "Prepare for their response" : "Describe another situation"}
+      onPrimary={() => {
+        if (!canReveal) {
+          onStartOver();
+          return;
+        }
+        setReactionsRevealed(true);
+        reactionsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }}
     >
       <div className="space-y-3">
         <p className="text-muted text-d16 italic">{result.disclosure}</p>
@@ -98,11 +114,14 @@ export function CardsStep({
             yours, which is the whole point of the pair — reading a line you
             dread next to a line you could actually say is what makes it
             rehearsable rather than just discouraging. */}
-        {!isRed && result.anticipated_reactions && result.anticipated_reactions.length > 0 && (
-          <div>
-            <h3 className="text-d16 font-semibold">If they push back</h3>
-            <div className="mt-1 space-y-1">
-              {result.anticipated_reactions.map((reaction, idx) => (
+        {reactionsRevealed && reactions.length > 0 && (
+          <div ref={reactionsRef}>
+            <h3 className="text-d16 font-semibold">Prepare for their response</h3>
+            <p className="text-muted text-d16 mt-1">
+              A first word rarely wraps things up. Here are a few ways this could go.
+            </p>
+            <div className="mt-2 space-y-1">
+              {reactions.map((reaction, idx) => (
                 <div key={idx} className="border-line bg-field rounded-card border p-3">
                   <p className="text-d16 font-medium">
                     If they say: &ldquo;{reaction.reaction}&rdquo;
