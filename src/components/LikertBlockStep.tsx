@@ -57,6 +57,7 @@ export function LikertBlockStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={goNext}
+      accountLink
       primaryDisabled={!isAnswered}
     >
       <div>

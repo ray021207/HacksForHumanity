@@ -234,7 +234,7 @@ export default function Home() {
       ) : null;
 
     case "upgrade":
-      return <UpgradePrompt />;
+      return <UpgradePrompt onBack={() => goTo("situation")} />;
 
     case "personality":
       return (

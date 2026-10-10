@@ -78,5 +78,10 @@
     "give_feedback": "Favor validation before the feedback itself, and open_question to check how it landed. Avoid anything that reads as a verdict on the person rather than a specific action.",
     "celebrate": "Keep it short and specific to what's being celebrated. Favor validation; a boundary or autonomy_offer starter rarely belongs here."
   },
-  "selfCriticalParentGuidance": "When the parent's confidence/load score is low, no starter or 'why' line may imply the parent caused the problem or should feel guilty. Lead the 'before_you_start' line with reassurance, not a caveat."
+  "selfCriticalParentGuidance": "When the parent's confidence/load score is low, no starter or 'why' line may imply the parent caused the problem or should feel guilty. Lead the 'before_you_start' line with reassurance, not a caveat.",
+  "anticipatedReactionsGuidance": {
+    "_status": "draft, needs owner review",
+    "_source": "Not copied from any published instrument. The three reaction archetypes used as a reference point (shutdown/stonewalling, deflection, pushback) are loosely inspired by Gottman's 'Four Horsemen' communication-breakdown research (criticism, contempt, defensiveness, stonewalling) and by Gottman-style emotion-coaching guidance on responding to a child who withdraws rather than engages. This is an original, best-effort adaptation for rehearsal purposes, not a validated clinical framework.",
+    "note": "Cover a range across the 2-3 reactions returned (e.g. one shutdown/silence, one deflection, one verbal pushback) rather than three variations of the same reaction type, so the parent rehearses more than one kind of moment."
+  }
 }

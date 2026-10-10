@@ -38,6 +38,7 @@ export function CardsStep({
       title={isRed ? "Please get help right now" : "Here's what you could say"}
       primaryLabel="Describe another situation"
       onPrimary={onStartOver}
+      accountLink
     >
       <div className="space-y-5">
         <p className="text-xs italic text-ink/50">{result.disclosure}</p>
@@ -90,6 +91,23 @@ export function CardsStep({
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {!isRed && result.anticipated_reactions && result.anticipated_reactions.length > 0 && (
+          <div>
+            <h2 className="text-sm font-semibold text-ink">Prepare for their response</h2>
+            <p className="mt-1 text-xs text-ink/50">
+              A first word rarely wraps things up — here are a few ways this could go.
+            </p>
+            <div className="mt-3 space-y-3">
+              {result.anticipated_reactions.map((r, idx) => (
+                <div key={idx} className="rounded-2xl border border-ink/10 bg-white/60 p-4">
+                  <p className="text-sm font-medium text-ink">If they say: {r.reaction}</p>
+                  <p className="mt-1 text-xs text-ink/60">{r.how_to_respond}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

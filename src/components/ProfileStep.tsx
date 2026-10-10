@@ -20,6 +20,7 @@ export function ProfileStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={onNext}
+      accountLink
     >
       <div className="space-y-4">
         <div>

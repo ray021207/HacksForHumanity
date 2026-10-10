@@ -22,6 +22,10 @@ function validCards(overrides: Partial<CardsOutput> = {}): CardsOutput {
       { text: "I hear that this feels unfair to you.", technique: "validation", why: "Names the feeling before the facts.", avoid: "Don't minimize it." },
       { text: "Let's figure out a curfew that works for both of us.", technique: "autonomy_offer", why: "Signals shared ownership.", avoid: "Don't dictate the outcome." },
     ],
+    anticipated_reactions: [
+      { reaction: "\"Whatever, I don't care.\"", how_to_respond: "That's okay — we can leave it here for now and pick it back up later." },
+      { reaction: "They go quiet and stare at their phone.", how_to_respond: "Give it a beat. You can say, \"Take your time, I'm not going anywhere.\"" },
+    ],
     setting_tip: "After dinner, when neither of you is rushing out the door.",
     ...overrides,
   };
@@ -228,5 +232,54 @@ describe("fallbackCard", () => {
     const card = fallbackCard("green");
     expect(validateSchema(card).valid).toBe(true);
     expect(lintBannedPatterns(card)).toEqual([]);
+  });
+});
+
+describe("anticipated_reactions", () => {
+  it("accepts 2 to 3 well-formed reactions", () => {
+    expect(validateSchema(validCards()).valid).toBe(true);
+  });
+
+  it("rejects fewer than 2 reactions", () => {
+    const cards = validCards({ anticipated_reactions: [validCards().anticipated_reactions[0]] });
+    const result = validateSchema(cards);
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.includes("2 to 3"))).toBe(true);
+  });
+
+  it("rejects more than 3 reactions", () => {
+    const base = validCards().anticipated_reactions[0];
+    const cards = validCards({ anticipated_reactions: [base, base, base, base] });
+    const result = validateSchema(cards);
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.includes("2 to 3"))).toBe(true);
+  });
+
+  it("rejects a reaction missing how_to_respond", () => {
+    const cards: any = validCards();
+    delete cards.anticipated_reactions[0].how_to_respond;
+    const result = validateSchema(cards);
+    expect(result.valid).toBe(false);
+  });
+
+  it("does not lint the 'reaction' field, since it quotes the child, not the parent", () => {
+    const cards = validCards({
+      anticipated_reactions: [
+        { reaction: "\"You always do this, you never listen to me.\"", how_to_respond: "I hear you." },
+        { reaction: "Silence.", how_to_respond: "That's okay." },
+      ],
+    });
+    expect(lintBannedPatterns(cards)).toEqual([]);
+  });
+
+  it("does lint the 'how_to_respond' field, since that's what the parent would say", () => {
+    const cards = validCards({
+      anticipated_reactions: [
+        { reaction: "They shrug.", how_to_respond: "You must stop acting like this." },
+        { reaction: "Silence.", how_to_respond: "That's okay." },
+      ],
+    });
+    const issues = lintBannedPatterns(cards);
+    expect(issues.some((i) => i.field.includes("how_to_respond") && i.category === "command")).toBe(true);
   });
 });

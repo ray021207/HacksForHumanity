@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { getAuthSession } from "@/lib/getAuthSession";
 import { db } from "@/db";
 import { subscriptions, usageCounters } from "@/db/schema";
 import { FREE_LIMIT } from "@/lib/billingConstants";
 import { BillingActions } from "@/components/BillingActions";
+import { SignOutButton } from "@/components/SignOutButton";
 
 // Reads the session on every request (via getAuthSession -> headers()), so
 // it can't be part of the static shell under Cache Components. This is the
@@ -33,7 +35,11 @@ export default async function BillingPage() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-cream">
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8">
-        <h1 className="text-3xl font-bold italic leading-tight text-ink">Your plan</h1>
+        <Link href="/app" className="text-xs text-ink/50 underline">
+          ‹ Back to app
+        </Link>
+
+        <h1 className="mt-4 text-3xl font-bold italic leading-tight text-ink">Your plan</h1>
 
         {isSubscribed ? (
           <p className="mt-4 text-sm text-ink/60">
@@ -47,6 +53,7 @@ export default async function BillingPage() {
         )}
 
         <BillingActions isSubscribed={isSubscribed} />
+        <SignOutButton />
       </div>
     </div>
   );

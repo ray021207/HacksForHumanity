@@ -9,6 +9,7 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
       title=""
       primaryLabel="Start"
       onPrimary={onAccept}
+      accountLink
       secondary={
         <p className="text-center text-xs text-ink/50">
           By clicking Start you agree to the{" "}

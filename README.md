@@ -209,14 +209,27 @@ until a clinician has reviewed the set itself.
 One structured call per request (`src/lib/generation.ts`): profile scores go in as numbers plus
 plain one-line tendencies (`scoresToTendencyLines`) — **never** as a type label — along with the
 age band, situation, goal, and the relevant slice of `playbook.json`. The model returns strict
-JSON: `{risk_tier, frame, before_you_start, starters: [{text, technique, why, avoid}], setting_tip}`,
-3 to 5 starters, each tagged with exactly one of `validation | open_question | autonomy_offer |
-repair | boundary`.
+JSON: `{risk_tier, frame, before_you_start, starters: [{text, technique, why, avoid}],
+anticipated_reactions: [{reaction, how_to_respond}], setting_tip}`, 3 to 5 starters, each tagged
+with exactly one of `validation | open_question | autonomy_offer | repair | boundary`, plus 2 to 3
+`anticipated_reactions` — this is the "prepare for their response" feature: realistic ways the
+other person might react to a first word that doesn't land cleanly (a shutdown, a deflection, a
+pushback like "you always do this"), each paired with one line on how the parent could meet it.
+This is still rehearsal, not chat: the reactions are prepared in the same one-shot call, not a
+live back-and-forth, and nothing the parent types after the cards are shown ever reaches the
+model. The reaction archetypes are loosely inspired by Gottman's "Four Horsemen" communication-
+breakdown research (criticism, contempt, defensiveness, stonewalling) and Gottman-style emotion-
+coaching guidance on responding to withdrawal — not copied from any published instrument; see
+`anticipatedReactionsGuidance` in `src/data/playbook.json` for the sourcing note in full.
 
-After generation, `validateSchema()` checks the shape and `lintBannedPatterns()` scans every field
-for commands, threats, guilt, withdrawal-of-affection language, and diagnosis/pop-psych labeling.
-A failure retries once with the same call; a second failure returns `fallbackCard()`, a fixed,
-pre-written card that is itself schema-valid and lint-clean.
+After generation, `validateSchema()` checks the shape and `lintBannedPatterns()` scans every
+parent-facing field for commands, threats, guilt, withdrawal-of-affection language, and
+diagnosis/pop-psych labeling. The `avoid` field and each reaction's `reaction` field are
+deliberately exempt from the lint — `avoid` exists to name a bad phrase as a caution, and
+`reaction` quotes the *other person*, not the parent, so both legitimately contain
+banned-pattern-shaped language on purpose. A failure retries once with the same call; a second
+failure returns `fallbackCard()`, a fixed, pre-written card that is itself schema-valid and
+lint-clean.
 
 `generateCards()` and `buildGenerationPrompt()` still accept an optional `refinement`
 ("shorter" / "softer" / "different angle") that re-runs the same one-shot call with a changed
@@ -228,7 +241,7 @@ Either way, nothing the parent types after the cards are shown ever reaches the 
 
 ## Tests
 
-`npm test` runs 46 Vitest tests covering:
+`npm test` runs 60 Vitest tests covering:
 
 - `src/lib/scoring.test.ts` — reverse keying, the hand-checkable TIPI example from the spec
   (Extraversion items scoring 5 and 2 → (5 + 6) / 2 = 5.5), the scenario-block scorer (averaging
@@ -239,15 +252,16 @@ Either way, nothing the parent types after the cards are shown ever reaches the 
   tier.
 - `src/lib/generation.test.ts` — schema validation, every banned-pattern category (including that
   benign "you will" phrasing and the `avoid` field's cautionary examples are correctly *not*
-  flagged), the retry-once-then-fallback flow, and that the fallback card itself passes both
-  checks.
+  flagged), relationship-type framing per relationship, `anticipated_reactions` count validation
+  (2 to 3 items) and that its `reaction` field is exempt from the lint while `how_to_respond` is
+  not, the retry-once-then-fallback flow, and that the fallback card itself passes both checks.
 
 ## Done criteria (numbers from this build)
 
 All of these were run against the real Anthropic API (model: see `.env.local`) at build time; see
 the commands above to re-run them.
 
-- **All Vitest tests pass**: 46/46.
+- **All Vitest tests pass**: 60/60.
 - **Safety script, red-tier recall and false-positive rate** on the 40-case starter set
   (`npm run safety:eval`): **100% red-tier recall (13/13)**, **0% false-positive rate (0/40)**.
   This is a small, hand-written, non-clinician-reviewed set — treat this as a sanity check that

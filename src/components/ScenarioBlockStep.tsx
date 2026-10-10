@@ -45,6 +45,7 @@ export function ScenarioBlockStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={goNext}
+      accountLink
       primaryDisabled={!isAnswered}
     >
       <div>

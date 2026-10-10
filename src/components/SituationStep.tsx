@@ -40,6 +40,7 @@ export function SituationStep({
       primaryLabel={isSubmitting ? "Getting cards..." : "Get conversation starters"}
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
       primaryDisabled={!canSubmit || isSubmitting}
+      accountLink
     >
       <div className="space-y-5">
         {familyChildren.length > 1 && (
