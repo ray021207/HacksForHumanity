@@ -49,6 +49,18 @@ cp .env.example .env.local   # then fill in ANTHROPIC_API_KEY
 | `npm run lint:pass-rate` | Runs generation (no retry) against the 50 scenarios in `tests/scenario-set.json` and reports the first-try lint pass rate. Needs `ANTHROPIC_API_KEY`. |
 | `npm run eval:profile` | Generates cards twice for each of the 50 scenarios (once with a distinctive synthetic profile, once with a neutral/generic one) and writes a paired CSV to `logs/profile-vs-generic.csv` for blind rating. Needs `ANTHROPIC_API_KEY`. |
 
+## Routes
+
+One Next app serves everything. The landing page is the root route and hands
+off to the wizard at `/plan`; there is no second deployment and no subdomain.
+See DEPLOYMENT.md.
+
+| Route | What it is |
+| --- | --- |
+| `/` | Landing page |
+| `/plan` | The questionnaire and cards |
+| `/partners` | Partner program for therapy offices |
+
 ## How it's organized
 
 ```
@@ -65,7 +77,12 @@ src/lib/logging.ts            Append-only counts-only log
 src/app/api/cards/generate    The one endpoint: safety gate -> (generation + validator) -> cards
 src/app/api/feedback/thumb    Logs a thumbs up/down (counts only)
 src/app/api/voice/transcribe  GET: is voice input configured. POST: transcribes one audio clip, nothing persisted
-src/app/page.tsx              The wizard: consent -> family -> questionnaire -> profile -> situation -> cards
+src/app/page.tsx              The landing page: hero, how it works, mission, FAQ, closing CTA
+src/app/plan/page.tsx         The wizard: consent -> family -> questionnaire -> profile -> situation -> cards
+src/app/partners/page.tsx     Partner program page for therapy offices and school counselors
+src/components/               Shared UI: the landing sections, the search bar, and the wizard steps
+src/hooks/                    Scroll, keyboard and focus hooks used by the header and landing sections
+src/fonts/                    DM Serif Text (vendored woff2) — the display face, self-hosted
 scripts/                      CLI scoring, safety eval, lint-pass-rate, profile-vs-generic eval
 tests/                        safety-set.json (40 labelled situations), scenario-set.json (50 synthetic scenarios)
 ```

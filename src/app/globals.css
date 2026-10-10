@@ -1,33 +1,184 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  /* Raisee color theme (exact brand values) */
-  --color-terracotta: #e26a4c;
-  --color-terracotta-soft: #ec9981;
-  --color-ink: #200524;
-  --color-cream: #f5f3df;
-  --color-olive: #d6d3a6;
+/* ---------------------------------------------------------------------------
+   Base 8.
 
-  --background: var(--color-cream);
-  --foreground: var(--color-ink);
+   Every spacing utility in this project is a multiple of 8 because --spacing IS
+   8px: p-1 = 8, p-2 = 16, p-3 = 24, p-6 = 48. There is no way to write a 5px
+   gap by accident. Section rhythm is the separate 124 ladder below.
+--------------------------------------------------------------------------- */
+@theme {
+	--spacing: 8px;
+
+	/* ---- type ladder: 72 down by 8 --------------------------------------
+	   Named by their pixel size so the ladder is visible at the call site.
+	   16 is the floor — anything the comp showed smaller gets promoted to it.
+
+	   Every heading size carries 0.02em more negative tracking than its
+	   optical baseline — the ladder still opens up as the sizes come down,
+	   it just starts 2% tighter. d16 is body copy and keeps its own value;
+	   tightening running text hurts reading speed. */
+	--text-d72: 72px;
+	--text-d72--line-height: 1.02;
+	--text-d72--letter-spacing: -0.048em;
+
+	--text-d64: 64px;
+	--text-d64--line-height: 1.04;
+	--text-d64--letter-spacing: -0.046em;
+
+	--text-d56: 56px;
+	--text-d56--line-height: 1.08;
+	--text-d56--letter-spacing: -0.044em;
+
+	--text-d48: 48px;
+	--text-d48--line-height: 1.1;
+	--text-d48--letter-spacing: -0.042em;
+
+	--text-d40: 40px;
+	--text-d40--line-height: 1.14;
+	--text-d40--letter-spacing: -0.04em;
+
+	--text-d32: 32px;
+	--text-d32--line-height: 1.2;
+	--text-d32--letter-spacing: -0.036em;
+
+	--text-d24: 24px;
+	--text-d24--line-height: 1.28;
+	--text-d24--letter-spacing: -0.032em;
+
+	--text-d16: 16px;
+	--text-d16--line-height: 1.5;
+	--text-d16--letter-spacing: -0.004em;
+
+	/* ---- section ladder: 124, then /3 each step -------------------------
+	   s1 = 124        big section padding
+	   s2 = 124/3      block gaps inside a section
+	   s3 = 124/9      tight gaps between stacked rows
+	   Written as calc so the relationship stays legible, not as rounded magic
+	   numbers that drift apart the first time someone edits one. */
+	--spacing-s1: 124px;
+	--spacing-s2: calc(124px / 3);
+	--spacing-s3: calc(124px / 9);
+
+	/* ---- colour --------------------------------------------------------- */
+	--color-canvas: #faf8f5;
+	--color-surface: #ffffff;
+	--color-ink: #16110e;
+	--color-muted: #6f6761;
+	--color-line: #e6e2dc;
+	--color-panel: #e9e6e2;
+	--color-panel-2: #e4e1dd;
+	--color-accent: #e0553a;
+	--color-blush: #fbdcec;
+	--color-blush-ink: #c0417f;
+	--color-field: #f1efec;
+
+	/* ---- mesh tints ------------------------------------------------------
+	   The four ellipses behind the closing CTA, lifted from the app's start
+	   screen. They are only ever seen through a 100px blur, so they are picked
+	   for how they bleed into each other, not for how they look flat. Nothing
+	   else in the page should use them — type on any of these fails contrast.
+	*/
+	--color-mesh-pink: #f0abd8;
+	--color-mesh-lilac: #cdb8ef;
+	--color-mesh-mint: #b6e1e6;
+	--color-mesh-peach: #f2c0ab;
+
+	/* ---- radii ---------------------------------------------------------- */
+	--radius-panel: 40px;
+	--radius-card: 32px;
+	--radius-field: 16px;
+	--radius-pill: 999px;
+
+	/* ---- type faces -----------------------------------------------------
+	   Display is DM Serif Text, vendored in src/fonts and injected by
+	   next/font in layout.tsx — self-hosted, no runtime request, no layout
+	   shift. Confirmed against the app mockups: the giveaway is the narrow
+	   et-ligature ampersand in the "kin&d" wordmark, which rules out the
+	   wide double-looped ampersand of Playfair Display.
+
+	   The sans is the same stack the Raisee app declares at the repo root,
+	   and it matches the mockups' letterforms. Helvetica Neue is a licensed
+	   system font that CANNOT be served as a webfont, so this resolves to it
+	   on macOS/iOS and degrades to Arial elsewhere. That is a known, accepted
+	   tradeoff — brand fidelity over cross-platform uniformity. Swapping in a
+	   licensed webfont later is a change to this one line. */
+	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
+	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+
+	/* ---- elevation ------------------------------------------------------ */
+	--shadow-bar: 0 2px 8px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);
+	--shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 16px 48px rgb(0 0 0 / 0.14);
+	--shadow-seg: 0 2px 8px rgb(0 0 0 / 0.1), 0 6px 20px rgb(0 0 0 / 0.1);
+
+	/* ---- entrances ------------------------------------------------------ */
+	--animate-pop-in: pop-in 160ms cubic-bezier(0.33, 1, 0.68, 1);
+	--animate-drop-in: drop-in 180ms cubic-bezier(0.33, 1, 0.68, 1);
+	--animate-fade-in: fade-in 160ms ease-out;
+	--animate-rise-in: rise-in 220ms cubic-bezier(0.33, 1, 0.68, 1);
+
+	@keyframes pop-in {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+	}
+	@keyframes drop-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+	}
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+	@keyframes rise-in {
+		from {
+			opacity: 0;
+			transform: translateY(24px);
+		}
+	}
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-terracotta: var(--color-terracotta);
-  --color-terracotta-soft: var(--color-terracotta-soft);
-  --color-ink: var(--color-ink);
-  --color-cream: var(--color-cream);
-  --color-olive: var(--color-olive);
-  /* Helvetica Neue is a licensed system font (not available via Google
-     Fonts) — this stack resolves to it on macOS/iOS, falls to Helvetica
-     then Arial elsewhere, which is the standard way to use it on the web. */
-  --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+@layer base {
+	html {
+		background: var(--color-canvas);
+	}
+
+	body {
+		background: var(--color-canvas);
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+		font-size: var(--text-d16);
+		line-height: 1.5;
+	}
+
+	/* The sheet takes over the viewport on mobile; this stops the page behind
+	   it from scrolling under the blur. */
+	body[data-locked='true'] {
+		overflow: hidden;
+	}
+
+	:where(button, a, input, textarea, [tabindex]):focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+@utility display {
+	font-family: var(--font-display);
+	/* DM Serif Text ships one weight. Asking for 700 would make the browser
+	   synthesise a fake bold and smear the hairlines that make the face. */
+	font-weight: 400;
 }

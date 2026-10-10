@@ -60,16 +60,18 @@ export function LikertBlockStep({
       primaryDisabled={!isAnswered}
     >
       <div>
-        <p className="text-lg font-medium text-ink">{itemText(item, isAdultChild)}</p>
+        <p className="text-d24">{itemText(item, isAdultChild)}</p>
 
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-1">
           {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
             <button
               key={n}
               type="button"
               onClick={() => onChange(item.id, n)}
-              className={`rounded-full border px-3 py-2 text-xs transition-colors ${
-                value === n ? "border-ink bg-ink text-cream" : "border-ink/15 bg-white/60 text-ink"
+              className={`rounded-pill text-d16 border px-3 py-1 transition-colors ${
+                value === n
+                  ? "border-ink bg-ink text-white"
+                  : "border-line bg-surface text-ink hover:border-ink"
               }`}
             >
               {scale.labels[n - scale.min]}
@@ -80,7 +82,7 @@ export function LikertBlockStep({
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`mt-4 text-xs underline ${value === null ? "text-ink" : "text-ink/40"}`}
+          className={`text-d16 mt-2 underline ${value === null ? "text-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>

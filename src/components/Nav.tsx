@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Icon from './Icon';
 import MobileSheet from './MobileSheet';
 import SearchBar from './SearchBar';
@@ -15,6 +16,11 @@ export default function Nav() {
 	const scrolled = useScrolledPast(8);
 	useCollapseOnScroll({ collapsed: compact, setCollapsed: setCompact });
 
+	// The bar IS the landing page's primary action. On the wizard and the
+	// partner pages it would be a second, competing way to start — so those
+	// routes get the wordmark and nothing else.
+	const onLanding = usePathname() === '/';
+
 	const account = (
 		<button
 			type="button"
@@ -25,13 +31,26 @@ export default function Nav() {
 		</button>
 	);
 
+	const shell = `bg-canvas sticky top-0 z-50 transition-shadow duration-200 ${
+		scrolled ? 'shadow-[0_1px_0_0_var(--color-line)]' : ''
+	}`;
+
+	if (!onLanding) {
+		return (
+			<header className={shell}>
+				<div className="mx-auto flex w-full max-w-[1360px] items-center justify-between gap-2 px-2 py-2 lg:px-3">
+					<Link href="/" className="display text-d24 shrink-0">
+						Kin&amp;d
+					</Link>
+					{account}
+				</div>
+			</header>
+		);
+	}
+
 	return (
 		<>
-			<header
-				className={`bg-canvas sticky top-0 z-50 transition-shadow duration-200 ${
-					scrolled ? 'shadow-[0_1px_0_0_var(--color-line)]' : ''
-				}`}
-			>
+			<header className={shell}>
 				<div className="mx-auto w-full max-w-[1360px] px-2 lg:px-3">
 					{/* Desktop: two rows that merge into one once the bar collapses. */}
 					<div className="hidden lg:block">

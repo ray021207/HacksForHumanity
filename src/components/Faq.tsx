@@ -48,7 +48,7 @@ export default function Faq() {
 	useKeyDown('Escape', () => setOpen(null), open !== null);
 
 	return (
-		<section className="gap-s3 flex flex-col items-center">
+		<section id="faq" className="gap-s3 flex flex-col items-center">
 			<h2 className="display text-d32 sm:text-d40 max-w-[20ch] text-center">
 				Questions parents ask
 			</h2>

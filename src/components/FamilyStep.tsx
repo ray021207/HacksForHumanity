@@ -58,26 +58,26 @@ export function FamilyStep({
       onPrimary={onNext}
       primaryDisabled={local.length === 0}
     >
-      <div className="space-y-5">
+      <div className="space-y-2">
         {local.map((child, idx) => (
-          <div key={child.id} className="rounded-2xl border border-ink/10 bg-white/60 p-4">
+          <div key={child.id} className="border-line bg-surface rounded-card border p-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-ink">Child {idx + 1}</h3>
+              <h3 className="text-d16 font-semibold">Child {idx + 1}</h3>
               {local.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeChild(child.id)}
-                  className="text-xs text-ink/50 underline"
+                  className="text-muted text-d16 underline"
                 >
                   Remove
                 </button>
               )}
             </div>
 
-            <label className="mt-3 block text-sm text-ink/70">
+            <label className="text-muted text-d16 mt-2 block">
               {familyBlock.fields.ageBand.label}
               <select
-                className="mt-1 block w-full rounded-xl border border-ink/15 bg-white p-2 text-sm text-ink"
+                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
                 value={child.ageBand}
                 onChange={(e) => update(child.id, { ageBand: e.target.value as ChildInfo["ageBand"] })}
               >
@@ -89,10 +89,10 @@ export function FamilyStep({
               </select>
             </label>
 
-            <label className="mt-3 block text-sm text-ink/70">
+            <label className="text-muted text-d16 mt-2 block">
               {familyBlock.fields.livingSituation.label}
               <select
-                className="mt-1 block w-full rounded-xl border border-ink/15 bg-white p-2 text-sm text-ink"
+                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
                 value={child.livingSituation}
                 onChange={(e) => update(child.id, { livingSituation: e.target.value })}
               >
@@ -104,22 +104,22 @@ export function FamilyStep({
               </select>
             </label>
 
-            <label className="mt-3 block text-sm text-ink/70">
+            <label className="text-muted text-d16 mt-2 block">
               {familyBlock.fields.nickname.label}
               <input
                 type="text"
-                className="mt-1 block w-full rounded-xl border border-ink/15 bg-white p-2 text-sm text-ink"
+                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
                 value={child.nickname ?? ""}
                 onChange={(e) => update(child.id, { nickname: e.target.value })}
                 placeholder="Optional, shown only on your screen"
               />
-              <span className="mt-1 block text-xs text-ink/40">{familyBlock.fields.nickname.helpText}</span>
+              <span className="text-muted text-d16 mt-1 block">{familyBlock.fields.nickname.helpText}</span>
             </label>
           </div>
         ))}
 
         {local.length < familyBlock.maxChildren && (
-          <button type="button" onClick={addChild} className="text-sm font-semibold text-ink underline">
+          <button type="button" onClick={addChild} className="text-d16 font-semibold underline">
             + Add another child
           </button>
         )}

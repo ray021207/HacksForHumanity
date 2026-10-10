@@ -33,7 +33,9 @@ export default function FieldChildren() {
 						>
 							<Icon name="minus" />
 						</button>
-						<span className="text-d16 w-6 text-center tabular-nums">Age {kid.age}</span>
+						<span className="text-d16 min-w-9 shrink-0 text-center whitespace-nowrap tabular-nums">
+							Age {kid.age}
+						</span>
 						<button
 							type="button"
 							aria-label={`Increase age of child ${i + 1}`}

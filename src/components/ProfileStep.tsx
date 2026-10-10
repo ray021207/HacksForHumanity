@@ -21,18 +21,18 @@ export function ProfileStep({
       primaryLabel="Continue"
       onPrimary={onNext}
     >
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div>
-          <h3 className="text-sm font-semibold text-ink">What stands out</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/80">
+          <h3 className="text-d16 font-semibold">What stands out</h3>
+          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
             {profile.strengths.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-olive/30 p-4">
-          <h3 className="text-sm font-semibold text-ink">A few things to try</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/80">
+        <div className="bg-field rounded-card p-3">
+          <h3 className="text-d16 font-semibold">A few things to try</h3>
+          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
             {profile.stretches.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}

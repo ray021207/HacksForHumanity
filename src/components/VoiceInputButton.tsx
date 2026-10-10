@@ -88,14 +88,14 @@ export function VoiceInputButton({ onTranscript }: { onTranscript: (text: string
   if (status === "checking" || status === "unavailable") return null;
 
   return (
-    <div className="mt-3 flex items-center gap-2">
+    <div className="mt-2 flex items-center gap-1">
       {status === "recording" ? (
         <button
           type="button"
           onClick={stopRecording}
-          className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-cream"
+          className="bg-ink rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-white"
         >
-          <span className="h-2 w-2 animate-pulse rounded-full bg-terracotta" />
+          <span className="bg-accent rounded-pill size-1 animate-pulse" />
           Stop recording
         </button>
       ) : (
@@ -103,12 +103,12 @@ export function VoiceInputButton({ onTranscript }: { onTranscript: (text: string
           type="button"
           onClick={startRecording}
           disabled={status === "transcribing"}
-          className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-cream disabled:opacity-50"
+          className="bg-ink rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-white disabled:opacity-50"
         >
           🎙️ {status === "transcribing" ? "Transcribing..." : "Speak"}
         </button>
       )}
-      {errorMessage && <span className="text-xs text-terracotta">{errorMessage}</span>}
+      {errorMessage && <span className="text-accent text-d16">{errorMessage}</span>}
     </div>
   );
 }

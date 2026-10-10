@@ -2,11 +2,10 @@
 	"$schema": "https://railway.com/railway.schema.json",
 	"build": {
 		"builder": "DOCKERFILE",
-		"dockerfilePath": "Dockerfile",
-		"watchPatterns": ["Landing-Page/**"]
+		"dockerfilePath": "Dockerfile"
 	},
 	"deploy": {
-		"startCommand": "node server.js",
+		"startCommand": "npm run start",
 		"healthcheckPath": "/",
 		"healthcheckTimeout": 120,
 		"restartPolicyType": "ON_FAILURE",

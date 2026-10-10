@@ -48,9 +48,9 @@ export function ScenarioBlockStep({
       primaryDisabled={!isAnswered}
     >
       <div>
-        <p className="text-lg font-medium text-ink">{prompt}</p>
+        <p className="text-d24">{prompt}</p>
 
-        <div className="mt-6 space-y-2">
+        <div className="mt-3 space-y-1">
           {item.options.map((opt: any) => (
             <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
               {opt.label}
@@ -61,7 +61,7 @@ export function ScenarioBlockStep({
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`mt-4 text-xs underline ${selected === null ? "text-ink" : "text-ink/40"}`}
+          className={`text-d16 mt-2 underline ${selected === null ? "text-ink" : "text-muted"}`}
         >
           Prefer not to say
         </button>

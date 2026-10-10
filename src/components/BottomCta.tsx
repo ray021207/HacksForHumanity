@@ -40,11 +40,6 @@ export default function BottomCta() {
 
 				<Link
 					href={PLAN_HREF}
-					// Nothing at /plan on this origin yet, so prefetching it just 404s
-					// on every render. Once NEXT_PUBLIC_APP_URL points at the app's own
-					// origin the href is cross-origin and next/link skips prefetch
-					// anyway. Drop this line when a local /plan route lands.
-					prefetch={false}
 					className="bg-ink rounded-pill text-d16 shadow-bar flex items-center gap-1 px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"
 				>
 					<Icon name="arrow" size={18} />

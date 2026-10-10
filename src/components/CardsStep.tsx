@@ -39,13 +39,13 @@ export function CardsStep({
       primaryLabel="Describe another situation"
       onPrimary={onStartOver}
     >
-      <div className="space-y-5">
-        <p className="text-xs italic text-ink/50">{result.disclosure}</p>
+      <div className="space-y-3">
+        <p className="text-muted text-d16 italic">{result.disclosure}</p>
 
         {result.fixed_content && (
-          <div className={`rounded-2xl border p-4 ${isRed ? "border-terracotta/40 bg-terracotta/10" : "border-olive bg-olive/30"}`}>
-            <h2 className="font-semibold text-ink">{result.fixed_content.heading}</h2>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/80">
+          <div className={`rounded-card border p-3 ${isRed ? "border-accent/40 bg-accent/10" : "border-line bg-field"}`}>
+            <h2 className="display text-d24">{result.fixed_content.heading}</h2>
+            <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
               {result.fixed_content.body.map((line, idx) => (
                 <li key={idx}>{line}</li>
               ))}
@@ -55,35 +55,35 @@ export function CardsStep({
 
         {!isRed && result.frame && (
           <div>
-            <p className="text-sm text-ink/60">{result.frame}</p>
+            <p className="text-muted text-d16">{result.frame}</p>
             {result.before_you_start && (
-              <p className="mt-1 text-sm font-medium text-ink">{result.before_you_start}</p>
+              <p className="text-d16 mt-1 font-semibold">{result.before_you_start}</p>
             )}
           </div>
         )}
 
         {!isRed && result.starters && (
-          <div className="space-y-3">
+          <div className="space-y-1">
             {result.starters.map((starter, idx) => (
-              <div key={idx} className="rounded-2xl border border-ink/10 bg-white/60 p-4">
-                <span className="inline-block rounded-full bg-ink/5 px-2 py-0.5 text-xs font-medium text-ink/60">
+              <div key={idx} className="border-line bg-surface rounded-card shadow-bar border p-3">
+                <span className="bg-field text-muted rounded-pill text-d16 inline-block px-2 py-1 font-medium">
                   {starter.technique.replace("_", " ")}
                 </span>
-                <p className="mt-2 text-sm font-medium text-ink">&ldquo;{starter.text}&rdquo;</p>
-                <p className="mt-1 text-xs text-ink/60">Why: {starter.why}</p>
-                <p className="mt-1 text-xs text-ink/40">Avoid: {starter.avoid}</p>
-                <div className="mt-2 flex gap-2">
+                <p className="text-d24 mt-2">&ldquo;{starter.text}&rdquo;</p>
+                <p className="text-muted text-d16 mt-1">Why: {starter.why}</p>
+                <p className="text-muted text-d16 mt-1">Avoid: {starter.avoid}</p>
+                <div className="mt-2 flex gap-1">
                   <button
                     type="button"
                     onClick={() => sendThumb(idx, starter.technique, "up")}
-                    className={`rounded-full border px-2 py-1 text-xs ${thumbs[idx] === "up" ? "border-ink bg-ink text-cream" : "border-ink/15"}`}
+                    className={`rounded-pill text-d16 border px-2 py-1 ${thumbs[idx] === "up" ? "border-ink bg-ink text-white" : "border-line bg-surface"}`}
                   >
                     👍
                   </button>
                   <button
                     type="button"
                     onClick={() => sendThumb(idx, starter.technique, "down")}
-                    className={`rounded-full border px-2 py-1 text-xs ${thumbs[idx] === "down" ? "border-ink bg-ink text-cream" : "border-ink/15"}`}
+                    className={`rounded-pill text-d16 border px-2 py-1 ${thumbs[idx] === "down" ? "border-ink bg-ink text-white" : "border-line bg-surface"}`}
                   >
                     👎
                   </button>
@@ -94,7 +94,7 @@ export function CardsStep({
         )}
 
         {!isRed && result.setting_tip && (
-          <p className="text-xs text-ink/50">Setting tip: {result.setting_tip}</p>
+          <p className="text-muted text-d16">Setting tip: {result.setting_tip}</p>
         )}
       </div>
     </WizardShell>

@@ -41,12 +41,12 @@ export function SituationStep({
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
       primaryDisabled={!canSubmit || isSubmitting}
     >
-      <div className="space-y-5">
+      <div className="space-y-3">
         {familyChildren.length > 1 && (
-          <label className="block text-sm text-ink/70">
+          <label className="text-muted text-d16 block">
             Which child?
             <select
-              className="mt-1 block w-full rounded-xl border border-ink/15 bg-white p-2 text-sm text-ink"
+              className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
               value={childId}
               onChange={(e) => setChildId(e.target.value)}
             >
@@ -61,7 +61,7 @@ export function SituationStep({
 
         <div>
           <textarea
-            className="block w-full rounded-2xl border border-ink/15 bg-white/60 p-3 text-sm text-ink placeholder:text-ink/40"
+            className="border-line bg-field rounded-field text-d16 text-ink placeholder:text-muted block w-full border p-2"
             rows={5}
             value={situationText}
             onChange={(e) => setSituationText(e.target.value)}
@@ -75,8 +75,8 @@ export function SituationStep({
         </div>
 
         <div>
-          <span className="block text-sm font-medium text-ink">What&apos;s this for?</span>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <span className="text-d16 block font-semibold">What&apos;s this for?</span>
+          <div className="mt-1 flex flex-wrap gap-1">
             {goalsBlock.options.map((opt: any) => (
               <PillChip key={opt.value} selected={goal === opt.value} onClick={() => setGoal(opt.value)}>
                 {opt.label}
@@ -86,8 +86,8 @@ export function SituationStep({
         </div>
 
         <div>
-          <span className="block text-sm font-medium text-ink">Setting</span>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <span className="text-d16 block font-semibold">Setting</span>
+          <div className="mt-1 flex flex-wrap gap-1">
             {SETTING_OPTIONS.map((opt) => (
               <PillChip key={opt.value} selected={setting === opt.value} onClick={() => setSetting(opt.value)}>
                 {opt.label}

@@ -1,11 +1,13 @@
 # syntax=docker/dockerfile:1
 #
-# Raisee — Next.js 16 (App Router).
+# Kin&d — Next.js 16 (App Router). One image serves the whole product: the
+# landing page at /, the wizard at /plan, the partner program at /partners and
+# the API routes.
 #
 # This app does NOT set `output: 'standalone'` in next.config.ts, so the runtime
 # stage keeps node_modules and runs `next start`. Switching it to standalone
-# would shrink this image by a few hundred MB; it's a one-line config change
-# plus the same COPY swap used in Landing-Page/Dockerfile.
+# would shrink this image by a few hundred MB: set the config flag, then copy
+# .next/standalone, .next/static and public instead of node_modules + .next.
 
 # ---- deps ----
 # Split from the build stage so the npm layer stays cached until the lockfile

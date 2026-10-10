@@ -1,5 +1,16 @@
 import type { ReactNode } from "react";
+import Icon from "./Icon";
 
+/**
+ * The frame every questionnaire screen sits in.
+ *
+ * This used to be its own app with its own palette (cream, terracotta, Tailwind's
+ * default 4px spacing). It now draws on the same tokens as the landing page: the
+ * 8px spacing base, the d16/d24/d32 type ladder, `display` for headings, and
+ * surface/field/line for the chrome. Nothing here sets a page background or a
+ * min-height — the root layout owns both, so the nav and footer wrap the wizard
+ * like they wrap every other route.
+ */
 export function WizardShell({
   title,
   description,
@@ -26,36 +37,38 @@ export function WizardShell({
   secondary?: ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-cream">
+    <div className="flex w-full flex-1 flex-col">
       {typeof progress === "number" && (
-        <div className="h-1 w-full bg-ink/10">
+        <div className="bg-field h-1 w-full">
           <div
-            className="h-full rounded-r-full bg-ink transition-all duration-300"
+            className="bg-ink rounded-r-pill h-full transition-all duration-300"
             style={{ width: `${Math.min(100, Math.max(0, Math.round(progress * 100)))}%` }}
           />
         </div>
       )}
-      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-5 pb-8">
+      <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-2 pt-3 pb-5 lg:px-3">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
             aria-label="Back"
-            className="mb-5 flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-lg text-ink"
+            className="bg-field text-ink hover:bg-panel-2 rounded-pill mb-3 grid size-5 place-items-center transition-colors"
           >
-            ‹
+            {/* The sprite's chevron points down; a quarter turn clockwise
+                lands it pointing back the way the user came. */}
+            <Icon name="chevron" size={18} className="rotate-90" />
           </button>
         )}
-        <h1 className="text-2xl font-bold text-ink">{title}</h1>
-        {description && <p className="mt-1 text-sm text-ink/55">{description}</p>}
-        <div className="mt-6 flex-1">{children}</div>
-        <div className="mt-8 space-y-3">
+        {title && <h1 className="display text-d32">{title}</h1>}
+        {description && <p className="text-muted text-d16 mt-1">{description}</p>}
+        <div className="mt-3 flex-1">{children}</div>
+        <div className="mt-s3 flex flex-col gap-2">
           {secondary}
           <button
             type="button"
             onClick={onPrimary}
             disabled={primaryDisabled}
-            className="w-full rounded-full bg-terracotta py-3.5 text-sm font-semibold text-cream transition-colors disabled:cursor-not-allowed disabled:bg-terracotta-soft"
+            className="bg-accent rounded-pill text-d16 shadow-bar w-full py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
           >
             {primaryLabel}
           </button>
@@ -65,6 +78,7 @@ export function WizardShell({
   );
 }
 
+/** Full-width answer row: one of several, one gets picked. */
 export function PillOption({
   selected,
   onClick,
@@ -78,10 +92,10 @@ export function PillOption({
     <button
       type="button"
       onClick={onClick}
-      className={`block w-full rounded-2xl border px-4 py-3 text-left text-sm transition-colors ${
+      className={`rounded-field text-d16 block w-full border px-3 py-2 text-left transition-colors ${
         selected
-          ? "border-ink bg-ink text-cream"
-          : "border-ink/15 bg-white/60 text-ink hover:border-ink/40"
+          ? "border-ink bg-ink text-white"
+          : "border-line bg-surface text-ink hover:border-ink"
       }`}
     >
       {children}
@@ -89,6 +103,7 @@ export function PillOption({
   );
 }
 
+/** The same choice as a chip, for answers that sit in a row. */
 export function PillChip({
   selected,
   onClick,
@@ -102,8 +117,10 @@ export function PillChip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-        selected ? "border-ink bg-ink text-cream" : "border-ink/20 bg-white/60 text-ink"
+      className={`rounded-pill text-d16 border px-3 py-1 transition-colors ${
+        selected
+          ? "border-ink bg-ink text-white"
+          : "border-line bg-surface text-ink hover:border-ink"
       }`}
     >
       {children}
