@@ -38,7 +38,6 @@ export function CardsStep({
       title={isRed ? "Please get help right now" : "Here's what you could say"}
       primaryLabel="Describe another situation"
       onPrimary={onStartOver}
-      accountLink
     >
       <div className="space-y-5">
         <p className="text-xs italic text-ink/50">{result.disclosure}</p>

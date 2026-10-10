@@ -28,7 +28,6 @@ export function GoalsStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={onNext}
-      accountLink
     >
       <div className="flex flex-wrap gap-2">
         {goalsBlock.options.map((opt: any) => (

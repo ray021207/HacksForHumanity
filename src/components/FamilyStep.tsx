@@ -58,7 +58,6 @@ export function FamilyStep({
       progress={progress}
       primaryLabel="Continue"
       onPrimary={onNext}
-      accountLink
       primaryDisabled={local.length === 0}
     >
       <div className="space-y-5">
