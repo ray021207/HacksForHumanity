@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import BottomCta from '@/components/BottomCta';
+import Faq from '@/components/Faq';
 import Icon, { type IconName } from '@/components/Icon';
 import ParallaxPhones from '@/components/ParallaxPhones';
 import Phone from '@/components/Phone';
@@ -159,19 +161,19 @@ export default function Page() {
 						The same moment sounds different at five, thirteen, and sixteen. Each
 						question fits your child&apos;s age.
 					</p>
+					{/* One card, one colour: every row is the same black notification.
+					    The middle one sits at full strength and the two either side
+					    drop to half, so the stack reads as the one you're on with the
+					    others falling away above and below. */}
 					<ul className="mt-auto flex flex-col gap-1">
 						{AGE_QUESTIONS.map((item, i) => (
 							<li
 								key={item.age}
-								className={`rounded-field text-ink flex items-center gap-2 px-2 py-2 ${
-									i === 1 ? 'bg-surface' : 'bg-surface/80'
+								className={`bg-ink rounded-field flex items-center gap-2 px-2 py-2 text-white ${
+									i === 1 ? '' : 'opacity-50'
 								}`}
 							>
-								<span
-									className={`rounded-pill text-d16 shrink-0 px-2 py-1 ${
-										i === 1 ? 'bg-ink text-white' : 'bg-field text-muted'
-									}`}
-								>
+								<span className="rounded-pill text-d16 shrink-0 bg-white/15 px-2 py-1">
 									Age {item.age}
 								</span>
 								<span className="text-d16">&ldquo;{item.q}&rdquo;</span>
@@ -205,6 +207,12 @@ export default function Page() {
 					</ul>
 				</div>
 			</section>
+
+			{/* ─────────────────────────── FAQ ─────────────────────────── */}
+			<Faq />
+
+			{/* ───────────────────── closing CTA ───────────────────── */}
+			<BottomCta />
 		</main>
 	);
 }

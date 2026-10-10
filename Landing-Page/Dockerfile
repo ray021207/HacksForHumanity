@@ -17,12 +17,19 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# NOTE: no secrets are needed here, and none should be added. Build args bake
-# into image layers and are readable by anyone who pulls the image.
+# The one build arg: the origin the "Get plan" CTA points at. NEXT_PUBLIC_* is
+# inlined into the client bundle at build time, so it cannot be a runtime
+# variable — Railway passes service variables through to the build. Empty keeps
+# the CTA on this origin; see src/lib/app-url.ts and DEPLOYMENT.md.
+ARG NEXT_PUBLIC_APP_URL=""
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+
+# NOTE: no secrets beyond that, and none should be added. Build args bake into
+# image layers and are readable by anyone who pulls the image.
 #
-# This stage DOES need network egress: next/font fetches Instrument Serif and
-# Inter at build time so it can self-host them. An air-gapped builder fails
-# here, not at runtime.
+# No font needs the network: the display face is vendored in src/fonts and the
+# body sans is a system stack, so nothing is fetched from fonts.googleapis.com
+# at build time or at runtime.
 RUN npm run build
 
 # ---- runtime ----

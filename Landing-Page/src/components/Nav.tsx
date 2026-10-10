@@ -1,31 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import Icon from './Icon';
 import MobileSheet from './MobileSheet';
 import SearchBar from './SearchBar';
 import { useSearch } from './SearchContext';
+import { useCollapseOnScroll } from '@/hooks/useCollapseOnScroll';
+import { useScrolledPast } from '@/hooks/useScrolledPast';
 
 export default function Nav() {
 	const search = useSearch();
 	const { compact, setCompact } = search;
-	const [scrolled, setScrolled] = useState(false);
 
-	useEffect(() => {
-		function onScroll() {
-			const y = window.scrollY;
-			setScrolled(y > 8);
-			// Hysteresis: collapse at 96, re-expand at 48, so a bar sitting exactly
-			// on the threshold doesn't flicker on a trackpad's sub-pixel scroll.
-			if (!compact && y > 96) setCompact(true);
-			else if (compact && y < 48) setCompact(false);
-		}
-
-		onScroll();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
-	}, [compact, setCompact]);
+	const scrolled = useScrolledPast(8);
+	useCollapseOnScroll({ collapsed: compact, setCollapsed: setCompact });
 
 	const account = (
 		<button

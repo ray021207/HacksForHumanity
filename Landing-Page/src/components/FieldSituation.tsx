@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Icon from './Icon';
 import { useSearch } from './SearchContext';
+import { useAutoFocus } from '@/hooks/useAutoFocus';
 
 const PROMPTS = [
 	'They stopped talking to me',
@@ -13,13 +13,7 @@ const PROMPTS = [
 
 export default function FieldSituation({ autoFocus = false }: { autoFocus?: boolean }) {
 	const search = useSearch();
-	const field = useRef<HTMLTextAreaElement>(null);
-
-	// Not the `autofocus` attribute: this only ever runs because the user just
-	// clicked the segment open, which is the one case a11y guidance allows.
-	useEffect(() => {
-		if (autoFocus) field.current?.focus();
-	}, [autoFocus]);
+	const field = useAutoFocus<HTMLTextAreaElement>(autoFocus);
 
 	return (
 		<div className="flex flex-col gap-2">

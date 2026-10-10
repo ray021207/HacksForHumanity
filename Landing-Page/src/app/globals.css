@@ -12,34 +12,39 @@
 
 	/* ---- type ladder: 72 down by 8 --------------------------------------
 	   Named by their pixel size so the ladder is visible at the call site.
-	   16 is the floor — anything the comp showed smaller gets promoted to it. */
+	   16 is the floor — anything the comp showed smaller gets promoted to it.
+
+	   Every heading size carries 0.02em more negative tracking than its
+	   optical baseline — the ladder still opens up as the sizes come down,
+	   it just starts 2% tighter. d16 is body copy and keeps its own value;
+	   tightening running text hurts reading speed. */
 	--text-d72: 72px;
 	--text-d72--line-height: 1.02;
-	--text-d72--letter-spacing: -0.028em;
+	--text-d72--letter-spacing: -0.048em;
 
 	--text-d64: 64px;
 	--text-d64--line-height: 1.04;
-	--text-d64--letter-spacing: -0.026em;
+	--text-d64--letter-spacing: -0.046em;
 
 	--text-d56: 56px;
 	--text-d56--line-height: 1.08;
-	--text-d56--letter-spacing: -0.024em;
+	--text-d56--letter-spacing: -0.044em;
 
 	--text-d48: 48px;
 	--text-d48--line-height: 1.1;
-	--text-d48--letter-spacing: -0.022em;
+	--text-d48--letter-spacing: -0.042em;
 
 	--text-d40: 40px;
 	--text-d40--line-height: 1.14;
-	--text-d40--letter-spacing: -0.02em;
+	--text-d40--letter-spacing: -0.04em;
 
 	--text-d32: 32px;
 	--text-d32--line-height: 1.2;
-	--text-d32--letter-spacing: -0.016em;
+	--text-d32--letter-spacing: -0.036em;
 
 	--text-d24: 24px;
 	--text-d24--line-height: 1.28;
-	--text-d24--letter-spacing: -0.012em;
+	--text-d24--letter-spacing: -0.032em;
 
 	--text-d16: 16px;
 	--text-d16--line-height: 1.5;
@@ -68,6 +73,17 @@
 	--color-blush-ink: #c0417f;
 	--color-field: #f1efec;
 
+	/* ---- mesh tints ------------------------------------------------------
+	   The four ellipses behind the closing CTA, lifted from the app's start
+	   screen. They are only ever seen through a 100px blur, so they are picked
+	   for how they bleed into each other, not for how they look flat. Nothing
+	   else in the page should use them — type on any of these fails contrast.
+	*/
+	--color-mesh-pink: #f0abd8;
+	--color-mesh-lilac: #cdb8ef;
+	--color-mesh-mint: #b6e1e6;
+	--color-mesh-peach: #f2c0ab;
+
 	/* ---- radii ---------------------------------------------------------- */
 	--radius-panel: 40px;
 	--radius-card: 32px;
@@ -75,10 +91,20 @@
 	--radius-pill: 999px;
 
 	/* ---- type faces -----------------------------------------------------
-	   Both are injected by next/font in layout.tsx, which self-hosts them —
-	   no request to fonts.googleapis.com at runtime, no layout shift. */
-	--font-display: var(--font-instrument-serif), 'Iowan Old Style', Georgia, serif;
-	--font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	   Display is DM Serif Text, vendored in src/fonts and injected by
+	   next/font in layout.tsx — self-hosted, no runtime request, no layout
+	   shift. Confirmed against the app mockups: the giveaway is the narrow
+	   et-ligature ampersand in the "kin&d" wordmark, which rules out the
+	   wide double-looped ampersand of Playfair Display.
+
+	   The sans is the same stack the Raisee app declares at the repo root,
+	   and it matches the mockups' letterforms. Helvetica Neue is a licensed
+	   system font that CANNOT be served as a webfont, so this resolves to it
+	   on macOS/iOS and degrades to Arial elsewhere. That is a known, accepted
+	   tradeoff — brand fidelity over cross-platform uniformity. Swapping in a
+	   licensed webfont later is a change to this one line. */
+	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
+	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
 
 	/* ---- elevation ------------------------------------------------------ */
 	--shadow-bar: 0 2px 8px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);
@@ -152,7 +178,7 @@
 
 @utility display {
 	font-family: var(--font-display);
-	/* Instrument Serif ships one weight. Asking for 700 would make the browser
+	/* DM Serif Text ships one weight. Asking for 700 would make the browser
 	   synthesise a fake bold and smear the hairlines that make the face. */
 	font-weight: 400;
 }

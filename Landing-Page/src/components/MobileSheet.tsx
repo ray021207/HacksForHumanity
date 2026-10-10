@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import FieldChildren from './FieldChildren';
 import FieldFamily from './FieldFamily';
 import FieldSituation from './FieldSituation';
@@ -8,6 +7,9 @@ import Link from 'next/link';
 import Icon from './Icon';
 import { useSearch } from './SearchContext';
 import { SEGMENTS } from '@/lib/search-config';
+import { PLAN_HREF } from '@/lib/app-url';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useKeyDown } from '@/hooks/useKeyDown';
 
 export default function MobileSheet() {
 	const search = useSearch();
@@ -15,20 +17,8 @@ export default function MobileSheet() {
 
 	// The page behind the blur must not scroll, or the frosted backdrop slides
 	// over content and the whole illusion falls apart.
-	useEffect(() => {
-		if (!sheetOpen) return;
-		document.body.dataset.locked = 'true';
-
-		function onKeyDown(e: KeyboardEvent) {
-			if (e.key === 'Escape') closeSheet();
-		}
-		window.addEventListener('keydown', onKeyDown);
-
-		return () => {
-			delete document.body.dataset.locked;
-			window.removeEventListener('keydown', onKeyDown);
-		};
-	}, [sheetOpen, closeSheet]);
+	useBodyScrollLock(sheetOpen);
+	useKeyDown('Escape', closeSheet, sheetOpen);
 
 	if (!sheetOpen) return null;
 
@@ -101,9 +91,11 @@ export default function MobileSheet() {
 						Clear all
 					</button>
 					<Link
-						href="/plan"
-						// No route at /plan yet, so the default prefetch just 404s on every
-						// render. Drop this line when the page lands.
+						href={PLAN_HREF}
+						// Nothing at /plan on this origin yet, so prefetching it just 404s
+						// on every render. Once NEXT_PUBLIC_APP_URL points at the app's own
+						// origin the href is cross-origin and next/link skips prefetch
+						// anyway. Drop this line when a local /plan route lands.
 						prefetch={false}
 						className="bg-accent rounded-pill text-d16 flex items-center gap-1 px-4 py-2 font-medium text-white"
 					>

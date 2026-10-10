@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import FieldChildren from './FieldChildren';
 import FieldFamily from './FieldFamily';
 import FieldSituation from './FieldSituation';
@@ -8,6 +8,10 @@ import Link from 'next/link';
 import Icon from './Icon';
 import { useSearch } from './SearchContext';
 import { SEGMENTS, type Segment } from '@/lib/search-config';
+import { PLAN_HREF } from '@/lib/app-url';
+import { useDismissOnOutsidePointer } from '@/hooks/useDismissOnOutsidePointer';
+import { useKeyDown } from '@/hooks/useKeyDown';
+import { useResetWhen } from '@/hooks/useResetWhen';
 
 export default function SearchBar() {
 	const search = useSearch();
@@ -16,31 +20,24 @@ export default function SearchBar() {
 
 	const { active, close, compact, setExpandedByUser } = search;
 
-	useEffect(() => {
-		if (!active) return;
+	useDismissOnOutsidePointer(barRef, close, active !== null);
 
-		function onPointerDown(e: PointerEvent) {
-			if (!barRef.current?.contains(e.target as Node)) close();
-		}
-		function onKeyDown(e: KeyboardEvent) {
-			if (e.key !== 'Escape') return;
+	// Escape closes the open segment and hands focus back to the button that
+	// opened it, rather than dropping it at the top of the document.
+	useKeyDown(
+		'Escape',
+		() => {
 			close();
 			barRef.current
 				?.querySelector<HTMLButtonElement>(`[data-segment="${active}"]`)
 				?.focus();
-		}
+		},
+		active !== null
+	);
 
-		window.addEventListener('pointerdown', onPointerDown);
-		window.addEventListener('keydown', onKeyDown);
-		return () => {
-			window.removeEventListener('pointerdown', onPointerDown);
-			window.removeEventListener('keydown', onKeyDown);
-		};
-	}, [active, close]);
-
-	useEffect(() => {
-		if (!compact) setExpandedByUser(false);
-	}, [compact, setExpandedByUser]);
+	// Back at the top of the page the bar is expanded by the scroll position, so
+	// the user's own expand is spent.
+	useResetWhen(!compact, () => setExpandedByUser(false));
 
 	/** Airbnb hides the rule next to whichever segment is lit up. */
 	function dividerHidden(i: number) {
@@ -147,9 +144,11 @@ export default function SearchBar() {
 
 				<div className="flex shrink-0 items-center pl-1">
 					<Link
-						href="/plan"
-						// No route at /plan yet, so the default prefetch just 404s on every
-						// render. Drop this line when the page lands.
+						href={PLAN_HREF}
+						// Nothing at /plan on this origin yet, so prefetching it just 404s
+						// on every render. Once NEXT_PUBLIC_APP_URL points at the app's own
+						// origin the href is cross-origin and next/link skips prefetch
+						// anyway. Drop this line when a local /plan route lands.
 						prefetch={false}
 						className="bg-accent rounded-pill text-d16 flex items-center gap-1 px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"
 					>
