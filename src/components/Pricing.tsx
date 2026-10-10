@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Icon from './Icon';
 import Mascot from './Mascot';
+import UpgradeButton from './UpgradeButton';
 import { PLAN_HREF } from '@/lib/app-url';
 
 const FREE = [
@@ -104,12 +105,7 @@ export default function Pricing() {
 						))}
 					</ul>
 
-					<Link
-						href={PLAN_HREF}
-						className="text-accent rounded-pill text-d16 shadow-bar mt-auto w-full bg-white py-2 text-center font-medium transition-opacity hover:opacity-90"
-					>
-						Get unlimited
-					</Link>
+					<UpgradeButton className="text-accent rounded-pill text-d16 shadow-bar mt-auto w-full bg-white py-2 text-center font-medium transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70" />
 				</div>
 			</div>
 

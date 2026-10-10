@@ -28,8 +28,8 @@ Kin&d is provided as-is, without warranty of any kind, and we accept no liabilit
 export default function Footer() {
 	return (
 		<footer className="border-line mt-auto border-t">
-			<div className="gap-s3 py-s3 mx-auto flex w-full max-w-[1360px] flex-col px-2 lg:px-3">
-				<div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+			<div className="gap-s2 py-s2 lg:py-s1 mx-auto flex w-full max-w-[1360px] flex-col px-2 lg:px-3">
+				<div className="gap-s2 flex flex-col sm:flex-row sm:justify-between">
 					<div className="flex flex-col gap-1">
 						<Link href="/" className="display text-d24 w-fit">
 							Kin&amp;d
@@ -39,8 +39,8 @@ export default function Footer() {
 						</p>
 					</div>
 
-					<nav className="flex flex-col gap-3 sm:flex-row sm:gap-6" aria-label="Footer">
-						<div className="flex flex-col gap-1">
+					<nav className="gap-s3 flex flex-col sm:flex-row sm:gap-9" aria-label="Footer">
+						<div className="flex flex-col gap-2">
 							<h2 className="text-d16 font-semibold">Resources</h2>
 							<ul className="flex flex-col gap-1">
 								{RESOURCES.map((item) => (
@@ -56,7 +56,7 @@ export default function Footer() {
 							</ul>
 						</div>
 
-						<div className="flex flex-col gap-1">
+						<div className="flex flex-col gap-2">
 							<h2 className="text-d16 font-semibold">Partners</h2>
 							<ul className="flex flex-col gap-1">
 								<li>
@@ -73,7 +73,7 @@ export default function Footer() {
 					</nav>
 				</div>
 
-				<p className="font-mono text-muted-2 border-line border-t pt-3 text-[12px] leading-[1.6] font-light whitespace-pre-line">
+				<p className="font-mono text-muted-2 border-line border-t pt-s3 text-[12px] leading-[1.6] font-light whitespace-pre-line">
 					{DISCLAIMER}
 				</p>
 			</div>

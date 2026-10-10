@@ -45,10 +45,6 @@ export default function Mission() {
 					Parents want to help. Most of us freeze at the moment it counts. The hard
 					part is rarely the love. It is the opening line.
 				</p>
-				<p>
-					So we make that part easier. You tell us what happened. We hand back a few
-					things you could say, and why each one lands. Then you go have the talk.
-				</p>
 			</div>
 
 			<ul className="mt-1 grid w-full gap-1 text-left sm:grid-cols-3">

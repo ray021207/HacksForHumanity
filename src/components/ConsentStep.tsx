@@ -86,16 +86,21 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
   return (
     <WizardShell
       title=""
-      primaryLabel="Start"
+      primaryLabel="Get started"
       onPrimary={onAccept}
       secondary={
-        <p className="text-muted text-d16 text-center">
-          By clicking Start you agree to the{" "}
-          <button type="button" onClick={() => setShowTerms(true)} className="underline">
-            terms and conditions
-          </button>
-          .
-        </p>
+        <>
+          <p className="text-muted text-d16 text-center">
+            By continuing you agree to the{" "}
+            <button type="button" onClick={() => setShowTerms(true)} className="underline">
+              terms and conditions
+            </button>
+            .
+          </p>
+          <p className="text-muted text-d16 text-center">
+            Not therapy. Just a gentle place to start.
+          </p>
+        </>
       }
     >
       {/* Light coming into the top of the screen: the four mesh tints under a
@@ -126,17 +131,19 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
       </div>
 
       <div className="relative z-10 flex min-h-[60vh] flex-col items-center justify-center text-center">
+        <span className="bg-blush text-blush-ink rounded-pill text-d16 mb-3 px-2 py-1">
+          01 &nbsp;Understand the moment
+        </span>
+
         <DanceStage />
 
-        <h1 className="display text-d40 mt-3 italic">Welcome to Kin&amp;d</h1>
-        <p className="text-muted text-d24 mt-1 italic">Where the first word finds the door</p>
+        <h1 className="display text-d32 sm:text-d40 mt-3 max-w-[24ch] italic">
+          &ldquo;She used to tell me everything. Now she goes straight to her
+          room.&rdquo;
+        </h1>
 
-        <p className="text-muted text-d16 mt-3 max-w-[52ch] italic">
-          Some conversations are hard to begin. Tell Kin&amp;d what&apos;s happening, and
-          you&apos;ll get a few gentle things you could actually say, with a note on why each
-          one works and what to avoid. Kin&amp;d draws on research into warm,
-          listening-first parenting. It&apos;s not therapy and it won&apos;t replace a real
-          conversation. It just helps you find the first words.
+        <p className="text-muted text-d16 mt-2 max-w-[44ch]">
+          Tell us what&apos;s going on. We&apos;ll help you find the first words.
         </p>
       </div>
 
@@ -151,9 +158,12 @@ export function ConsentStep({ onAccept }: { onAccept: () => void }) {
           >
             <h2 className="display text-d24">Terms and conditions</h2>
             <ul className="text-muted text-d16 mt-2 list-disc space-y-1 pl-3">
-              <li>No chat — a short questionnaire once, then cards for each situation.</li>
+              <li>No chat. A short questionnaire once, then cards for each situation.</li>
               <li>Your answers stay in your browser, never on our server.</li>
-              <li>We never store what you describe, your child&apos;s name, or their birthdate.</li>
+              <li>
+                We never store what you describe, the child or ward&apos;s name, or their
+                birthdate.
+              </li>
               <li>Dangerous situations get crisis resources instead of generated cards.</li>
               <li>AI-generated, not therapy or medical advice.</li>
             </ul>
