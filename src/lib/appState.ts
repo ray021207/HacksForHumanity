@@ -20,7 +20,7 @@ export type RelationshipType =
 
 export interface ChildInfo {
   id: string;
-  ageBand: "13-15" | "16-17" | "18-22" | "23+";
+  ageBand: "13-15" | "16-17" | "18-22";
   livingSituation: string;
   relationshipType: RelationshipType;
   relationshipTypeOther?: string; // free text, only meaningful when relationshipType === "other"

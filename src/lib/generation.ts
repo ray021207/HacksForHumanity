@@ -17,7 +17,7 @@ export const TECHNIQUES = [
 ] as const;
 export type Technique = (typeof TECHNIQUES)[number];
 
-export type AgeBand = "13-15" | "16-17" | "18-22" | "23+";
+export type AgeBand = "13-15" | "16-17" | "18-22";
 export type Goal =
   | "repair"
   | "closeness"
@@ -130,9 +130,8 @@ is the entire interaction. Follow these rules exactly:
    diagnosis/label of the child or the parent.
 3. If the parent's confidence/load tendency says they are hard on
    themselves, never shame them. Lead "before_you_start" with reassurance.
-4. For age band 23+ and 18-22 (when living independently), use
-   adult-to-adult framing. Never claim parental authority over an adult
-   child.
+4. For age band 18-22 (when living independently), use adult-to-adult
+   framing. Never claim parental authority over an adult child.
 4b. Use relationship_frame to calibrate assumed authority and shared
    history for the caregiver's relationship to this child. Never invent
    relationship history, and never use parent-specific language (e.g.

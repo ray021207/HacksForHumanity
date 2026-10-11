@@ -71,8 +71,7 @@
           "options": [
             { "value": "13-15", "label": "13 to 15" },
             { "value": "16-17", "label": "16 to 17" },
-            { "value": "18-22", "label": "18 to 22" },
-            { "value": "23+", "label": "23 and up" }
+            { "value": "18-22", "label": "18 to 22" }
           ]
         },
         "livingSituation": {

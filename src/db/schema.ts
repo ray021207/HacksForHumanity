@@ -98,7 +98,7 @@ export const children = pgTable("child", {
     .references(() => user.id, { onDelete: "cascade" }),
   relationshipType: text("relationship_type").notNull(), // RelationshipType union, see src/lib/appState.ts
   relationshipTypeOther: text("relationship_type_other"),
-  ageBand: text("age_band").notNull(), // "13-15" | "16-17" | "18-22" | "23+"
+  ageBand: text("age_band").notNull(), // "13-15" | "16-17" | "18-22"
   livingSituation: text("living_situation").notNull(),
   nickname: text("nickname"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
