@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+
+// Safety classification + generation are two sequential model calls, plus a
+// possible retry on an invalid first attempt — comfortably over Vercel's
+// default serverless timeout (10s on Hobby) under real-world latency.
+export const maxDuration = 60;
 import { classifyRisk } from "@/lib/safety";
 import { generateCards, type AgeBand, type Goal, type Refinement } from "@/lib/generation";
 import type { ProfileScores } from "@/lib/scoring";

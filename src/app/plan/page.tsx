@@ -87,6 +87,7 @@ export default function Home() {
   const [situationChildId, setSituationChildId] = useState<string | null>(null);
   const [cardsResult, setCardsResult] = useState<CardsApiResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function update(patch: Partial<AppState>) {
     setState((prev) => {
@@ -124,6 +125,7 @@ export default function Home() {
 
   async function submitSituation(input: { childId: string; situationText: string; goal: Goal; setting: string }) {
     setIsSubmitting(true);
+    setSubmitError(null);
     setSituationChildId(input.childId);
     const child = state.children.find((c) => c.id === input.childId)!;
     try {
@@ -139,9 +141,19 @@ export default function Home() {
           goal: input.goal,
         }),
       });
+      // A non-JSON body (e.g. a platform-level timeout page) throws here and
+      // falls to the catch below rather than being handed to CardsStep.
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(typeof data?.error === "string" ? data.error : `Request failed (${res.status})`);
+      }
       setCardsResult(data);
       goTo("cards");
+    } catch {
+      // Stay on the situation screen with a visible error rather than
+      // navigating to "cards" with a response that isn't actually cards —
+      // that's what used to render as a near-blank screen.
+      setSubmitError("That took too long or something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -209,6 +221,7 @@ export default function Home() {
           onBack={() => goBack("situation")}
           onSubmit={submitSituation}
           isSubmitting={isSubmitting}
+          errorMessage={submitError}
         />
       );
 

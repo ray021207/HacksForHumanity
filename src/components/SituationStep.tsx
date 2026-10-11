@@ -19,11 +19,13 @@ export function SituationStep({
   onBack,
   onSubmit,
   isSubmitting,
+  errorMessage,
 }: {
   familyChildren: ChildInfo[];
   onBack: () => void;
   onSubmit: (input: { childId: string; situationText: string; goal: Goal; setting: string }) => void;
   isSubmitting: boolean;
+  errorMessage?: string | null;
 }) {
   const [childId, setChildId] = useState(familyChildren[0]?.id ?? "");
   const [situationText, setSituationText] = useState("");
@@ -41,6 +43,7 @@ export function SituationStep({
       primaryLabel={isSubmitting ? "Getting cards..." : "Find the first words"}
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
       primaryDisabled={!canSubmit || isSubmitting}
+      secondary={errorMessage ? <p className="text-accent text-d16 text-center">{errorMessage}</p> : undefined}
     >
       <div className="space-y-3">
         <div>

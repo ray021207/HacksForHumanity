@@ -179,7 +179,7 @@ export function CardsStep({
                     type="button"
                     aria-label={`Go to card ${idx + 1}`}
                     onClick={() => scrollToCard(idx)}
-                    className={`h-1 rounded-full transition-all ${idx === activeIdx ? "bg-purp-faded-ink w-4" : "bg-secondary-bg w-1"}`}
+                    className={`h-1 rounded-full transition-all ${idx === activeIdx ? "bg-prup w-4" : "bg-secondary-bg w-1"}`}
                   />
                 ))}
               </div>
