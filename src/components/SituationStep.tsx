@@ -35,19 +35,37 @@ export function SituationStep({
   return (
     <WizardShell
       mascot="star"
-      title="What's going on?"
-      description="Type or speak. Nothing here is stored after you leave this page."
+      headerPill="New situation"
+      title="Tell us about the moment."
       onBack={onBack}
-      primaryLabel={isSubmitting ? "Getting cards..." : "Get conversation starters"}
+      primaryLabel={isSubmitting ? "Getting cards..." : "Find the first words"}
       onPrimary={() => onSubmit({ childId, situationText: situationText.trim(), goal: goal as Goal, setting })}
       primaryDisabled={!canSubmit || isSubmitting}
     >
       <div className="space-y-3">
+        <div>
+          <textarea
+            className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg placeholder:text-secondary-fg block w-full border p-2"
+            rows={5}
+            value={situationText}
+            onChange={(e) => setSituationText(e.target.value)}
+            placeholder="Type or speak, e.g. we argued about curfew tonight and it got heated."
+          />
+          <VoiceInputButton
+            onTranscript={(text) =>
+              setSituationText((prev) => (prev.trim() ? `${prev.trim()} ${text}` : text))
+            }
+          />
+          <p className="text-secondary-fg text-d16 mt-1">
+            Please leave out names or details that could identify your child.
+          </p>
+        </div>
+
         {familyChildren.length > 1 && (
-          <label className="text-muted text-d16 block">
+          <label className="text-secondary-fg text-d16 block">
             Which child?
             <select
-              className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+              className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg mt-1 block w-full border p-2"
               value={childId}
               onChange={(e) => setChildId(e.target.value)}
             >
@@ -61,22 +79,7 @@ export function SituationStep({
         )}
 
         <div>
-          <textarea
-            className="border-line bg-field rounded-field text-d16 text-ink placeholder:text-muted block w-full border p-2"
-            rows={5}
-            value={situationText}
-            onChange={(e) => setSituationText(e.target.value)}
-            placeholder="Type or speak, e.g. we argued about curfew tonight and it got heated."
-          />
-          <VoiceInputButton
-            onTranscript={(text) =>
-              setSituationText((prev) => (prev.trim() ? `${prev.trim()} ${text}` : text))
-            }
-          />
-        </div>
-
-        <div>
-          <span className="text-d16 block font-semibold">What&apos;s this for?</span>
+          <span className="text-d16 block font-semibold">What do you hope for?</span>
           <div className="mt-1 flex flex-wrap gap-1">
             {goalsBlock.options.map((opt: any) => (
               <PillChip key={opt.value} selected={goal === opt.value} onClick={() => setGoal(opt.value)}>
@@ -87,7 +90,7 @@ export function SituationStep({
         </div>
 
         <div>
-          <span className="text-d16 block font-semibold">Setting</span>
+          <span className="text-d16 block font-semibold">Where did this happen?</span>
           <div className="mt-1 flex flex-wrap gap-1">
             {SETTING_OPTIONS.map((opt) => (
               <PillChip key={opt.value} selected={setting === opt.value} onClick={() => setSetting(opt.value)}>

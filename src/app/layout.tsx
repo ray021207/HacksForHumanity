@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
@@ -30,6 +31,17 @@ const dmSerifText = localFont({
 
 // The body sans is deliberately NOT a webfont — see the note in globals.css.
 
+// DM Serif Display, for the /plan wizard's headlines specifically — a
+// different face from the landing page's DM Serif Text (wider, no italic
+// companion needed here). Self-hosted at build time by next/font like the
+// local one above.
+const dmSerifDisplay = DM_Serif_Display({
+	subsets: ['latin'],
+	weight: '400',
+	variable: '--font-dm-serif-display',
+	display: 'swap'
+});
+
 export const metadata: Metadata = {
 	title: 'Kin&d: know what to say when it matters',
 	description:
@@ -44,7 +56,7 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({ children }: LayoutProps<'/'>) {
 	return (
-		<html lang="en" className={`${dmSerifText.variable} h-full`}>
+		<html lang="en" className={`${dmSerifText.variable} ${dmSerifDisplay.variable} h-full`}>
 			<body className="flex min-h-full flex-col antialiased">
 				<Nav />
 				{children}

@@ -93,7 +93,7 @@ export function VoiceInputButton({ onTranscript }: { onTranscript: (text: string
         <button
           type="button"
           onClick={stopRecording}
-          className="bg-ink rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-white"
+          className="bg-primary-fg rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-primary-bg"
         >
           <span className="bg-accent rounded-pill size-1 animate-pulse" />
           Stop recording
@@ -103,7 +103,7 @@ export function VoiceInputButton({ onTranscript }: { onTranscript: (text: string
           type="button"
           onClick={startRecording}
           disabled={status === "transcribing"}
-          className="bg-ink rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-white disabled:opacity-50"
+          className="bg-primary-fg rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-primary-bg disabled:opacity-50"
         >
           🎙️ {status === "transcribing" ? "Transcribing..." : "Speak"}
         </button>

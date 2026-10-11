@@ -78,31 +78,21 @@
 	--color-blush-ink: #c0417f;
 	--color-field: #f1efec;
 
-	/* ---- Clovis aliases --------------------------------------------------
-	   main names its colours for the role they play (primary-fg, secondary-bg)
-	   rather than for what they are (ink, field). Both namings are now in the
-	   tree: the questionnaire and everything main added — sign-in, billing,
-	   the upgrade wall — are written against these four, and the landing page
-	   is written against the names above.
-
-	   Rather than rewriting one set of class names into the other, the roles
-	   point at the landing page's values. That is the whole merge in five
-	   lines: main's components keep their markup and come out in our palette,
-	   and a screen built against either vocabulary lands in the same place.
-
-	   These are aliases, not a second palette. Changing canvas changes
-	   primary-bg with it, which is the only way the two namings can't drift. */
-	--color-primary-fg: var(--color-ink);
-	--color-primary-bg: var(--color-canvas);
-	--color-secondary-fg: var(--color-muted);
-	--color-secondary-bg: var(--color-field);
-	--color-tertiary-fg: var(--color-muted-2);
-
-	/* main's pink pair, used for selected answers and technique badges. Ours
-	   is the blush the landing page already picks answers out in, so the two
-	   designs agree on what "chosen" looks like. */
-	--color-prup: var(--color-blush-ink);
-	--color-purp-faded: var(--color-blush);
+	/* ---- /plan's own palette ----------------------------------------------
+	   These are NOT aliases to the landing page's colours — they're the
+	   /plan wizard's own values (from the Clovis Figma variables), kept as a
+	   separate set so the wizard (family through cards) can look different
+	   from the landing page and ConsentStep without either side's classes
+	   needing to change. Nothing outside src/components/WizardShell.tsx and
+	   the step components it wraps references these names, so redefining
+	   them here only repaints the wizard screens. */
+	--color-primary-fg: #100212;
+	--color-primary-bg: #fbfaf9;
+	--color-secondary-fg: rgb(16 2 18 / 64%);
+	--color-secondary-bg: #e8e4e3;
+	--color-tertiary-fg: rgb(16 2 18 / 40%);
+	--color-prup: #ee59c9;
+	--color-purp-faded: rgb(238 89 201 / 24%);
 
 	/* ---- mesh tints ------------------------------------------------------
 	   The four ellipses behind the closing CTA, lifted from the app's start
@@ -137,9 +127,12 @@
 	--font-display: var(--font-dm-serif-text), 'Iowan Old Style', Georgia, serif;
 	--font-sans: 'Helvetica Neue', Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
 
-	/* main's headlines ask for font-serif; ours is the `display` utility.
-	   Same face, so the alias keeps its screens on the brand serif. */
-	--font-serif: var(--font-display);
+	/* DM Serif Display, for the /plan wizard's headlines specifically — a
+	   different face from the landing page's `display` utility (DM Serif
+	   Text), self-hosted via next/font/google in layout.tsx. Scoped the same
+	   way the colours above are: only WizardShell's title uses font-serif,
+	   so this doesn't touch the landing page's own headlines. */
+	--font-serif: var(--font-dm-serif-display), Georgia, 'Times New Roman', serif;
 
 	/* Courier for the footer disclaimer only. Legal copy set in the same face
 	   as the marketing copy reads as more marketing copy; a typewriter face

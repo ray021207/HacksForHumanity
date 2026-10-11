@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TermsNotice from "./TermsNotice";
-import { WizardShell } from "./WizardShell";
+import { WizardShell, PillChip } from "./WizardShell";
 import type { ChildInfo, RelationshipType } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
@@ -66,7 +66,7 @@ export function FamilyStep({
     >
       <div className="space-y-2">
         {local.map((child, idx) => (
-          <div key={child.id} className="border-line bg-surface rounded-card border p-3">
+          <div key={child.id} className="border-secondary-bg bg-primary-bg rounded-card border p-3">
             <div className="flex items-center justify-between">
               <h3 className="text-d16 font-semibold">
                 {relationshipField.nounLabels[child.relationshipType] ?? "Child"} {idx + 1}
@@ -75,36 +75,34 @@ export function FamilyStep({
                 <button
                   type="button"
                   onClick={() => removeChild(child.id)}
-                  className="text-muted text-d16 underline"
+                  className="text-secondary-fg text-d16 underline"
                 >
                   Remove
                 </button>
               )}
             </div>
 
-            <label className="text-muted text-d16 mt-2 block">
-              {relationshipField.label}
-              <select
-                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
-                value={child.relationshipType}
-                onChange={(e) =>
-                  update(child.id, { relationshipType: e.target.value as RelationshipType })
-                }
-              >
+            <div className="mt-2">
+              <span className="text-secondary-fg text-d16 block">{relationshipField.label}</span>
+              <div className="mt-1 flex flex-wrap gap-1">
                 {relationshipField.options.map((opt: any) => (
-                  <option key={opt.value} value={opt.value}>
+                  <PillChip
+                    key={opt.value}
+                    selected={child.relationshipType === opt.value}
+                    onClick={() => update(child.id, { relationshipType: opt.value as RelationshipType })}
+                  >
                     {opt.label}
-                  </option>
+                  </PillChip>
                 ))}
-              </select>
-            </label>
+              </div>
+            </div>
 
             {child.relationshipType === "other" && (
-              <label className="text-muted text-d16 mt-2 block">
+              <label className="text-secondary-fg text-d16 mt-2 block">
                 Tell us what to call it (optional)
                 <input
                   type="text"
-                  className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                  className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg mt-1 block w-full border p-2"
                   value={child.relationshipTypeOther ?? ""}
                   onChange={(e) => update(child.id, { relationshipTypeOther: e.target.value })}
                   placeholder="However you'd describe it"
@@ -112,10 +110,10 @@ export function FamilyStep({
               </label>
             )}
 
-            <label className="text-muted text-d16 mt-2 block">
+            <label className="text-secondary-fg text-d16 mt-2 block">
               {familyBlock.fields.ageBand.label}
               <select
-                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg mt-1 block w-full border p-2"
                 value={child.ageBand}
                 onChange={(e) => update(child.id, { ageBand: e.target.value as ChildInfo["ageBand"] })}
               >
@@ -127,10 +125,10 @@ export function FamilyStep({
               </select>
             </label>
 
-            <label className="text-muted text-d16 mt-2 block">
+            <label className="text-secondary-fg text-d16 mt-2 block">
               {familyBlock.fields.livingSituation.label}
               <select
-                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg mt-1 block w-full border p-2"
                 value={child.livingSituation}
                 onChange={(e) => update(child.id, { livingSituation: e.target.value })}
               >
@@ -142,16 +140,16 @@ export function FamilyStep({
               </select>
             </label>
 
-            <label className="text-muted text-d16 mt-2 block">
+            <label className="text-secondary-fg text-d16 mt-2 block">
               {familyBlock.fields.nickname.label}
               <input
                 type="text"
-                className="border-line bg-field rounded-field text-d16 text-ink mt-1 block w-full border p-2"
+                className="border-secondary-bg bg-secondary-bg rounded-field text-d16 text-primary-fg mt-1 block w-full border p-2"
                 value={child.nickname ?? ""}
                 onChange={(e) => update(child.id, { nickname: e.target.value })}
                 placeholder="Optional, shown only on your screen"
               />
-              <span className="text-muted text-d16 mt-1 block">{familyBlock.fields.nickname.helpText}</span>
+              <span className="text-secondary-fg text-d16 mt-1 block">{familyBlock.fields.nickname.helpText}</span>
             </label>
           </div>
         ))}

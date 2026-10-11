@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WizardShell, PillChip } from "./WizardShell";
+import { WizardShell, PillOption } from "./WizardShell";
 import type { RawResponses } from "@/lib/appState";
 import questionnaire from "@/data/questionnaire.json";
 
@@ -9,10 +9,10 @@ function itemText(item: any, isAdult: boolean): string {
 }
 
 /**
- * One question per screen, each with its own back/continue, matching the
- * "Question 1 / Question 2 / ..." onboarding pattern. Item count comes
- * from src/data/questionnaire.json (6 TIPI items as of this build — a
- * trimmed 3-trait subset, see that file's "source" note).
+ * One question per screen, each with its own back/continue. The question
+ * text itself is the screen title. Item count comes from
+ * src/data/questionnaire.json (6 TIPI items as of this build — a trimmed
+ * 3-trait subset, see that file's "source" note).
  */
 export function LikertBlockStep({
   blockId,
@@ -51,29 +51,25 @@ export function LikertBlockStep({
 
   return (
     <WizardShell
-      title={`Question ${itemIndex + 1}`}
-      description={`${block.title} · ${itemIndex + 1} of ${block.items.length}`}
+      headerPill={`${itemIndex + 1} of ${block.items.length}`}
+      title={itemText(item, isAdultChild)}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Continue"
+      primaryLabel="Next"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
     >
-      <div>
-        <p className="text-d24">{itemText(item, isAdultChild)}</p>
-
-        <div className="mt-3 flex flex-wrap gap-1">
-          {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
-            <PillChip key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
-              {scale.labels[n - scale.min]}
-            </PillChip>
-          ))}
-        </div>
+      <div className="space-y-1">
+        {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((n) => (
+          <PillOption key={n} selected={value === n} onClick={() => onChange(item.id, n)}>
+            {scale.labels[n - scale.min]}
+          </PillOption>
+        ))}
 
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`text-d16 mt-2 underline ${value === null ? "text-blush-ink" : "text-muted"}`}
+          className={`text-d16 mt-2 block underline ${value === null ? "text-prup" : "text-secondary-fg"}`}
         >
           Prefer not to say
         </button>

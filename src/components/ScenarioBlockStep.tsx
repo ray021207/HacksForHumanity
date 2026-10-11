@@ -5,7 +5,7 @@ import questionnaire from "@/data/questionnaire.json";
 
 const scenarioBlock = (questionnaire.blocks as any[]).find((b) => b.id === "scenarios");
 
-/** One scenario per screen, same "Question N" pattern as the personality block. */
+/** One scenario per screen; the scenario prompt itself is the screen title. */
 export function ScenarioBlockStep({
   responses,
   isAdultChild,
@@ -39,33 +39,30 @@ export function ScenarioBlockStep({
 
   return (
     <WizardShell
-      title={`Question ${itemIndex + 1}`}
-      description={`${scenarioBlock.title} · ${itemIndex + 1} of ${scenarioBlock.items.length}`}
+      headerPill={`${itemIndex + 1} of ${scenarioBlock.items.length}`}
+      title={prompt}
       onBack={goBack}
       progress={progress}
-      primaryLabel="Continue"
+      primaryLabel="Next"
       onPrimary={goNext}
       primaryDisabled={!isAnswered}
     >
-      <div>
-        <p className="text-d24">{prompt}</p>
-
-        <div className="mt-3 space-y-1">
-          {item.options.map((opt: any) => (
-            <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
-              {opt.label}
-            </PillOption>
-          ))}
-        </div>
+      <div className="space-y-1">
+        {item.options.map((opt: any) => (
+          <PillOption key={opt.id} selected={selected === opt.id} onClick={() => onChange(item.id, opt.id)}>
+            {opt.label}
+          </PillOption>
+        ))}
 
         <button
           type="button"
           onClick={() => onChange(item.id, null)}
-          className={`text-d16 mt-2 underline ${selected === null ? "text-blush-ink" : "text-muted"}`}
+          className={`text-d16 mt-2 block underline ${selected === null ? "text-prup" : "text-secondary-fg"}`}
         >
           Prefer not to say
         </button>
       </div>
+      <p className="text-secondary-fg text-d16 mt-3">No right or wrong. Just what feels like you.</p>
     </WizardShell>
   );
 }

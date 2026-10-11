@@ -9,6 +9,13 @@ export type RelationshipType =
   | "aunt_uncle"
   | "foster_parent"
   | "legal_guardian"
+  | "solo_parent"
+  | "two_moms"
+  | "two_dads"
+  | "step_parents"
+  | "two_step_parents"
+  | "co_parents_two_homes"
+  | "grandparents"
   | "other";
 
 export interface ChildInfo {

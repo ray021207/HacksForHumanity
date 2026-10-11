@@ -31,7 +31,7 @@
       "maxChildren": 4,
       "fields": {
         "relationshipType": {
-          "label": "Your relationship to them",
+          "label": "Your family relationship",
           "options": [
             { "value": "parent", "label": "Parent" },
             { "value": "step_parent", "label": "Step-parent" },
@@ -39,6 +39,13 @@
             { "value": "aunt_uncle", "label": "Aunt or uncle" },
             { "value": "foster_parent", "label": "Foster parent" },
             { "value": "legal_guardian", "label": "Legal guardian" },
+            { "value": "solo_parent", "label": "Solo parents" },
+            { "value": "two_moms", "label": "Two moms" },
+            { "value": "two_dads", "label": "Two dads" },
+            { "value": "step_parents", "label": "Step-parents" },
+            { "value": "two_step_parents", "label": "two-step-parents" },
+            { "value": "co_parents_two_homes", "label": "Co-parents across two homes" },
+            { "value": "grandparents", "label": "Grandparents" },
             { "value": "other", "label": "Other" }
           ],
           "otherFreeTextField": "relationshipTypeOther",
@@ -49,6 +56,13 @@
             "aunt_uncle": "Niece/nephew",
             "foster_parent": "Foster child",
             "legal_guardian": "Ward",
+            "solo_parent": "Child",
+            "two_moms": "Child",
+            "two_dads": "Child",
+            "step_parents": "Stepchild",
+            "two_step_parents": "Stepchild",
+            "co_parents_two_homes": "Child",
+            "grandparents": "Grandchild",
             "other": "Child"
           }
         },

@@ -17,19 +17,20 @@ export function ProfileStep({
 }) {
   return (
     <WizardShell
+      headerPill="Your results"
       mascot="block"
-      title="A quick read on your tendencies"
-      description="Here's what your answers suggest about how you tend to show up in hard conversations. We use this to tune the tone and techniques in your cards, never to label or diagnose you. It's based on a short, original questionnaire (not a validated clinical instrument), so take it as a loose signal, not a verdict. You can retake it anytime, and it never leaves your browser."
+      title={profile.headline}
+      description="No labels, no scores. Just patterns to work with."
       onBack={onBack}
       progress={progress}
-      primaryLabel="Continue"
+      primaryLabel="Start with a situation"
       onPrimary={onNext}
       secondary={
         onRetake && (
           <button
             type="button"
             onClick={onRetake}
-            className="text-muted text-d16 mx-auto underline"
+            className="text-secondary-fg text-d16 mx-auto underline"
           >
             Retake the questionnaire
           </button>
@@ -37,23 +38,32 @@ export function ProfileStep({
       }
     >
       <div className="space-y-2">
-        <div>
-          <h3 className="text-d16 font-semibold">What stands out</h3>
-          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
+        <div className="border-secondary-bg bg-primary-bg rounded-card border p-3">
+          <span className="bg-purp-faded text-prup rounded-pill text-d16 inline-block px-2 py-1 font-medium">
+            What you do well
+          </span>
+          <ul className="text-primary-fg text-d16 mt-2 list-disc space-y-1 pl-3">
             {profile.strengths.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}
           </ul>
         </div>
-        <div className="bg-field rounded-card p-3">
-          <h3 className="text-d16 font-semibold">A few things to try</h3>
-          <ul className="text-muted text-d16 mt-1 list-disc space-y-1 pl-3">
+        <div className="border-secondary-bg bg-primary-bg rounded-card border p-3">
+          <span className="bg-purp-faded text-prup rounded-pill text-d16 inline-block px-2 py-1 font-medium">
+            What you might be missing
+          </span>
+          <ul className="text-primary-fg text-d16 mt-2 list-disc space-y-1 pl-3">
             {profile.stretches.map((s, idx) => (
               <li key={idx}>{s}</li>
             ))}
           </ul>
         </div>
       </div>
+
+      <p className="text-secondary-fg text-d16 mt-3">
+        This is based on a short, original questionnaire, not a validated clinical instrument —
+        take it as a loose signal, not a verdict. It never leaves your browser.
+      </p>
     </WizardShell>
   );
 }
