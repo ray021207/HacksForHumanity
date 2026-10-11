@@ -31,11 +31,11 @@ export default function Pricing() {
 				</span>
 
 				<h2 className="display text-d32 sm:text-d40 lg:text-d56 max-w-[24ch]">
-					Start free. Go unlimited for $5 a week.
+					Start free. Go unlimited for $9.99 a month.
 				</h2>
 
 				<p className="text-muted text-d16 max-w-[48ch]">
-					No bundles, no annual lock-in. Cancel any week you don’t need us.
+					No bundles, no annual lock-in. Cancel any month you don’t need us.
 				</p>
 			</div>
 
@@ -86,11 +86,11 @@ export default function Pricing() {
 					<div className="flex flex-col gap-1">
 						<span className="text-d16 font-semibold">Unlimited</span>
 						<span className="display text-d48 lg:text-d56">
-							$5
-							<span className="text-d24 font-normal text-white/70"> / week</span>
+							$9.99
+							<span className="text-d24 font-normal text-white/70"> / month</span>
 						</span>
 						<span className="text-d16 text-white/85">
-							For the weeks when one talk leads to three.
+							For the months when one talk leads to three.
 						</span>
 					</div>
 
