@@ -17,7 +17,7 @@ export default function Footer() {
 				<div className="gap-s2 flex flex-col sm:flex-row sm:justify-between">
 					<div className="flex flex-col gap-1">
 						<Link href="/" className="display text-d24 w-fit">
-							Kin&amp;d
+							Kin<span className="text-wordmark-amp">&amp;</span>d
 						</Link>
 						<p className="text-muted text-d16 max-w-[32ch]">
 							Know what to say when it matters.
