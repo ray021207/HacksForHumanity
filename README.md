@@ -17,15 +17,18 @@ ready for real users. See "What still needs a human" below before any real launc
 - Better Auth for sign-in (magic-link email via Resend, plus optional Google OAuth), with
   database sessions
 - Drizzle ORM + Postgres (Neon/Vercel Postgres) for persistence
-- Stripe Checkout + Billing Portal for the freemium subscription
-- **Persistence changed from the original MVP.** Sign-in is now required before the
-  questionnaire or card generation. Once signed in, your account, questionnaire responses,
-  children/relationship info, and situation text are stored in Postgres, tied to your account —
-  this is a deliberate change from the original local-only MVP, made to support saved
-  progress across devices and the freemium usage limit. The append-only `logs/events.log`
-  remains counts-only, as before, for safety-gate/lint telemetry specifically. The in-browser
-  `localStorage` draft (`appState.ts`) still exists, but only as a short-lived autosave cache
-  for the in-progress step — the server is the source of truth once a block is completed.
+- Stripe Checkout + Billing Portal for the optional paid subscription
+
+**No account is required to use the app.** The questionnaire and card generation at `/plan` work
+entirely from browser `localStorage` (`appState.ts`) — there is no auth check and no usage limit
+on `/api/cards/generate`. Sign-in, Postgres persistence, and Stripe billing are a separate,
+optional path: the pricing card's "Get unlimited" button (`UpgradeButton.tsx`) sends a visitor
+through `/sign-in` and Stripe Checkout, and `src/lib/billing.ts` has the free-tier usage-counter
+logic (`checkAndConsumeUsage`, `FREE_LIMIT` free generations before blocking) — but that function
+is **not currently called from `/api/cards/generate`**, so nothing actually enforces it yet. Wiring
+it in is the one piece of unfinished work if the freemium limit is wanted back; see
+`src/lib/billing.ts` for where the call would go. The append-only `logs/events.log` remains
+counts-only, as always, for safety-gate/lint telemetry.
 
 ## Setup
 
@@ -38,10 +41,10 @@ cp .env.example .env.local   # then fill in the variables below
 
 - `ANTHROPIC_API_KEY` — required for the safety classifier and card generation.
 - `MODEL_NAME` — defaults to `claude-sonnet-5-5` if unset.
-- `ELEVENLABS_API_KEY` — optional. Enables the "🎤 Speak instead" mic button on the situation
-  screen (speech-to-text only; there's no read-aloud/TTS). Leave it unset and the mic button
-  simply doesn't render — `GET /api/voice/transcribe` reports `{enabled: false}` and the UI checks
-  that before showing it.
+- `ELEVENLABS_API_KEY` — optional. Enables the "Speak" button on the situation screen
+  (speech-to-text only; there's no read-aloud/TTS). Leave it unset and the button simply doesn't
+  render — `GET /api/voice/transcribe` reports `{enabled: false}` and the UI checks that before
+  showing it.
 - `AUTH_SECRET` — required. Generate with `openssl rand -base64 33`.
 - `AUTH_URL` — the deployed domain in production; auto-detected in dev.
 - `RESEND_API_KEY`, `EMAIL_FROM` — required for magic-link sign-in email.
@@ -60,15 +63,17 @@ npm run db:generate   # regenerate drizzle/*.sql after a schema change (already 
 npm run db:migrate    # apply migrations to the database
 ```
 
-## Freemium limit
+## Freemium limit (scaffolded, not currently wired in)
 
-Signed-in users get `FREE_LIMIT` (5, see `src/lib/billingConstants.ts`) free card generations
-before `/api/cards/generate` returns `402` and the UI shows an upgrade prompt
-(`src/components/UpgradePrompt.tsx`) linking to `/account/billing`. A red-tier (crisis) result
-never consumes a free generation, since it costs no model call and someone in crisis shouldn't
-be penalized for hitting a limit. The usage counter is enforced server-side
-(`src/lib/billing.ts`) via an atomic `INSERT ... ON CONFLICT DO UPDATE`, and fails closed (blocks
-free users, never blocks an already-resolved subscriber) if the database is unreachable.
+`src/lib/billing.ts` has `checkAndConsumeUsage()`: `FREE_LIMIT` (5, see
+`src/lib/billingConstants.ts`) free generations per signed-in user via an atomic
+`INSERT ... ON CONFLICT DO UPDATE`, fails closed (blocks free users, never blocks an
+already-resolved subscriber) if the database is unreachable, and never counts a red-tier
+(crisis) result since that costs no model call. `src/components/UpgradePrompt.tsx` is the 402
+UI. **None of this is called from `/api/cards/generate` right now** — card generation has no
+usage check at all, signed in or not. To bring the limit back: call `checkAndConsumeUsage()` from
+`cards/generate/route.ts` (after the safety gate decides the tier, before the model call for
+green/amber) and return `402` with an upgrade link when `allowed` is `false`.
 
 ## Running things
 
@@ -91,9 +96,11 @@ See DEPLOYMENT.md.
 
 | Route | What it is |
 | --- | --- |
-| `/` | Landing page |
-| `/plan` | The questionnaire and cards |
+| `/` | Landing page — no account needed to start |
+| `/plan` | The questionnaire and cards, localStorage-only, no sign-in required |
 | `/partners` | Partner program for therapy offices |
+| `/sign-in` | Optional — only reached via the pricing card's "Get unlimited" button |
+| `/account/billing` | Subscription status and Stripe Billing Portal link, signed-in only |
 
 ## How it's organized
 
@@ -111,7 +118,7 @@ src/lib/logging.ts            Append-only counts-only log
 src/app/api/cards/generate    The one endpoint: safety gate -> (generation + validator) -> cards
 src/app/api/feedback/thumb    Logs a thumbs up/down (counts only)
 src/app/api/voice/transcribe  GET: is voice input configured. POST: transcribes one audio clip, nothing persisted
-src/app/page.tsx              The landing page: hero, how it works, mission, FAQ, closing CTA
+src/app/page.tsx              The landing page: hero, how it works, mission, pricing, FAQ, closing CTA
 src/app/plan/page.tsx         The wizard: consent -> family -> questionnaire -> profile -> situation -> cards
 src/app/partners/page.tsx     Partner program page for therapy offices and school counselors
 src/components/               Shared UI: the landing sections, the search bar, and the wizard steps
@@ -132,10 +139,16 @@ questions**, and the TIPI was later trimmed from 10 to 6 items on request (see p
 
 The full sourcing rationale and instrument survey are in the original product spec (kept locally, not in this repo); block by block, as built:
 
-1. **Family** — age band (13–15, 16–17, 18–22, 23+), living situation, optional nickname.
-   Original, not from a published instrument. This is the single biggest lever on tone: teens get
-   autonomy/identity framing, adult children get adult-to-adult framing with no claim to parental
-   authority. No birthdates, no real names, ever.
+1. **Family** — relationship type (14 options: the original parent / step-parent / grandparent /
+   aunt-or-uncle / foster parent / legal guardian, plus solo parents / two moms / two dads /
+   step-parents / two-step-parents / co-parents across two homes / grandparents, plus Other with
+   free text), age band (13–15, 16–17, 18–22), living situation, optional nickname. Original, not
+   from a published instrument. Age band is the single biggest lever on tone: teens get
+   autonomy/identity framing, 18–22 (when living independently) gets adult-to-adult framing with
+   no claim to parental authority. Relationship type calibrates assumed authority and shared
+   history separately — see `relationshipGuidance` in `src/data/playbook.json`, one frame per
+   type (e.g. a foster parent's frame says not to presume long shared history; a grandparent's
+   says to watch era-specific assumptions). No birthdates, no real names, ever.
 
 2. **Personality — 6 of the 10 TIPI items** (Gosling, Rentfrow & Swann, 2003). The TIPI measures
    the Big Five as 5 traits × 2 items each (one regular, one reverse-keyed), and its scoring
@@ -184,7 +197,7 @@ screen shows strengths-first language with one suggested stretch — never a typ
 
 ## Voice input (optional)
 
-The situation screen has a "🎤 Speak instead" button that records a short clip in the browser
+The situation screen has a "Speak" button that records a short clip in the browser
 (`MediaRecorder`), sends it to `POST /api/voice/transcribe`, and drops the transcript into the same
 editable textarea the parent would otherwise type into — it's never auto-submitted. That route
 calls ElevenLabs speech-to-text (`src/lib/elevenlabs-client.ts`) and nothing else: the audio is
@@ -258,7 +271,7 @@ Either way, nothing the parent types after the cards are shown ever reaches the 
 
 ## Tests
 
-`npm test` runs 60 Vitest tests covering:
+`npm test` runs 67 Vitest tests covering:
 
 - `src/lib/scoring.test.ts` — reverse keying, the hand-checkable TIPI example from the spec
   (Extraversion items scoring 5 and 2 → (5 + 6) / 2 = 5.5), the scenario-block scorer (averaging
@@ -278,7 +291,7 @@ Either way, nothing the parent types after the cards are shown ever reaches the 
 All of these were run against the real Anthropic API (model: see `.env.local`) at build time; see
 the commands above to re-run them.
 
-- **All Vitest tests pass**: 60/60.
+- **All Vitest tests pass**: 67/67.
 - **Safety script, red-tier recall and false-positive rate** on the 40-case starter set
   (`npm run safety:eval`): **100% red-tier recall (13/13)**, **0% false-positive rate (0/40)**.
   This is a small, hand-written, non-clinician-reviewed set — treat this as a sanity check that
@@ -326,7 +339,8 @@ the commands above to re-run them.
 
 ## Explicitly out of scope for this MVP
 
-Chat (there is none, by design — voice input still only fills the same one-shot textarea), text-to-
-speech/read-aloud, partner sharing, child accounts, push notifications, subscriptions,
-streaks/gamification, and any analytics built on emotional content. No deployment — this has only
-been run locally.
+Chat (there is none, by design — voice input still only fills the same one-shot textarea),
+text-to-speech/read-aloud, partner sharing, child accounts, push notifications,
+streaks/gamification, and any analytics built on emotional content. The app is deployed on Vercel
+(see DEPLOYMENT.md); subscriptions exist as a scaffolded, optional path (see "Freemium limit"
+above) rather than an enforced part of the product.
