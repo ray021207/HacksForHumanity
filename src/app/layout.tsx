@@ -43,7 +43,7 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-	title: 'Kin&d: know what to say when it matters',
+	title: 'Kin&d: Kin and Kind',
 	description:
 		'Personalized guidance for the conversations you want to have with your child.'
 };

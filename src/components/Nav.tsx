@@ -39,8 +39,9 @@ export default function Nav() {
 			}`}
 		>
 			<div className="mx-auto flex w-full max-w-[1360px] items-center justify-between gap-2 px-2 py-2 lg:px-3">
-				<Link href="/" className="display text-d24 shrink-0">
-					Kin&amp;d
+				<Link href="/" className="flex shrink-0 items-baseline gap-1">
+					<span className="display text-d24">Kin&amp;d</span>
+					{onLanding && <span className="text-muted text-d16 hidden sm:inline">Kin &amp; Kind</span>}
 				</Link>
 
 				<div className="flex shrink-0 items-center gap-1">
