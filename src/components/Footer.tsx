@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const RESOURCES = [
 	{ href: '/#how-it-works', label: 'How it works' },
@@ -9,8 +12,15 @@ const RESOURCES = [
 /**
  * Two link groups. The product is one page and one wizard, so a
  * five-column sitemap would be set dressing for routes that don't exist.
+ *
+ * Only shown on the landing page — the wizard and partner pages are their
+ * own focused flows, and a sitemap footer at the bottom of a questionnaire
+ * step is just an exit nobody asked for.
  */
 export default function Footer() {
+	const onLanding = usePathname() === '/';
+	if (!onLanding) return null;
+
 	return (
 		<footer className="border-line mt-auto border-t">
 			<div className="gap-s2 py-s2 lg:py-s1 mx-auto flex w-full max-w-[1360px] flex-col px-2 lg:px-3">
