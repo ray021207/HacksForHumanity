@@ -105,7 +105,7 @@ export function VoiceInputButton({ onTranscript }: { onTranscript: (text: string
           disabled={status === "transcribing"}
           className="bg-primary-fg rounded-pill text-d16 flex items-center gap-1 px-3 py-1 font-medium text-primary-bg disabled:opacity-50"
         >
-          🎙️ {status === "transcribing" ? "Transcribing..." : "Speak"}
+          {status === "transcribing" ? "Transcribing..." : "Speak"}
         </button>
       )}
       {errorMessage && <span className="text-accent text-d16">{errorMessage}</span>}
